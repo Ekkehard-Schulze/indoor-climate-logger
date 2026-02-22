@@ -1,0 +1,7 @@
+after the plotly run these data are actually appendd to the original log file					
+Sensor	Mean 	Min 	Max 	Stdev 	duration
+CO2	1434.8	350	3149	566.68	47 days 14:29:55
+ADT1	20.55	15.88	22.22	0.42	47 days 14:29:55
+BME_humidity	43.88	23.9	50.6	2.83	47 days 14:29:55
+BME_pressure	1006.59	980.6	1029.1	10.54	47 days 14:29:55
+DS181	4.9	-5.56	24.44	3.84	47 days 14:29:55
