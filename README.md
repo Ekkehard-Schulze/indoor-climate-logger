@@ -1,7 +1,12 @@
-1-Wire temperature logger for Linux systems
+indoor climate logger for 
+microcontrollers running circuit Python
+Linux Systems
+MS-Windows PCs
+
+Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 -------------------------------------------
 
-This Python script uses the Linux kernel driver for temperature readings. 
+This Python script also uses the Linux kernel driver for temperature readings. 
 
 The 1-Wire bus enables multiple temperature sensors on a single long cable.
 
@@ -21,54 +26,13 @@ ISO 8601 date and time. This format is compatible with python's pandas
 
 and plotly packages as well as with spreadsheet processing. 
 
-The script either logs temperature measurements with its own timer,
-
-or, alternatively, records a single data frame, suitable for periodic 
-
-calls by the cron deamon.
-
-For example, this crontab line invokes a data frame recording every 15 minutes: 
-
-*/15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
-
-Moreover, a further script provides graphical data analyzis and statistics.
-
-The 1-Wire bus can power sensors using 'external power'
-
-(three wires) or 'parasite power' (two wires).
-
-This script was only tested using external power.
-
-To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
-
-via raspi-config. The default Raspberry Pi GPIO pin for 
-
-1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-
-between the data line and 3.3 volt. 
-
-
-
+The script either logs temperature measurements with its own timer.
 
 
 Notes
 -------
 
-1.) To see the command line options use './1-Wire-temperature-logger-RPi.pyw -h'
-
-2.) Read the 'user settings' (lines 87 to 130) and modify these according to your needs.
-
-3.) The file name extension '.pyw' prevents the opening of a terminal window in case
-
-you invoke the script as a cron job.
-
-4.) You might be interested to have a look at [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/)
-
-to learn about more sophisticated techniques to interrogate 1Wire temperature 
-
-sensors using the Linux kernel driver, which are actually not used here.
-
-
+1.) 
 
 Images
 -------
