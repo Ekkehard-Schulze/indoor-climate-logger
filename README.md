@@ -1,7 +1,6 @@
 indoor climate logger for 
 microcontrollers running circuit Python
-Linux Systems
-MS-Windows PCs
+Linux Systems (such as RPi) and MS-Windows PCs running CPython with Adafruit Blinka library
 
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 -------------------------------------------
