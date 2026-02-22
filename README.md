@@ -34,17 +34,3 @@ Notes
 
 1.) 
 
-Images
--------
-
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1Wire_bus.jpg)
-
-An eight-meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
-
-was used to document mercury arc lamp usage in a lab for two years.
-
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
-
-Four type K thermocouples connected via 1-Wire bus to a RaspberryPi3B+ using MAX31850 amplifiers
-
-allow to measure temperatures ranging from -200°C to 1200°C with the MAX31850 interface.
