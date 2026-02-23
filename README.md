@@ -59,20 +59,21 @@ For microcontrollers running CircuitPython
 	located on the PC.
 
 
-For a MS-Windows PCs, Linux PCs or RaspberryPis 
+For MS-Windows PCs, Linux PCs or RaspberryPis 
 ----------------------------------------------
 
 **you need**
 
  - to install the required **Adafruit Blinka** packages using "pip install -r CPython-requirements.txt". The 
-  latter is located in the utilit_scripts folder.
+  latter is located in the utilit_scripts folder. Except you only want to use 1Wire on the RaspberryPi,
+  in this case no software installation is required.
 
 - edit the user setting either in the head of "indoor-climate-logger.py", or, alternatively, in
   user_settings.template.py, which then must be saved as user_settings.py. If "user_settings.py"
   is present, it will override the setting in the head of "indoor-climate-logger.py".
 
 - use the command line start (see "indoor-climate-logger.py -h") and specify either an
-  USB-I2C-interface device or choose the RaspberryPi option. The Raspberry Pi supports 1Wire for 
+  USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi supports 1Wire for 
   sensor communication alongside I2C. 
 
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
