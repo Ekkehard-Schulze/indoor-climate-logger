@@ -23,7 +23,8 @@ For microcontrollers running CircuitPython
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp
-  these go to the /lib folder
+  these go to the /lib folder.
+  
   You may omit the drivers for the sensors you do not use
 - indoor-climate-logger.py renamed to code.py, header edited for your desired user settings
 - boot.py
