@@ -18,6 +18,12 @@ Indoor climate data logger
 - illuminance
 - contactless surface temperature of an object
 
+**uses one out of three time sources**
+
+- NTP time for WiFi enabled microcontrollers
+- DS3231 precision RTC for non-Network applications
+- System time as a fallback or on CPython PCs
+
 For microcontrollers running CircuitPython
 ------------------------------------------
 
