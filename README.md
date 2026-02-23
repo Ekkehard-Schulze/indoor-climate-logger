@@ -56,12 +56,12 @@ For microcontrollers running CircuitPython
 	located on the PC.
 
 
-For a MS-Windows PC or a Linux PC or a RaspberryPi 
---------------------------------------------------
+For a MS-Windows PCs, Linux PCs or RaspberryPi 
+----------------------------------------------
 
 **you need**
 
- - to install the required Adafruit Blinka packages using "pip install -r CPython-requirements.txt". The 
+ - to install the required **Adafruit Blinka** packages using "pip install -r CPython-requirements.txt". The 
   latter is located in the utilit_scripts folder.
 
 
