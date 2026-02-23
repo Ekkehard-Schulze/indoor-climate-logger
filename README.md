@@ -163,5 +163,5 @@ remove _user_settings.py_ and edit the settings in the head section of _indoor-c
 
 Why is it indoors?
 ---------------------
-Because it is not low power. Consequently, place the sensors at leat 15 cm away from the
+Because it is not low power. Consequently, place the sensors at least 15 cm away from the
 controller, to avoid excessive influence of the dissipated electrical power.
