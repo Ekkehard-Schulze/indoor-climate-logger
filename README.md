@@ -61,7 +61,7 @@ For a MS-Windows PC or a Linux PC or a RaspberryPi
 
 **you need**
 
- - to install the required packages using "pip install -r CPython-requirements.txt". The 
+ - to install the required Adafruit Blinka packages using "pip install -r CPython-requirements.txt". The 
   latter is located in the utilit_scripts folder.
 
 
