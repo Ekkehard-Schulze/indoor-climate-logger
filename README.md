@@ -1,7 +1,7 @@
 Indoor climate data logger 
 =====================
 
-for
+**for**
 
 - microcontrollers running CircuitPython
 
@@ -9,7 +9,7 @@ for
 
 - Linux/RaspberryPi using CPython
 
-can record
+**can record**
 
 - precision temperature of multiple sensors and sensor types
 - humidity
