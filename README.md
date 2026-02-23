@@ -131,15 +131,15 @@ whereas the others are semiconductor sensors.
 Notes
 -------
 
-1. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python
+1. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
 
 2. On MS-Windows PCs only I2C-Sernsors are supported. ADT720 fails due to a driver bug.
 
-3. On a Raspberry Pi kernel 1Wire and Blinka I2C are supported.
+3. On Raspberry Pi kernel 1Wire and Blinka I2C are supported.
 
 4. The script either logs temperature measurements with Python's timer or RTC,
     or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
-	is also supported
+	is also supported.
 
 5. The script writes a tab separated value formatted text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
