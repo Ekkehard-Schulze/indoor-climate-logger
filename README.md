@@ -10,8 +10,8 @@ for
 - Linux/RaspberryPi using CPython
 
 
-Microcontrollers running CircuitPython
---------------------------------------
+For microcontrollers running CircuitPython
+------------------------------------------
 
 you need
 
