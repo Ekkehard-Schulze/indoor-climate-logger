@@ -51,7 +51,7 @@ For microcontrollers running CircuitPython
   **you may like to use**
   - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython and renames _boot.py_ to boot.bak on the microcontroller, when 
 	plugged to a USB port, even when the filesystem is mounted read-only. After a reset or
-	re-plug of the microcontroller, the the files system is mounted read only for the controller,
+	re-plug of the microcontroller, the files system is mounted read only for the controller,
 	and now log data can be copied to the PC. This is required, WiFi is not available or not
 	activated. For convenience, this script may be located on the controller, however it also functions when
 	located on the PC.
@@ -60,7 +60,7 @@ For microcontrollers running CircuitPython
     convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
 	delete _indoor-climate-logger.py_. After a reset or e-plug of the microcontroller, the the files system 
 	is mounted read write for the controller and the controller starts logging data. It is not possible
-	to read the growing log file via USB, however in verboose mode the data are also pinted to the
+	to read the growing log file via USB, however in verbose mode the data are also printed to the
 	repl, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however it also functions when
 	located on the PC.
 
@@ -131,9 +131,9 @@ whereas the others are semiconductor sensors.
 Notes
 -------
 
-1.) MS-Z19 carbon dioxide is onyly supported on microvontrollers running Circuit Python
+1.) MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python
 
-2.) On MS-Windows PCs only I2C-Sernsors are spported. ADT720 fails due to a driver bug.
+2.) On MS-Windows PCs only I2C-Sernsors are supported. ADT720 fails due to a driver bug.
 
 3.) On a Raspberry Pi kernel 1Wire and Blinka I2C are supported.
 
@@ -141,14 +141,14 @@ Notes
     or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
 	is also supported
 
-5.) The script writes a tab separated value formated text file with 
+5.) The script writes a tab separated value formatted text file with 
 
 ISO 8601 date and time. This format is compatible with python's pandas 
 
 and plotly packages as well as with spreadsheet processing. 
 
-6.) The script _plotly_time_series.py_ server for generating statistics and interavtive data 
-    exloration using plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
+6.) The script _plotly_time_series.py_ server for generating statistics and interacvtive data 
+    exploration using plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
 
 
@@ -164,4 +164,4 @@ remove _user_settings.py_ and edit the settings in the head section of _indoor-c
 Why is it indoors?
 ---------------------
 Because it is not low power. Consequently, place the sensors at least 15 cm away from the
-controller, to avoid excessive influence of the dissipated electrical power.
+controller, to avoid excessive influence of the dissipated thermal power.
