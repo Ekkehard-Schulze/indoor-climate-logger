@@ -147,8 +147,8 @@ and plotly packages as well as with spreadsheet processing.
 
 6. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration with Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
-7. On a microcontroller the flash limited memory is used for rolling storage, to allow for continous infinite operation. 
-Generate a long-term log file by periodic data polling and merging. Find the respective scripts 
+7. On a microcontroller the imited flash memory is used for rolling storage, to allow for continous infinite operation. 
+Generate a long-term log file by periodic data polling and merging on a secondary system. Find the respective scripts 
 in utility_scripts/data_retrieval_merge_and_cleaning.
 
 8. You find more technical details in _indoor-climate-logger.py_.
