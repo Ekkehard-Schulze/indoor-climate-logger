@@ -11,12 +11,12 @@ for
 
 can record
 
-- precision temperature of multiple sensors
+- precision temperature of multiple sensors and sensor types
 - humidity
 - atmospheric pressure
 - carbon dioxide concentration using non-dispersive spectrometry
 - illuminance
-- contactless surface temperature of objects 
+- contactless surface temperature of an object
 
 For microcontrollers running CircuitPython
 ------------------------------------------
