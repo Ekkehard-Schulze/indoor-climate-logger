@@ -76,13 +76,30 @@ For MS-Windows PCs, Linux PCs or RaspberryPis
   USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi supports 1Wire for 
   sensor communication alongside I2C. 
 
-Work-in progress, Software runs, Readme is unfinished. See instructions in code.
+Supported sensors
 -------------------------------------------
+Sensors implemented with auto detect (auto-detect requires activation of the specific bus in this code)
+------------------------------------
+• i2c
+  TMP117   temperature 0.1°C precision
+  ADT7420  temperature 0.2°C precision
+  mlx90614 temperature IR  0.5°C precision
+  bme280   barometric pressure, humidity 3%, temperature ±1°C (0.5°C at 25°C) 
+  bme680   barometric pressure, humidity 3%, temperature ±1°C 
+  tsl2561  Lux
+
+• 1Wire
+  DS18B20  ±0.5°C Accuracy from -10°C to +85°C
+  DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+  DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+  MAX31850 ±2°C for temperatures  -200°C to +700°C
+
+• serial rx tx
+   MH-Z19
 
 
 
-
- user settings process
+ technical details
  ===============================
 
 
