@@ -141,6 +141,7 @@ ISO 8601 date and time. This format is compatible with python's pandas
 
 and plotly packages as well as with spreadsheet processing. 
 
-6.) The script server for generating statistics and interavtive data exloration using plotly.
+6.) The script "plotly_time_series.py" server for generating statistics and interavtive data 
+    exloration using plotly.  Try it using the demo data set "20260222_201501_MHZ_19_CO2_log.tsv".
 
 
