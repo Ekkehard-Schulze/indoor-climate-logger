@@ -1,0 +1,17 @@
+# winkey+x a , cd ..., pip install -r filename # on windows
+# sudo pip install -r filename   # for all users. without sudo for present user 
+
+ftd2xx   ; sys_platform == 'win32'          # used to discover FT232H driver replacement by MS-Win 
+                                            # auto-update to FTDI thereby removing libusbK
+hidapi                                      # for USB CP2221 for I2C, SPI, 1Wire
+
+Adafruit-Blinka
+Adafruit-PlatformDetect
+adafruit-circuitpython-busdevice            # i2c communication
+adafruit-circuitpython-ds3231               # clock with tcxo
+adafruit-circuitpython-bme280               # temp pressure humidity
+adafruit-circuitpython-bme680               # temp pressure air quality
+adafruit-circuitpython-mlx90614             # ir thermometer
+adafruit-circuitpython-tsl2561              # light sensor lux
+adafruit-circuitpython-tmp117               # Texas Instruments NIST tracable thermometer +/- 0.1°C accuracy
+adafruit-circuitpython-adt7410              # this might be ADT7420 compatible

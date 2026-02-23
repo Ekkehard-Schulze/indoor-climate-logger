@@ -55,6 +55,18 @@ For microcontrollers running CircuitPython
 	repl, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however it also functions when
 	located on the PC.
 
+
+For a MS-Windows PC or a Linux PC or a RaspberryPi 
+--------------------------------------------------
+
+**you need**
+
+ - to install the required packages using "pip install -r CPython-requirements.txt". The 
+  latter is located in the utilit_scripts folder.
+
+
+
+
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 -------------------------------------------
 
