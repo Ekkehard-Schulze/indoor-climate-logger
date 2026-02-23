@@ -40,25 +40,25 @@ For microcontrollers running CircuitPython
   these go to the /lib folder.
   
   You may omit the drivers for the sensors you do not use.
-- indoor-climate-logger.py renamed to code.py, header edited for your desired user settings
-- boot.py
+- _indoor-climate-logger.py_ renamed to _code.py_, header edited for your desired user settings
+- _boot.py_
 - if you want to activate WiFi, edit settings_template.toml with your credentials
   and rename it to settings.toml
-- edit the user setting either in the head of "indoor-climate-logger.py", or, alternatively, in
-  user_settings.template.py, which then must be saved as user_settings.py. If "user_settings.py"
-  is present, it will override the setting in the head of "indoor-climate-logger.py".
+- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
+  _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
+  is present, it will override the setting in the head of _indoor-climate-logger.py_.
   
   **you may like to use**
-  - The script "switch_RPiPico_to_USB_read_log_mode.py" runs in CPython and renames boot.py to boot.bak on the microcontroller, when 
+  - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython and renames _boot.py_ to boot.bak on the microcontroller, when 
 	plugged to a USB port, even when the filesystem is mounted read-only. After a reset or
 	re-plug of the microcontroller, the the files system is mounted read only for the controller,
 	and now log data can be copied to the PC. This is required, WiFi is not available or not
 	activated. For convenience, this script may be located on the controller, however it also functions when
 	located on the PC.
  
-  - The script "switch_RPiPico_to_write_log_mode.py" runs in CPython and renames boot.bak to boot.py. For the
-    convenience of the developer, it also copies indoor-climate-logger.py to code.py and offers to
-	delete indoor-climate-logger.py. After a reset or e-plug of the microcontroller, the the files system 
+  - The script _switch_RPiPico_to_write_log_mode.py_ runs in CPython and renames _boot.bak_ to _boot.py_. For the
+    convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
+	delete _indoor-climate-logger.py_. After a reset or e-plug of the microcontroller, the the files system 
 	is mounted read write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB, however in verboose mode the data are also pinted to the
 	repl, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however it also functions when
@@ -70,15 +70,15 @@ For MS-Windows PCs, Linux PCs or RaspberryPis
 
 **you need**
 
- - to install the required **Adafruit Blinka** packages using "pip install -r CPython-requirements.txt". The 
+ - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_. The 
   latter is located in the utilit_scripts folder. Except you only want to use 1Wire on the RaspberryPi,
   in this case no software installation is required.
 
-- edit the user setting either in the head of "indoor-climate-logger.py", or, alternatively, in
-  user_settings.template.py, which then must be saved as user_settings.py. If "user_settings.py"
-  is present, it will override the setting in the head of "indoor-climate-logger.py".
+- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
+  user_settings.template.py, which then must be saved as user_settings.py. If _user_settings.py_
+  is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
-- use the command line start (see "indoor-climate-logger.py -h") and specify either an
+- use the command line start (enter _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi supports 1Wire for 
   sensor communication alongside I2C. 
 
@@ -147,10 +147,18 @@ ISO 8601 date and time. This format is compatible with python's pandas
 
 and plotly packages as well as with spreadsheet processing. 
 
-6.) The script "plotly_time_series.py" server for generating statistics and interavtive data 
-    exloration using plotly.  Try it using the demo data set "20260222_201501_MHZ_19_CO2_log.tsv".
+6.) The script _plotly_time_series.py_ server for generating statistics and interavtive data 
+    exloration using plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
 
 
 Why is it indoors?
 ---------------------
+
+
+Never forget
+---------------------
+A _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
+if you want o configure multiple loggers and use and maintain the same 
+_indoor-climate-logger.py/code.py_ for all of them. If you have just one logger, it is more convenient to
+_remove user_settings.py_ and edit the settings in the head section of _indoor-climate-logger.py/code.py_:
