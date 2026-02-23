@@ -138,7 +138,7 @@ Notes
 3.) On a Raspberry Pi kernel 1Wire and Blinka I2C are supported.
 
 4.) The script either logs temperature measurements with Python's timer or RTC,
-    or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
+    or with a DS3231 I2C precision clock.    On WiFi enabled microcontroller, NTP
 	is also supported
 
 5.) The script writes a tab separated value formatted text file with 
