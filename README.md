@@ -161,4 +161,4 @@ Never forget
 A _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want o configure multiple loggers and use and maintain the same 
 _indoor-climate-logger.py/code.py_ for all of them. If you have just one logger, it is more convenient to
-_remove user_settings.py_ and edit the settings in the head section of _indoor-climate-logger.py/code.py_:
+_remove user_settings.py_ and edit the settings in the head section of _indoor-climate-logger.py/code.py_.
