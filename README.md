@@ -152,9 +152,6 @@ and plotly packages as well as with spreadsheet processing.
 
 
 
-Why is it indoors?
----------------------
-
 
 Never forget
 ---------------------
@@ -162,3 +159,9 @@ A _user_settings.py_ overrides the settings in the head of _indoor-climate-logge
 if you want o configure multiple loggers and use and maintain the same 
 _indoor-climate-logger.py/code.py_ for all of them. If you have just one logger, it is more convenient to
 remove _user_settings.py_ and edit the settings in the head section of _indoor-climate-logger.py/code.py_.
+
+
+Why is it indoors?
+---------------------
+Because it is not low power. Consequently, place the sensors at leat 15 cm away from the
+controller, to avoid excessive influence of the dissipated electrical power.
