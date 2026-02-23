@@ -1,18 +1,33 @@
 Indoor climate logger 
----------------------
+=====================
 
-- for microcontrollers running CircuitPython
+for
 
-- for MS-Windows PCs using CPython
+- microcontrollers running CircuitPython
 
-- for Linux/RaspberryPi using CPython
+- MS-Windows PCs using CPython
+
+- Linux/RaspberryPi using CPython
+
+
+Microcontrollers running CircuitPython
+--------------------------------------
+
+you need
+
+- CircuitPython installed, this code was developed with version 9.6.1 on RaspberrPi Pico2W
+
+
+
+Work-in progress, Software runs, Readme is unfinished. See instructions in code.
+-------------------------------------------
+
+
 
 
  and the Adafruit Blinka module
  ===============================
 
-Work-in progress, Software runs, Readme is unfinished. See instructions in code.
--------------------------------------------
 
 This Python script also uses the Linux kernel driver for temperature readings. 
 
