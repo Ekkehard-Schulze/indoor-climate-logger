@@ -142,9 +142,7 @@ Notes
 	is also supported
 
 5. The script writes a tab separated value formatted text file with 
-
 ISO 8601 date and time. This format is compatible with python's pandas 
-
 and plotly packages as well as with spreadsheet processing. 
 
 6. The script _plotly_time_series.py_ server for generating statistics and interacvtive data 
