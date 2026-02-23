@@ -15,11 +15,11 @@ For microcontrollers running CircuitPython
 
 you need
 
-- CircuitPython installed, this code was developed with version 9.6.1 on RaspberrPi Pico2W and Pico2W
+- CircuitPython, this code was developed using version 9.2.1 on RaspberrPi Pico2W and Pico2W
 - the /lib folder
 - the hardware drivers from the Adafruit library bundle for your CircuitPython version:
   https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases
-  adafruit_register, adafruit_tmp117, adafruit_adt7410,   
+  adafruit_register, adafruit_tmp117, adafruit_adt7410, 
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp
