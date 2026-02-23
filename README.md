@@ -25,7 +25,7 @@ For microcontrollers running CircuitPython
   adafruit_onewire, adafruit_ds3231, adafruit_ntp
   these go to the /lib folder.
   
-  You may omit the drivers for the sensors you do not use
+  You may omit the drivers for the sensors you do not use.
 - indoor-climate-logger.py renamed to code.py, header edited for your desired user settings
 - boot.py
 - if you want to activate WiFi, edit settings_template.toml with your credentials
