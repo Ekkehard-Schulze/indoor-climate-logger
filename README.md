@@ -110,7 +110,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
 ---------------------
 
 
-On Linux systems this Python script uses the Linux kernel driver for temperature readings. 
+On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for temperature readings. 
 
 The 1-Wire bus enables multiple temperature sensors on a single long cable.
 
@@ -133,7 +133,7 @@ Notes
 
 1. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
 
-2. On MS-Windows PCs only I2C-Sernsors are supported. ADT720 fails due to a driver bug.
+2. On MS-Windows PCs only I2C-sensors are supported. ADT720 fails due to a driver bug.
 
 3. On Raspberry Pi kernel 1Wire and Blinka I2C are supported.
 
