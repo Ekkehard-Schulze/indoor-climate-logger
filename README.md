@@ -36,14 +36,16 @@ For microcontrollers running CircuitPython
 	plugged to a USB port, even when the filesystem is mounted read-only. After a reset or
 	re-plug of the microcontroller, the the files system is mounted read only for the controller,
 	and now log data can be copied to the PC. This is required, WiFi is not available or not
-	activated.
+	activated. For convenience, this script may be located on the controller, however it also functions when
+	located on the PC.
  
   - switch_RPiPico_to_write_log_mode.py runs in CPython and renames boot.bak to boot.py. For the
     convenience of the developer, it also copies indoor-climate-logger.py to code.py and offers to
 	delete indoor-climate-logger.py. After a reset or e-plug of the microcontroller, the the files system 
 	is mounted read write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB, however in verboose mode the data are also pinted to the
-	repl, e. g. when using the Thonny-IDE.
+	repl, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however it also functions when
+	located on the PC.
 
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 -------------------------------------------
