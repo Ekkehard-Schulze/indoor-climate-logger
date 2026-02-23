@@ -13,7 +13,7 @@ for
 For microcontrollers running CircuitPython
 ------------------------------------------
 
-you need
+_you need_
 
 - CircuitPython, this code was developed using version 9.2.1 on RaspberrPi Pico2W and Pico2W
 - the /lib folder
@@ -30,7 +30,7 @@ you need
 - if you want to activate WiFi, edited settings_template.toml with your credentials
   and rename it to settings.toml
   
-  you may like to use
+  _you may like to use_
   - test stest
 
 
