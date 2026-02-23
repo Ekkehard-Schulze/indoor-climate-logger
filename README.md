@@ -155,7 +155,7 @@ and plotly packages as well as with spreadsheet processing.
 
 Never forget
 ---------------------
-A _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
+The script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain the same 
 _indoor-climate-logger.py/code.py_ for all of them. With one logger, remove user_settings.py and 
 edit settings in _indoor-climate-logger.py/code.py_ instead.
