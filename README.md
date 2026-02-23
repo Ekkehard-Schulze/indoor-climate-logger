@@ -8,6 +8,9 @@ Indoor climate logger
 - for Linux/RaspberryPi using CPython
 
 
+ and the Adafruit Blinka module
+ ===============================
+
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 -------------------------------------------
 
