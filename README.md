@@ -87,7 +87,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
   - mlx90614 temperature IR  0.5°C precision
   - bme280   barometric pressure, humidity 3%, temperature ±1°C (0.5°C at 25°C) 
   - bme680   barometric pressure, humidity 3%, temperature ±1°C 
-  - tsl2561  Lux
+  - tsl2561  illuminance
 
 - 1Wire
   - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
@@ -96,7 +96,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
   - MAX31850 ±2°C for temperatures  -200°C to +700°C
 
 - serial rx tx
-  - MH-Z19
+  - MH-Z19   carbon dioxide concentration
 
 
 
@@ -104,7 +104,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
  ===============================
 
 
-This Python script also uses the Linux kernel driver for temperature readings. 
+On Linux systems this Python script uses the Linux kernel driver for temperature readings. 
 
 The 1-Wire bus enables multiple temperature sensors on a single long cable.
 
@@ -118,17 +118,29 @@ MAX31850, and DS1825. The latter two read type K thermocouples,
 
 whereas the others are semiconductor sensors.
 
-The script writes a tab separated value formated text file with 
 
-ISO 8601 date and time. This format is compatible with python's pandas 
 
-and plotly packages as well as with spreadsheet processing. 
-
-The script either logs temperature measurements with its own timer.
 
 
 Notes
 -------
 
-1.) 
+1.) MS-Z19 carbon dioxide is onyly supported on microvontrollers running Circuit Python
+
+2.) On MS-Windows PCs only I2C-Sernsors are spported. ADT720 fails due to a driver bug.
+
+3.) On a Raspberry Pi kernel 1Wire and Blinka I2C are supported.
+
+4.) The script either logs temperature measurements with Python's timer or RTC,
+    or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
+	is also supported
+
+5.) The script writes a tab separated value formated text file with 
+
+ISO 8601 date and time. This format is compatible with python's pandas 
+
+and plotly packages as well as with spreadsheet processing. 
+
+6.) The script server for generating statistics and interavtive data exloration using plotly.
+
 
