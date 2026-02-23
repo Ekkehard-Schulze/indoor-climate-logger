@@ -27,7 +27,7 @@ For microcontrollers running CircuitPython
   You may omit the drivers for the sensors you do not use
 - indoor-climate-logger.py renamed to code.py, header edited for your desired user settings
 - boot.py
-- if you want to activate WiFi, edited settings_template.toml with your credentials
+- if you want to activate WiFi, edit settings_template.toml with your credentials
   and rename it to settings.toml
   
   **you may like to use**
