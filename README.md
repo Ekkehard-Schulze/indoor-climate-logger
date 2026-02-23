@@ -16,7 +16,7 @@ Indoor climate data logger
 - atmospheric pressure
 - carbon dioxide concentration using non-dispersive spectrometry
 - illuminance
-- contactless surface temperature of an object
+- radiation surface temperature
 
 **uses one out of three time sources**
 
