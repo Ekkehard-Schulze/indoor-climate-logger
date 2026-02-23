@@ -18,11 +18,11 @@ you need
 - CircuitPython installed, this code was developed with version 9.6.1 on RaspberrPi Pico2W and Pico2W
 - the \lib folder
 - indoor-climate-logger.py renamed to code.py, header edited for your desired user settings
-- if you want to activate WiFi settings_template.toml edited with your redentials
-  and renamed to settings.toml
+- if you want to activate WiFi, edited settings_template.toml with your credentials
+  and rename it to settings.toml
   
-  
-
+  you may like to use
+  - test stest
 
 
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
