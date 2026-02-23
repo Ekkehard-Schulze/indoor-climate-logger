@@ -137,16 +137,15 @@ Notes
 
 3. On Raspberry Pi kernel 1Wire and Blinka I2C are supported.
 
-4. The script either logs temperature measurements with Python's timer or RTC,
+4. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
     or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
 	is also supported.
 
-5. The script writes a tab separated value formatted text file with 
+5. _indoor-climate-logger.py/code.py_ writes a tab separated value formatted text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-6. The script _plotly_time_series.py_ server for generating statistics and interacvtive data 
-    exploration using plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
+6. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration with Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
 7. You find more technical details in _indoor-climate-logger.py_.
 
