@@ -101,7 +101,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
 
 
  technical details
- ===============================
+---------------------
 
 
 On Linux systems this Python script uses the Linux kernel driver for temperature readings. 
@@ -145,3 +145,6 @@ and plotly packages as well as with spreadsheet processing.
     exloration using plotly.  Try it using the demo data set "20260222_201501_MHZ_19_CO2_log.tsv".
 
 
+
+Why is it indoors?
+---------------------
