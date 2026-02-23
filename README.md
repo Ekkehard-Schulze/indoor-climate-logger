@@ -38,6 +38,9 @@ For microcontrollers running CircuitPython
 - boot.py
 - if you want to activate WiFi, edit settings_template.toml with your credentials
   and rename it to settings.toml
+- edit the user setting either in the head of "indoor-climate-logger.py", or, alternatively, in
+  user_settings.template.py, which then must be saved as user_settings.py. If "user_settings.py"
+  is present, it will override the setting in the head of "indoor-climate-logger.py".
   
   **you may like to use**
   - The script "switch_RPiPico_to_USB_read_log_mode.py" runs in CPython and renames boot.py to boot.bak on the microcontroller, when 
@@ -56,7 +59,7 @@ For microcontrollers running CircuitPython
 	located on the PC.
 
 
-For a MS-Windows PCs, Linux PCs or RaspberryPi 
+For a MS-Windows PCs, Linux PCs or RaspberryPis 
 ----------------------------------------------
 
 **you need**
@@ -64,8 +67,13 @@ For a MS-Windows PCs, Linux PCs or RaspberryPi
  - to install the required **Adafruit Blinka** packages using "pip install -r CPython-requirements.txt". The 
   latter is located in the utilit_scripts folder.
 
+- edit the user setting either in the head of "indoor-climate-logger.py", or, alternatively, in
+  user_settings.template.py, which then must be saved as user_settings.py. If "user_settings.py"
+  is present, it will override the setting in the head of "indoor-climate-logger.py".
 
-
+- use the command line start (see "indoor-climate-logger.py -h") and specify either an
+  USB-I2C-interface device or choose the RaspberryPi option. The Raspberry Pi supports 1Wire for 
+  sensor communication alongside I2C. 
 
 Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 -------------------------------------------
@@ -73,7 +81,7 @@ Work-in progress, Software runs, Readme is unfinished. See instructions in code.
 
 
 
- and the Adafruit Blinka module
+ user settings process
  ===============================
 
 
