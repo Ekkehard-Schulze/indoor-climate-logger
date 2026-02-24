@@ -351,7 +351,7 @@ if USE_ONE_WIRE_temperature_Linux_Kernel:
 
         def __init__(self):
             import glob
-            self.logger_name = "1wire_logger"
+            self.LOGGER_name = "1wire_logger"
             self.base_dir = '/sys/bus/w1/devices/'
             self.device_folder_list = glob.glob(self.base_dir + '28*')
 
