@@ -147,7 +147,7 @@ in _./utility_scripts/data_retrieval_merge_and_cleaning_.
 3. The script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 
 _indoor-climate-logger.py/code.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
-edit the settings in _indoor-climate-logger.py/code.py_ instead.
+edit the settings in the head section of _indoor-climate-logger.py/code.py_ instead.
 
 4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
