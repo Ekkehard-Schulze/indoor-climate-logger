@@ -72,7 +72,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_. The 
-  latter is located in the _utilit_scripts_ folder. Except you only want to use 1Wire on the RaspberryPi,
+  latter is located in the _utilit_scripts_ folder. Except you only want to use One-Wire on the RaspberryPi,
   in this case no software installation is required.
 
 - edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
@@ -80,7 +80,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
 - use the command line start (enter _indoor-climate-logger.py -h_) and specify either an
-  USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi supports 1Wire for 
+  USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi supports One-Wire for 
   sensor communication alongside I2C. 
 
 Supported sensors
@@ -96,7 +96,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
   - bme680   barometric pressure, humidity 3%, temperature ±1°C 
   - tsl2561  illuminance
 
-- 1Wire
+- One-Wire
   - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
   - DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
   - DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
@@ -107,22 +107,22 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
 
 
 
-technical details for One-Wire temperature sensors on RaspberryPi/Linux
+Technical details for One-Wire temperature sensors on RaspberryPi/Linux
 -----------------------------------------------------------
 
 On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for temperature readings. 
-The 1-Wire bus enables multiple temperature sensors on a single long cable.
-The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
+The One-Wire bus enables multiple temperature sensors on a single long cable.
+The Linux kernel auto-discovers One-Wire temperature sensors on startup.
 You can connect different types of sensors to the same bus. The kernel 
-supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
+supports One-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
 MAX31850, and DS1825. The latter two read type K thermocouples,
 whereas the others are semiconductor sensors.
-The 1-Wire bus can power sensors using 'external power'
+The One-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
-To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
+To use One-Wire sensors with a Raspberry Pi, activate the One-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
-1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
+One-Wire communication is GPIO4. You need a 4.7kΩ resistor 
 between the data line and 3.3 volt. 
 
 
@@ -150,7 +150,7 @@ edit settings in _indoor-climate-logger.py/code.py_ instead.
 
 6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
 
-7. On Raspberry Pi kernel 1Wire and Blinka I2C are supported.
+7. On Raspberry Pi kernel One-Wire and Blinka I2C are supported.
 
 8. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
     or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
