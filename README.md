@@ -25,7 +25,7 @@ Indoor climate data logger
 - DS3231 precision RTC for non-Network applications
 - System time as a fallback or on CPython PCs
 
-**optional WiFi connection allows instant monitoring**
+**allows instant monitoring via WiFi access**
 
 - available on RaspberryPi PicoW and Pico2W
 
