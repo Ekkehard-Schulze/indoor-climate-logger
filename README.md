@@ -149,7 +149,7 @@ if you want to configure multiple loggers and use and maintain an identical
 _indoor-climate-logger.py/code.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
 edit the settings in _indoor-climate-logger.py/code.py_ instead.
 
-4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration with Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
+4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
 
 5. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
