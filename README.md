@@ -107,7 +107,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
 
 
 
-technical details for One-Wire temperature sensor on Linux
+technical details for One-Wire temperature sensor on RaspberryPi/Linux
 -----------------------------------------------------------
 
 
