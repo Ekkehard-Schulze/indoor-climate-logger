@@ -11,7 +11,8 @@ Indoor climate data logger
 
 **can record**
 
-- precision temperature of multiple sensors and sensor types
+- precision temperature with up to four I2C sensors
+- general purpose temperature with more than eight One-Wire sensors
 - humidity
 - atmospheric pressure
 - carbon dioxide concentration using non-dispersive spectrometry
@@ -106,8 +107,8 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
 
 
 
- technical details
----------------------
+technical details for One-Wire temperature sensor on Linux
+-----------------------------------------------------------
 
 
 On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for temperature readings. 
@@ -123,6 +124,20 @@ supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
 MAX31850, and DS1825. The latter two read type K thermocouples,
 
 whereas the others are semiconductor sensors.
+
+The 1-Wire bus can power sensors using 'external power'
+
+(three wires) or 'parasite power' (two wires).
+
+This script was only tested using external power.
+
+To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
+
+via raspi-config. The default Raspberry Pi GPIO pin for 
+
+1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
+
+between the data line and 3.3 volt. 
 
 
 
