@@ -164,4 +164,5 @@ edit settings in _indoor-climate-logger.py/code.py_ instead.
 Why is it indoors?
 ---------------------
 Because it is not low power. Consequently, place the sensors at least 15 cm away from the
-controller, to avoid excessive influence of the dissipated thermal power.
+controller, to avoid excessive influence of the dissipated thermal power. You may like to sneak a 
+sensor cable to ouddors in addition.
