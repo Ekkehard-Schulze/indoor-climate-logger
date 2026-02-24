@@ -25,6 +25,10 @@ Indoor climate data logger
 - DS3231 precision RTC for non-Network applications
 - System time as a fallback or on CPython PCs
 
+**optional WiFi connection allows instant monitoring**
+
+- available on RaspberryPi PicoW and Pico2W
+
 For microcontrollers running CircuitPython
 ------------------------------------------
 
@@ -92,7 +96,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
   - TMP117   temperature 0.1°C precision
   - ADT7420  temperature 0.2°C precision
   - mlx90614 temperature IR  0.5°C precision
-  - bme280   barometric pressure, humidity 3%, temperature ±1°C (0.5°C at 25°C) 
+  - bme280   barometric pressure, humidity 3%, temperature ±1°C
   - bme680   barometric pressure, humidity 3%, temperature ±1°C 
   - tsl2561  illuminance
 
