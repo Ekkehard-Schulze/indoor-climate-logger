@@ -11,8 +11,8 @@ Indoor climate data logger
 
 **can record**
 
-- precision temperature with up to four I2C sensors
-- general purpose temperature with more than eight One-Wire sensors
+- precision temperature using up to four I2C sensors
+- general purpose temperature using more than eight One-Wire sensors
 - humidity
 - atmospheric pressure
 - carbon dioxide concentration using non-dispersive spectrometry
@@ -146,35 +146,36 @@ between the data line and 3.3 volt.
 Notes
 -------
 
-1. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
-
-2. On MS-Windows PCs only I2C-sensors are supported. ADT720 fails due to a driver bug.
-
-3. On Raspberry Pi kernel 1Wire and Blinka I2C are supported.
-
-4. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
-    or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
-	is also supported.
-
-5. _indoor-climate-logger.py/code.py_ writes a tab separated value formatted text file with 
+1. _indoor-climate-logger.py/code.py_ writes a tab separated value formatted text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-6. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration with Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
-
-7. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
+2. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
 Generate a long-term log file by periodic data polling and merging on a secondary system. Find the respective scripts 
 in _./utility_scripts/data_retrieval_merge_and_cleaning_.
 
-8. You find more technical details in _indoor-climate-logger.py_.
 
-
-Never forget
----------------------
-The script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
+3. The script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain the same 
-_indoor-climate-logger.py/code.py_ for all of them. With one logger, remove user_settings.py and 
+_indoor-climate-logger.py/code.py_ for all of them. When operating hust a single logger, remove user_settings.py and 
 edit settings in _indoor-climate-logger.py/code.py_ instead.
+
+4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration with Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
+
+
+5. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
+
+6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
+
+7. On Raspberry Pi kernel 1Wire and Blinka I2C are supported.
+
+8. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
+    or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
+	is also supported.
+
+9. You find more technical details in _indoor-climate-logger.py_.
+
+
 
 
 Why is it indoors?
