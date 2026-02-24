@@ -107,7 +107,7 @@ Sensors implemented with auto detect (auto-detect requires activation of the spe
 
 
 
-Technical details for One-Wire temperature sensors on RaspberryPi/Linux
+One-Wire temperature sensors on RaspberryPi/Linux
 -----------------------------------------------------------
 
 On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for temperature readings. 
