@@ -153,7 +153,7 @@ edit settings in _indoor-climate-logger.py/code.py_ instead.
 7. On Raspberry Pi kernel One-Wire and Blinka I2C are supported.
 
 8. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
-    or with a DS3231 I2C precision clock. On WiFi enabled microcontroller, NTP
+    or with a DS3231 I2C precision clock. On WiFi enabled microcontrollers, NTP
 	is also supported.
 
 9. You find more technical details in _indoor-climate-logger.py_.
