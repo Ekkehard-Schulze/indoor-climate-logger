@@ -123,7 +123,9 @@ This script was only tested using external power.
 To use One-Wire sensors with a Raspberry Pi, activate the One-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
 One-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-between the data line and 3.3 volt. 
+between the data line and 3.3 volt. If you need crontab based One-Wire 
+sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
+provides a much leaner solution.
 
 
 Notes
