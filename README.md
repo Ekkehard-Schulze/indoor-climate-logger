@@ -66,8 +66,8 @@ For microcontrollers running CircuitPython
 	located on the PC.
 
 
-For MS-Windows PCs, Linux PCs or RaspberryPis 
-----------------------------------------------
+For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
+-------------------------------------------------------------
 
 **you need**
 
