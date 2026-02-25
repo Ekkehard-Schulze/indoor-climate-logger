@@ -182,6 +182,7 @@ RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used
 22: TX  (GP16)
 34: One-Wire (GP28)
 
+t
 
 Example screen copy of _plotly_time_series.py
 ------------------------------------------------
