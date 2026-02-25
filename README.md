@@ -172,3 +172,16 @@ Why is it indoors?
 Because it is not low power. Consequently, place the sensors at least 15 cm away from the
 controller, to avoid excessive influence of the dissipated thermal power. You may like to sneak a 
 sensor cable to ouddors in addition.
+
+
+RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used
+-------------------------------------------------
+ 6: SDA (GP4)
+ 7: SCL (GP5)
+21: RX  (GP17)
+22: TX  (GP16)
+34: One-Wire (GP28)
+
+
+Example screen copy of _plotly_time_series.py
+------------------------------------------------
