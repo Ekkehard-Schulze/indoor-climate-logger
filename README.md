@@ -174,15 +174,13 @@ controller, to avoid excessive influence of the dissipated thermal power. You ma
 sensor cable to ouddors in addition.
 
 
-RaspberryPi Pico, Pico2, PicoW, Pico2W Pins 
------------------------------------
-used and pullup resistors to 3V3
-----------------------------------------------------------------------------
- 6: SDA (GP4)  2k2
- 7: SCL (GP5)  2k2
+RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used and pullup resistors
+---------------------------------------------------------------------
+ 6: SDA (GP4)  2.2 kΩ to 3V3
+ 7: SCL (GP5)  2.2 kΩ to 3V3
 21: RX  (GP17)
 22: TX  (GP16)
-34: One-Wire (GP28) 1k
+34: One-Wire (GP28) 1 kΩ to 3V3
 
 
 
