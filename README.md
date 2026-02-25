@@ -182,7 +182,12 @@ RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used
 22: TX  (GP16)
 34: One-Wire (GP28)
 
-t
+
 
 Example screen copy of _plotly_time_series.py
 ------------------------------------------------
+
+![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/time_course_screenshot.webp)
+
+![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/descriptive_statistics_screenshot.webp)
+
