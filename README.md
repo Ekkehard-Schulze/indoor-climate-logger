@@ -175,10 +175,12 @@ sensor cable to ouddors in addition.
 
 Notes for development, debugging and trouble shooting using CircuitPython
 ---------------------------------------------------------
-1. boot.py mounts the controllers filesystem to read/write during startup, which prevents
+1. boot.py mounts the controller's filesystem to read/write during startup, which prevents
    write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
+
 2. A Repl command to stop write mode is 'import os; os.rename("/boot.py", "/boot.bak")' followed by a reset.
-Now the filesystem is fully accessible from the PC via USB.
+Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
+to its file system. The write attempt triggers an exception.
 
 3. The settins "LOG_EXCEPTIONS_to_file = True" sends exceptions to a log file, to preserve them. This file is accessible 
 via http, if the server is set active. However, due to limitations in CicuitPython, these logs
