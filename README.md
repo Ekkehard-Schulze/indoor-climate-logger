@@ -173,6 +173,25 @@ Because it is not low power. Consequently, place the sensors at least 15 cm away
 controller, to avoid excessive influence of the dissipated thermal power. You may like to sneak a 
 sensor cable to ouddors in addition.
 
+Notes for development, debugging and trouble shooting using CircuitPython
+---------------------------------------------------------
+1. boot.py mounts the controllers filesystem to read/write during startup, which prevents
+   write access from PC via USB. Moreover, the log files can not be read from
+2. A Repl command to stop write mode is "import os; os.rename("/boot.py", "/boot.bak")" followed by a reset.
+Now the filesystem is fully accessible from the PC via USB.
+
+3. The settins "LOG_EXCEPTIONS_to_file = True" sends exceptions to a log file, to preserve them. This file is accessible 
+via http, if the server is set active. However, due to limitations in CicuitPython, these logs
+do not contain the normal backtrace information with line numbers. Moreover, this setting
+prevents error output to the Repl.
+
+4. Consequently, for console debugging set "LOG_EXCEPTIONS_to_file = False".
+
+5. A good setting for debugging is boot.py renamed to boot.bak, "LOG_EXCEPTIONS_to_file = False",
+and "WRITE_LOG_data_to_file = False".
+  
+
+
 
 RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used and pullup resistors
 ---------------------------------------------------------------------
