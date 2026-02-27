@@ -7,7 +7,7 @@ Indoor climate data logger
 
 - MS-Windows PCs using CPython
 
-- Linux/RaspberryPi using CPython
+- Linux PCs/RaspberryPis using CPython
 
 **can record**
 
@@ -15,7 +15,7 @@ Indoor climate data logger
 - general purpose temperature using more than eight One-Wire sensors
 - humidity
 - atmospheric pressure
-- carbon dioxide concentration using non-dispersive spectrometry
+- carbon dioxide concentration
 - illuminance
 - radiation surface temperature
 
@@ -23,7 +23,7 @@ Indoor climate data logger
 
 - NTP time for WiFi enabled microcontrollers
 - DS3231 precision RTC for non-Network applications
-- System time as a fallback or on CPython PCs
+- System time
 
 **allows instant monitoring via WiFi access**
 
@@ -37,37 +37,36 @@ For microcontrollers running CircuitPython
 - CircuitPython, this code was developed using version 9.2.1 on RaspberrPi Pico2W and Pico2W
 - the _/lib_ folder
 - the hardware drivers from the Adafruit library bundle for your CircuitPython version:
-  https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases
-  adafruit_register, adafruit_tmp117, adafruit_adt7410, 
+  https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp
   these go to the _/lib_ folder.
   
   You may omit the drivers for the sensors you do not use.
-- _indoor-climate-logger.py_ renamed to _code.py_, header edited for your desired user settings
+- The main script _indoor-climate-logger.py_ renamed to _code.py_, with the header edited for your desired user settings
 - _boot.py_
 - if you want to activate WiFi, edit settings_template.toml with your credentials
   and rename it to settings.toml
 - edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
   _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
-  is present, it will override the setting in the head of _indoor-climate-logger.py_.
+  is present, it will override the settings in the head of _indoor-climate-logger.py_.
   
   **you may like to use**
   - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython and renames _boot.py_ to boot.bak on the microcontroller, when 
-	plugged to a USB port, even when the filesystem is mounted read-only. After a reset or
-	re-plug of the microcontroller, the files system is mounted read only for the controller,
+	plugged to a USB port, even when the controller's filesystem is mounted read-only. After a reset
+	of the microcontroller, the files system is mounted read only for the controller,
 	and now log data can be copied to the PC. This is required, WiFi is not available or not
 	activated. For convenience, this script may be located on the controller, however it also functions when
 	located on the PC.
  
   - The script _switch_RPiPico_to_write_log_mode.py_ runs in CPython and renames _boot.bak_ to _boot.py_. For the
     convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
-	delete _indoor-climate-logger.py_. After a reset or e-plug of the microcontroller, the the files system 
+	delete _indoor-climate-logger.py_. After a reset or e-plug of the microcontroller, the files system 
 	is mounted read write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB, however in verbose mode the data are also printed to the
-	repl, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however it also functions when
-	located on the PC.
+	console, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however 
+	it must be run with the PC's CPython interpreter.
 
 
 For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
@@ -76,7 +75,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_. The 
-  latter is located in the _utilit_scripts_ folder. Except you only want to use One-Wire on the RaspberryPi,
+  latter is located in the _utility_scripts_ folder. Except you only want to use One-Wire on the RaspberryPi,
   in this case no software installation is required.
 
 - edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
