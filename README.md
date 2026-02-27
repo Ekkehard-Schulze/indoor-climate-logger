@@ -75,20 +75,20 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use One-Wire on the RaspberryPi, which does not require an additional driver.
+  Except you only want to use just One-Wire on the RaspberryPi, which does not require an additional driver.
 
 - edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
-- use the command line start (enter _indoor-climate-logger.py -h_) and specify either an
-  USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi supports One-Wire for 
-  sensor communication alongside I2C. 
+- use the command line start (just enter _indoor-climate-logger.py -h_) and specify either an
+  USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi 
+  supports One-Wire for sensor communication alongside I2C. 
 
 Supported sensors
 -------------------------------------------
 
-Sensors implemented with auto detect (auto-detect requires activation of the specific bus in this code)
+Sensors implemented with auto detect (auto-detect requires activation of the specific bus in the user settings)
 
 - i2c
   - TMP117   temperature 0.1°C precision
