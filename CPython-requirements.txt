@@ -1,5 +1,5 @@
 # winkey+x a , cd ..., pip install -r filename # on windows
-# sudo pip install -r filename   # for all users. without sudo for present user 
+# sudo pip3 install -r filename   # for all users. without sudo for present user 
 
 ftd2xx   ; sys_platform == 'win32'          # used to discover FT232H driver replacement by MS-Win 
                                             # auto-update to FTDI thereby removing libusbK
