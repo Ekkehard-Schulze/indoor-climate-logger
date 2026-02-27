@@ -161,8 +161,22 @@ edit the settings in the head section of _indoor-climate-logger.py/code.py_ inst
 8. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
     or with a DS3231 I2C precision clock. On WiFi enabled microcontrollers, NTP
 	is also supported.
+	
+9.	The adafruit_httpserver module in /lib is source code from CircuitPython version 8.2.6. 
+The respective module of CircuitPython 9.2.8 is not used, becaue it contains
+incompatible changes.
 
-9. You find more technical details in _indoor-climate-logger.py_.
+10.	The module schulze_one_wire_temperature.py in /lib is a forked 
+Adafruit_ds18x20 source code from CircuitPython version 8.2.6. 
+The fork was done to improve usage with 'parasite power' and to allow usage of
+additional sensor types. Attention:  in addition to the code modification I needed
+a 820 Ohm pullup resistor if I used more than one DS18X20 Sensor and 450 Ohm für MAX31850,
+instead of the usual 4k7 used for Arduino. This is an indication that the basic implementation
+of One-Wire in Micropython/CircuitPython and as well in the Linux kernel does not cover
+One-Wire parasite power in a proper way. Conseqeuntly, you can not use parasite power
+for larger installations.
+
+11. You find more technical details in _indoor-climate-logger.py_.
 
 
 
