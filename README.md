@@ -218,9 +218,13 @@ to see standard backtraces and to have USB-write access to the controller.
 RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used and pullup resistors
 ---------------------------------------------------------------------
  6: SDA (GP4)  2.2 kΩ to 3V3
+ 
  7: SCL (GP5)  2.2 kΩ to 3V3
+ 
 21: RX  (GP17)
+
 22: TX  (GP16)
+
 34: One-Wire (GP28) 1 kΩ to 3V3
 
 
