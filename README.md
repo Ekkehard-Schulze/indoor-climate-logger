@@ -46,10 +46,8 @@ For microcontrollers running CircuitPython
   https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
-  adafruit_onewire, adafruit_ds3231, adafruit_ntp
-  these go to the _/lib_ folder.
-  
-  You may omit the drivers for the sensors you do not use.
+  adafruit_onewire, adafruit_ds3231, adafruit_ntp.\
+  Copy these go to the _/lib_ folder. You may omit the drivers for the sensors you do not use.
 - The main script _indoor-climate-logger.py_ renamed to _code.py_, with the header edited for your desired user settings
 - _boot.py_
 - if you want to activate WiFi, edit settings.template.toml with your credentials
@@ -59,12 +57,13 @@ For microcontrollers running CircuitPython
   is present, it will override the settings in the head of _indoor-climate-logger.py_.
   
   **you may like to use**
-  - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython and renames _boot.py_ to boot.bak on the microcontroller, when 
+  - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython on the PC and renames _boot.py_ to boot.bak on the microcontroller, when 
 	plugged to a USB port, even when the controller's filesystem is mounted read-only. After a reset
 	of the microcontroller, the files system is mounted read only for the controller,
 	and now log data can be copied to the PC. This is required, WiFi is not available or not
-	activated. For convenience, this script may be located on the controller, however it also functions when
-	located on the PC.
+	activated. For convenience, this script may be located on the controller, however 
+	it must be run with the PC's CPython interpreter.
+
  
   - The script _switch_RPiPico_to_write_log_mode.py_ runs in CPython and renames _boot.bak_ to _boot.py_. For the
     convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
@@ -87,7 +86,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
-- use the command line start (just enter _indoor-climate-logger.py -h_) and specify either an
+- use the command line start (e. g. _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi 
   supports One-Wire for sensor communication alongside I2C. 
 
