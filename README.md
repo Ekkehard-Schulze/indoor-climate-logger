@@ -31,7 +31,7 @@ Indoor climate data logger
 
 **allows one of three I2C to USB interfaces for PCs**
 
-- RapberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
+- RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
 - FT232H
 - MCP2221
 
@@ -88,7 +88,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
 - use the command line start (just enter _indoor-climate-logger.py -h_) and specify either an
-  USB-I2C-interface device (RapberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi 
+  USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi 
   supports One-Wire for sensor communication alongside I2C. 
 
 Supported sensors
