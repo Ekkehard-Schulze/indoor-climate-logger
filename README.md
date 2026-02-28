@@ -227,8 +227,9 @@ RaspberryPi Pico, Pico2, PicoW, Pico2W Pins used and pullup resistors
 
 Static screen shots from _plotly_time_series.py_
 ------------------------------------------------
+note: plotly is an interactive data exploration tool
 
-**Time course** (note: plotly is an interactive data exploration tool)
+**Time course** 
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/time_course_screenshot.webp)
 
