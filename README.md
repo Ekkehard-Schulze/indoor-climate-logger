@@ -205,8 +205,8 @@ prevents error output to the Repl. This mode is the normal stand alone operation
 3. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
 Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
 to its file system. The write attempt triggers an exception. This is used to harvest
-the logged data from non WiFi enabled loggers. This setting can also be issued via the 
-serial connnection using _switch_RPiPico_to_USB_read_log_mode.py_ in the PC, when the
+the logged data from non WiFi enabled loggers. This setting can also be issued via the USB- 
+serial connnection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
 controller is attached via USB.
 
 5. Moreover, for console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
