@@ -175,10 +175,10 @@ adafruit_ds18x20 source code from CircuitPython version 8.2.6.
 The fork was done to improve performance with 'parasite power' and to allow usage of
 additional sensor types. Attention:  in addition to the code modification I needed
 a 820 Ohm pullup resistor if I used more than one DS18X20 Sensor and 450 Ohm für MAX31850,
-instead of the usual 4k7 used in sensor data sheets. This is an indication that the basic implementation
-of One-Wire in Micropython/CircuitPython and as well in the Linux kernel does not implement
-One-Wire parasite power in a proper way. Conseqeuntly, you can not use parasite power
-for larger installations.
+instead of the usual 4k7 used in sensor data sheets. This is an indication that the implementation
+of the One-Wire protocol in Micropython/CircuitPython and as well in the Linux kernel does not handle
+One-Wire parasite power in a proper way. Consequently, you can not use parasite power
+for larger installations, use standard power via a 3-wire connection instead.
 
 
 
