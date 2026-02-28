@@ -68,7 +68,7 @@ For microcontrollers running CircuitPython
  
   - The script _switch_RPiPico_to_write_log_mode.py_ runs in CPython and renames _boot.bak_ to _boot.py_. For the
     convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
-	delete _indoor-climate-logger.py_. After a reset or e-plug of the microcontroller, the files system 
+	delete _indoor-climate-logger.py_. After a reset of the microcontroller, the files system 
 	is mounted read write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB, however in verbose mode the data are also printed to the
 	console, e. g. when using the Thonny-IDE. For convenience, this script may be located on the controller, however 
