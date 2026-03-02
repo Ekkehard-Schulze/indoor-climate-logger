@@ -183,7 +183,7 @@ for larger installations, use standard power via a 3-wire connection instead.
 
 11. The default settings were run on multiple RaspberryPi Pico2Ws using CircuitPython version 9.2.8 
 for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
-using the DS3231 precision clock instead of NTP time was tested for more than 6 month as well.
+using the DS3231 precision clock instead of NTP time was also tested for more than 6 month.
 
 
 
