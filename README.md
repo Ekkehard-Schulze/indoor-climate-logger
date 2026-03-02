@@ -166,8 +166,9 @@ edit the settings in the head section of _indoor-climate-logger.py/code.py_ inst
 	is also supported.
 	
 9.	The adafruit_httpserver module in /lib is source code from CircuitPython version 8.2.6. 
-The respective module of CircuitPython 9.2.8 is not used, becaue it contains
+The respective module of CircuitPython 9.2.8 is not used, because it contains
 incompatible changes.
+
 
 10.	The module schulze_one_wire_temperature.py in /lib is a forked 
 adafruit_ds18x20 source code from CircuitPython version 8.2.6. 
@@ -180,6 +181,11 @@ One-Wire parasite power in a proper way. Consequently, you can not use parasite 
 for larger installations, use standard power via a 3-wire connection instead.
 
 
+11. The default settings were run on multiple RaspberryPi Pico2Ws using CircuitPython version 9.2.8 
+for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
+using the DS3231 precision clock instead of NTP time was tested for more than 6 month as well.
+
+
 
 
 
@@ -187,7 +193,7 @@ Why is it indoors?
 ---------------------
 Because it is not low power. Consequently, place the sensors at least 15 cm away from the
 controller, to avoid excessive influence of the dissipated thermal power. You may like to sneak a 
-sensor cable to ouddors in addition.
+sensor cable to outdors in addition.
 
 Notes for development, debugging and trouble shooting using CircuitPython
 ---------------------------------------------------------
@@ -195,7 +201,7 @@ Notes for development, debugging and trouble shooting using CircuitPython
    write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
    This mode is the normal stand alone operation of the logger.
 
-2. The setting "LOG_EXCEPTIONS_to_file = True" sends the exception mesages to a log file, to preserve them. This file is accessible 
+2. The setting "LOG_EXCEPTIONS_to_file = True" sends the exception messages to a log file, to preserve them. This file is accessible 
 via http, if the server is set active. However, due to limitations in CicuitPython, these logs
 do not contain the normal backtrace information with line numbers. Moreover, this setting
 prevents error output to the Repl. This mode is the normal stand alone operation of the logger.
@@ -204,7 +210,7 @@ prevents error output to the Repl. This mode is the normal stand alone operation
 Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
 to its file system. The write attempt triggers an exception. This is used to harvest
 the logged data from non WiFi enabled loggers. This setting can also be issued via the USB- 
-serial connnection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
+serial connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
 controller is attached via USB.
 
 5. Moreover, for console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
