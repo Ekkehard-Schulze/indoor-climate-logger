@@ -40,7 +40,7 @@ For microcontrollers running CircuitPython
 
 **you need**
 
-- CircuitPython, this code was developed using version 9.2.1 on RaspberrPi Pico2W and Pico2W
+- CircuitPython, this code was developed using version 9.2.8 on RaspberrPi Pico2W and Pico2W
 - the _/lib_ folder
 - the hardware drivers from the Adafruit library bundle for your CircuitPython version:
   https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
