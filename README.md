@@ -52,7 +52,7 @@ For microcontrollers running CircuitPython
 - _boot.py_
 - if you want to activate WiFi, edit settings.template.toml with your credentials
   and rename it to settings.toml
-- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
+- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
   is present, it will override the settings in the head of _indoor-climate-logger.py_.
   
@@ -82,7 +82,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
   Except you only want to use just One-Wire on the RaspberryPi, which does not require an additional driver.
 
-- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in
+- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
@@ -147,7 +147,7 @@ Generate a long-term log file by periodic data polling and merging on a secondar
 in _./utility_scripts/data_retrieval_merge_and_cleaning_.
 
 
-3. The script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
+3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 
 _indoor-climate-logger.py/code.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
 edit the settings in the head section of _indoor-climate-logger.py/code.py_ instead.
