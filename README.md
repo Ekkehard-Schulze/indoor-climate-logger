@@ -68,8 +68,8 @@ For microcontrollers running CircuitPython
     convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
 	delete _indoor-climate-logger.py_. After a subsequent reset of the microcontroller, the files system 
 	is mounted read/write for the controller and the controller starts logging data. It is not possible
-	to read the growing log file via USB, however in verbose mode the data are also printed to the
-	console, e. g. when using the Thonny-IDE. 
+	to read the growing log file via USB, however the data are also printed to the
+	serial console.
 
 For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 -------------------------------------------------------------
