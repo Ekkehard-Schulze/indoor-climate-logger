@@ -57,15 +57,16 @@ For microcontrollers running CircuitPython
   and rename it to settings.toml
   
   **you may like to use**
-  - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython on the PC and renames _boot.py_ to boot.bak on the microcontroller, when 
+  - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs in CPython on the PC and renames 
+    _boot.py_ to boot.bak on the microcontroller, when 
 	plugged to a USB port, even when the controller's filesystem is mounted read-only. After a reset
 	of the microcontroller, the files system is mounted read only for the controller,
-	and now log data can be copied to the PC. This is required, WiFi is not available or not
-	activated. For convenience, this script may be located on the controller, however 
+	and now the logged data are accessibel for the PC. This is required, when WiFi is not available.
+	For convenience, this script may be located on the controller, however 
 	it must be run with the PC's CPython interpreter.
 
  
-  - The script _switch_RPiPico_to_write_log_mode.py_ runs in CPython and renames _boot.bak_ to _boot.py_. For the
+  - the script _switch_RPiPico_to_write_log_mode.py_, which runs in CPython and renames _boot.bak_ to _boot.py_. For the
     convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
 	delete _indoor-climate-logger.py_. After a reset of the microcontroller, the files system 
 	is mounted read write for the controller and the controller starts logging data. It is not possible
