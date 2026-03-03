@@ -42,19 +42,19 @@ For microcontrollers running CircuitPython
 
 - CircuitPython, this code was developed using version 9.2.8 on RaspberrPi Pico2W and Pico2W
 - the _/lib_ folder
-- the hardware drivers from the Adafruit library bundle for your CircuitPython version:
+- these hardware drivers from the Adafruit library bundle for your CircuitPython version:
   https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp.\
-  Copy these go to the _/lib_ folder. You may omit the drivers for the sensors you do not use.
-- The main script _indoor-climate-logger.py_ renamed to _code.py_, with the header edited for your desired user settings
+  Copy these go to the _/lib_ folder. You may omit the drivers for sensors you do not use.
+- to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
+  _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
+  is present, it will override the settings in the head of _indoor-climate-logger.py_.
+- the main script _indoor-climate-logger.py_ renamed to _code.py_.
 - _boot.py_
 - if you want to activate WiFi, edit settings.template.toml with your credentials
   and rename it to settings.toml
-- edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
-  _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
-  is present, it will override the settings in the head of _indoor-climate-logger.py_.
   
   **you may like to use**
   - The script _switch_RPiPico_to_USB_read_log_mode.py_ runs in CPython on the PC and renames _boot.py_ to boot.bak on the microcontroller, when 
