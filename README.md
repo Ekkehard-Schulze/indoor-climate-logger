@@ -62,8 +62,6 @@ For microcontrollers running CircuitPython
 	plugged to a USB port, even when the controller's filesystem is mounted read-only. After a subsequent reset
 	of the microcontroller, the files system is mounted read only for the controller,
 	and the logged data are accessibel for the PC. This is required, when WiFi is not available.
-	For convenience, this script may be located on the controller, however 
-	it must be run with the PC's CPython interpreter.
 
  
   - the script _switch_RPiPico_to_write_log_mode.py_, which runs in CPython and renames _boot.bak_ to _boot.py_. For the
