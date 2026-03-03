@@ -60,16 +60,15 @@ For microcontrollers running CircuitPython
   - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs on the PC and renames 
     _boot.py_ to boot.bak on the microcontroller. After a subsequent reset
 	of the microcontroller, the logged data are accessibel for the PC. 
-	This is required, when WiFi is not available for data transfer.
+	This is required, if WiFi is not available for data transfer.
 
  
   - the script _switch_RPiPico_to_write_log_mode.py_, which runs on the PC and renames _boot.bak_ to _boot.py_. 
     For the
-    convenience of the developer, it also copies _indoor-climate-logger.py_ to _code.py_ and offers to
-	delete _indoor-climate-logger.py_. After a subsequent reset of the microcontroller, the files system 
+    convenience of the developer, this script also copies _indoor-climate-logger.py_ to _code.py_. 
+	After a subsequent reset of the microcontroller, the files system 
 	is mounted read/write for the controller and the controller starts logging data. It is not possible
-	to read the growing log file via USB, however the data are also printed to the
-	serial console.
+	to read the growing log file via USB.
 
 For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 -------------------------------------------------------------
@@ -77,15 +76,15 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use just One-Wire on the RaspberryPi, which does not require an additional driver.
+  Except you only want to use One-Wire on the RaspberryPi, which does not require an additional driver.
 
 - edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
-- use the command line start (e. g. _indoor-climate-logger.py -h_) and specify either an
-  USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi option. The Raspberry Pi 
-  supports One-Wire for sensor communication alongside I2C. 
+- start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
+  USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi 
+  option. The Raspberry Pi supports One-Wire for sensor communication alongside I2C. 
 
 Supported sensors
 -------------------------------------------
