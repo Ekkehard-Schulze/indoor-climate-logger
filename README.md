@@ -76,7 +76,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use One-Wire on the RaspberryPi, which does not require an additional driver.
+  Except you only want to use One-Wire on a RaspberryPi, which does not require an additional driver.
 
 - edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
