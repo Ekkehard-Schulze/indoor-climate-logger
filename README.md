@@ -57,7 +57,7 @@ For microcontrollers running CircuitPython
   and rename it to settings.toml
   
   **you may like to use**
-  - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs in CPython on the PC and renames 
+  - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs on the PC and renames 
     _boot.py_ to boot.bak on the microcontroller, when 
 	plugged to a USB port, even when the controller's filesystem is mounted read-only. After a subsequent reset
 	of the microcontroller, the files system is mounted read only for the controller,
