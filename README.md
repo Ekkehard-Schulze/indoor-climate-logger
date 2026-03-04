@@ -192,19 +192,21 @@ Notes for development, debugging and trouble shooting using CircuitPython
    write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
    This mode is the normal stand alone operation of the logger.
 
-2. The setting "LOG_EXCEPTIONS_to_file = True" sends the exception messages to a log file, to preserve them. This file is accessible 
-via http, if the server is set active. However, due to limitations in CicuitPython, these logs
-do not contain the normal backtrace information with line numbers. Moreover, this setting
-prevents error output to the Repl. This mode is the normal stand alone operation of the logger.
 
-3. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
+1. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
 Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
 to its file system. The write attempt triggers an exception. This is used to harvest
 the logged data from non WiFi enabled loggers. This setting can also be issued via the USB- 
 serial connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
 controller is attached via USB.
 
-5. Moreover, for console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
+1. The setting "LOG_EXCEPTIONS_to_file = True" sends the exception messages to a log file, to preserve them. This file is accessible 
+via http, if the server is set active. However, due to limitations in CicuitPython, these logs
+do not contain the normal backtrace information with line numbers. Moreover, this setting
+prevents error output to the Repl. This mode is the normal stand alone operation of the logger.
+
+
+1. Moreover, for console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
 and "WRITE_LOG_data_to_file = False" and have boot.py renamed to boot.bak. This allows
 to see standard backtraces and to have USB-write access to the controller.
   
