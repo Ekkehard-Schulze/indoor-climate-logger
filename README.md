@@ -135,13 +135,13 @@ provides a much leaner solution.
 Notes
 -------
 
-1. _indoor-climate-logger.py/code.py_ writes a tab separated value formatted text file with 
+1. _indoor-climate-logger.py_ writes a tab separated value formatted text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 
-_indoor-climate-logger.py/code.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
+_indoor-climate-logger.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
 edit the settings in the head section of _indoor-climate-logger.py/code.py_ instead.
 
 4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
