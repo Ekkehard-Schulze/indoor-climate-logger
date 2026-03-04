@@ -165,7 +165,7 @@ power. You may like to sneak a sensor cable to outdors in addition.
 Notes for CircuitPython
 ---------------------------------------------------------
 
-2. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
+1. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
 Generate a long-term log file by periodic data polling and merging on a secondary system. Find the respective scripts 
 in _./utility_scripts/data_retrieval_merge_and_cleaning_.
 
