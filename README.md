@@ -76,7 +76,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use One-Wire on a RaspberryPi, which does not require an additional driver.
+  Except you only want to use One-Wire on a RaspberryPi, which only depends on the kernel driver.
 
 - to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
@@ -89,7 +89,8 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 Supported sensors
 -------------------------------------------
 
-Sensors implemented with auto detect (auto-detect requires activation of the specific bus in the user settings)
+Sensors are implemented with auto detect, however  auto-detect requires activation 
+of the respective bus in the user settings)
 
 - i2c
   - TMP117   temperature 0.1°C precision
@@ -119,14 +120,14 @@ The Linux kernel auto-discovers One-Wire temperature sensors on startup.
 You can connect different types of sensors to the same bus. The kernel 
 supports One-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
 MAX31850, and DS1825. The latter two read type K thermocouples,
-whereas the others are semiconductor sensors.
+whereas the others are semiconductor thermometers.
 The One-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
 To use One-Wire sensors with a Raspberry Pi, activate the One-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
 One-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-between the data line and 3.3 volt. If you need crontab based One-Wire 
+between the data line and 3.3 volt. If you prefer crontab triggered One-Wire 
 sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
 provides a much leaner solution.
 
@@ -155,7 +156,7 @@ edit the settings in the head section of _indoor-climate-logger.py/code.py_ inst
 
 6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
 
-7. On Raspberry Pi kernel One-Wire and Blinka I2C are supported.
+7. On Raspberry Pi kernel driven One-Wire and Blinka I2C are supported.
 
 8. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
     or with a DS3231 I2C precision clock. On WiFi enabled microcontrollers, NTP
@@ -181,15 +182,9 @@ for larger installations, use standard power via a 3-wire connection instead.
 for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
 using the DS3231 precision clock instead of NTP time was also tested for more than 6 month.
 
-
-
-
-
-Why is it indoors?
----------------------
-Because it is not low power. Consequently, place the sensors at least 15 cm away from the
-controller, to avoid excessive influence of the dissipated thermal power. You may like to sneak a 
-sensor cable to outdors in addition.
+12. Why is it indoors? Because it is not low power. Consequently, place the sensors at 
+least 15 cm away from the controller, to avoid excessive influence of the dissipated thermal 
+power. You may like to sneak a sensor cable to outdors in addition.
 
 Notes for development, debugging and trouble shooting using CircuitPython
 ---------------------------------------------------------
