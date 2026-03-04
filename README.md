@@ -152,7 +152,7 @@ edit the settings in the head section of _indoor-climate-logger.py/code.py_ inst
 4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
 
-5. MS-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
+5. MH-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
 
 6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
 
