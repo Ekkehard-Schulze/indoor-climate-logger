@@ -139,11 +139,6 @@ Notes
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-2. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
-Generate a long-term log file by periodic data polling and merging on a secondary system. Find the respective scripts 
-in _./utility_scripts/data_retrieval_merge_and_cleaning_.
-
-
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 
 _indoor-climate-logger.py/code.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
@@ -162,6 +157,22 @@ edit the settings in the head section of _indoor-climate-logger.py/code.py_ inst
     or with a DS3231 I2C precision clock. On WiFi enabled microcontrollers, NTP
 	is also supported.
 	
+
+12. Why is it indoors? Because it is not low power. Consequently, place the sensors at 
+least 15 cm away from the controller, to avoid excessive influence of the dissipated thermal 
+power. You may like to sneak a sensor cable to outdors in addition.
+
+Notes for CircuitPython
+---------------------------------------------------------
+
+2. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
+Generate a long-term log file by periodic data polling and merging on a secondary system. Find the respective scripts 
+in _./utility_scripts/data_retrieval_merge_and_cleaning_.
+
+1. boot.py mounts the controller's filesystem to read/write during startup, which prevents
+   write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
+   This mode is the normal stand alone operation of the logger.
+
 9.	The adafruit_httpserver module in /lib is source code from CircuitPython version 8.2.6. 
 The respective module of CircuitPython 9.2.8 is not used, because it contains
 incompatible changes.
@@ -181,16 +192,6 @@ for larger installations, use standard power via a 3-wire connection instead.
 11. The default settings were run on multiple RaspberryPi Pico2Ws using CircuitPython version 9.2.8 
 for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
 using the DS3231 precision clock instead of NTP time was also tested for more than 6 month.
-
-12. Why is it indoors? Because it is not low power. Consequently, place the sensors at 
-least 15 cm away from the controller, to avoid excessive influence of the dissipated thermal 
-power. You may like to sneak a sensor cable to outdors in addition.
-
-Notes for CircuitPython
----------------------------------------------------------
-1. boot.py mounts the controller's filesystem to read/write during startup, which prevents
-   write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
-   This mode is the normal stand alone operation of the logger.
 
 
 1. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
