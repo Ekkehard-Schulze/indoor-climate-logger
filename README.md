@@ -173,6 +173,14 @@ in _./utility_scripts/data_retrieval_merge_and_cleaning_.
    write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
    This mode is the normal stand alone operation of the logger.
 
+
+1. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
+Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
+to its file system. This mode is used to harvest
+the logged data from non WiFi enabled loggers. This setting can also be issued via the USB- 
+serial connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
+controller is attached via USB.
+
 9.	The adafruit_httpserver module in /lib is source code from CircuitPython version 8.2.6. 
 The respective module of CircuitPython 9.2.8 is not used, because it contains
 incompatible changes.
@@ -194,12 +202,6 @@ for more than 6 month and are therefore tested for stable continuous operation. 
 using the DS3231 precision clock instead of NTP time was also tested for more than 6 month.
 
 
-1. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
-Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
-to its file system. This mode is used to harvest
-the logged data from non WiFi enabled loggers. This setting can also be issued via the USB- 
-serial connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
-controller is attached via USB.
 
 1. The setting "LOG_EXCEPTIONS_to_file = True" sends the exception messages to a log file, to preserve them. This file is accessible 
 via http, if the server is set active. However, due to limitations in CicuitPython, these logs
