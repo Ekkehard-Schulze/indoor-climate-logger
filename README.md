@@ -186,7 +186,7 @@ using the DS3231 precision clock instead of NTP time was also tested for more th
 least 15 cm away from the controller, to avoid excessive influence of the dissipated thermal 
 power. You may like to sneak a sensor cable to outdors in addition.
 
-Notes for development, debugging and trouble shooting using CircuitPython
+Notes for CircuitPython
 ---------------------------------------------------------
 1. boot.py mounts the controller's filesystem to read/write during startup, which prevents
    write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
