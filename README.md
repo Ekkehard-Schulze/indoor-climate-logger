@@ -177,8 +177,8 @@ in _./utility_scripts/data_retrieval_merge_and_cleaning_.
 1. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
 Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
 to its file system. This mode is used to harvest
-the logged data from non WiFi enabled loggers. This setting can also be issued via the USB- 
-serial connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
+the logged data from non WiFi enabled loggers. This setting can also be issued via the USB-serial
+ connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
 controller is attached via USB.
 
 9.	The adafruit_httpserver module in /lib is source code from CircuitPython version 8.2.6. 
@@ -209,7 +209,7 @@ do not contain the normal backtrace information with line numbers. Moreover, thi
 prevents error output to the Repl. This mode is the normal stand alone operation of the logger.
 
 
-1. Moreover, for console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
+1. For console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
 and "WRITE_LOG_data_to_file = False" and have boot.py renamed to boot.bak. This allows
 to see standard backtraces and to have USB-write access to the controller.
   
