@@ -118,7 +118,7 @@ try:
 except ImportError:  # if no user_settings.py file is found the settings below are used:
                     # by the way: Circuit Python does not know ModuleNotFoundError,
                     # ImportError is an upstream generic Error
-    # here are user-settings for  RPi PicoW http DS3231 location 220 meter above sea level
+    # here are user-settings for  RPi PicoW http NTP-time location 220 meter above sea level
     # use this code block as master to derive further user settings
     
     LOG_every_n_seconds = 300
