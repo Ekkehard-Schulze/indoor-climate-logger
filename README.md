@@ -232,7 +232,7 @@ RaspberryPi Pico, Pico2, PicoW, Pico2W pins and pullup resistors
 
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
-note: plotly is an interactive data exploration tool
+note: Plotly is an interactive data exploration tool
 
 
 
