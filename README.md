@@ -52,7 +52,7 @@ For microcontrollers running CircuitPython
   _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
   is present, it will override the settings in the head of _indoor-climate-logger.py_.
 - the main script _indoor-climate-logger.py_ renamed to _code.py_.
-- _boot.py_
+- _boot.py_ to mount the filesystem in write mode
 - if you want to activate WiFi, edit settings.template.toml with your credentials
   and rename it to settings.toml
   
@@ -142,7 +142,7 @@ and plotly packages as well as with spreadsheet processing.
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 
 _indoor-climate-logger.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
-edit the settings in the head section of _indoor-climate-logger.py/code.py_ instead.
+edit the settings in the head section of _indoor-climate-logger.py_ instead.
 
 4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
@@ -153,7 +153,7 @@ edit the settings in the head section of _indoor-climate-logger.py/code.py_ inst
 
 7. On Raspberry Pi kernel driven One-Wire and Blinka I2C are supported.
 
-8. _indoor-climate-logger.py/code.py_ either logs temperature measurements with Python's timer or RTC,
+8. _indoor-climate-logger.py_ either logs temperature measurements with Python's timer or RTC,
     or with a DS3231 I2C precision clock. On WiFi enabled microcontrollers, NTP
 	is also supported.
 	
