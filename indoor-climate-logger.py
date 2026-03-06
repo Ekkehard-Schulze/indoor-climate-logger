@@ -151,7 +151,7 @@ except ImportError:  # if no user_settings.py file is found the settings below a
     SET_RTC_from_NTP = True  # intended for microcontroller with WiFi. 
                               # Attention: RTC is the controllers build in RTC, NOT DS3231
                               # https://en.wikipedia.org/wiki/ISO_8601 
-    UTC_offset = +1           # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
+    UTC_offset_hours = +1           # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
     TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"   # for UTC      
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"   # for time zone agnostic     
@@ -958,7 +958,7 @@ try:  # -------- outer error handler loop -------------------
         import adafruit_ntp
         from rtc import RTC
         rtc = RTC()
-        rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=UTC_offset, cache_seconds=3600).datetime
+        rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=UTC_offset_hours, cache_seconds=3600).datetime
 
     # --------------- collect all sensor names from sensor objects -------------------------------
 
