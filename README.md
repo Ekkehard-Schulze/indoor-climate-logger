@@ -139,7 +139,7 @@ Notes
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-2. The logger runs in a fixed time zone defined by 'UTC_offset_hours' when using NTP or by the time,
+2. The logger reports for a fixed time zone, defined by 'UTC_offset_hours' when using NTP time is used, or by the time,
    to which the RTC was set, when using an RTC, e. g. the DS3231 I2C clock.  However, when using a 
    PC's system time, the time is local legal time. In this case, whenever the switching from or to 
    daylight savings time occurs, the time zone changes, e. g. from CET to CEST.   
