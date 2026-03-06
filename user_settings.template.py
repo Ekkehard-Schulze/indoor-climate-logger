@@ -3,8 +3,8 @@
 #                        ------           -------------------    --------
 # (copied from indoor-climate-logger.py code section master lines ~108 - ~179)
 
-# name of this profile: Gundelfingen1
-# purpose RPi PicoW or Pico2W http DS3231 location 220 meter above sea level
+# name of this profile: Gundelfingen2
+# purpose RPi PicoW or Pico2W http NTP location 220 meter above sea level
 
 
 # ---------------------- user settings --------------------------
@@ -50,7 +50,7 @@ MONITOR_WIFI_connection = False  # not recommended, may lead to instability
 
 USE_WATCHdog = False     # not recommended, may lead to instability 
                          # every 7 seconds in your code loops to prevent reset
-                         # Attention: True led in combination with 
+                         # Attention: True lead in combination with 
                          # MONITOR_WIFI_connection = True for Gundelfingen 
                          # CO2 logger to Error 205 and non-sceduled reboots
 
@@ -58,7 +58,8 @@ HOURS_between_reboots = 12  # used for HTTP-server to force cold-start and WiFi 
 
 HEIGHT_above_sea_level_in_meter = 260  # for normalizing local atmospheric pressure to sea level
 MAX_log_file_size_in_bytes = 0  # zero means no file size limit set, this gets overwritten by the 
-                  # microcontroller hardware auto-detection, or it may set her manually
+                  # microcontroller type auto-detection, when a 'known' controller is found
+
 
 USE_ALARM_wakeup_sleep = False  # only used for compatible hardware, e.g. RaspberryPi PicoW, 
                                 # may require DS3231 clock
@@ -67,6 +68,6 @@ USE_ALARM_wakeup_sleep = False  # only used for compatible hardware, e.g. Raspbe
 ALARM_SLEEP_HOLDOFF_TIME = 10   # seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
                                 # alarm sleep, which  works on RPi Pico, not on Pico2
 
-MAX_exception_file_size_bytes = 1_000_000 # may be changed by controller type detection
+MAX_exception_file_size_bytes = 1_000_000 # may be changed by microcontroller type auto-detection
 
 # -------------- end of user settings -----------------------------------
