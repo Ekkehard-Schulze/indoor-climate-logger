@@ -139,6 +139,11 @@ Notes
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
+2. The logger runs in a fixed time zone defined by 'UTC_offset_hours' when using NTP or RTC time, 
+   except, when using a PC's system time. In the latter case the switching of daylight savings time will lead 
+   to the data reperesenting local legal time, which however then is from one out of two possible time zones,
+   e. g. CET versus CEST.   
+   
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 
 _indoor-climate-logger.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
