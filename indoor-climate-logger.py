@@ -152,7 +152,7 @@ except ImportError:  # if no user_settings.py file is found the settings below a
                               # Attention: RTC is the controllers build in RTC, NOT DS3231
                               # https://en.wikipedia.org/wiki/ISO_8601 
     UTC_offset_hours = +1           # UTC is 0, CET is 1, CEST is 2. Used for time stamp, internal clock it UTC
-    TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   
+    TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00" # e. g. for UTC + 1 hour
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"   # for UTC      
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"   # for time zone agnostic     
     
