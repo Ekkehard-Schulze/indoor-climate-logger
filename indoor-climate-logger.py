@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This script can run under CPython3 and also under CircuitPython on microcontrollers
 
-# You probably like to adjust the user settings starting in line 124 to your project's needs
+# You probably like to adjust the user settings starting in line 113 to your project's needs
 
 # Attention: provide a user_settings.py file when using pylint, to avoid some complains
 # pylint: disable=trailing-whitespace
