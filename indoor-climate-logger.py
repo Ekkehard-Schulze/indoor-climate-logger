@@ -151,8 +151,13 @@ except ImportError:  # if no user_settings.py file is found the settings below a
     SET_RTC_from_NTP = True  # intended for microcontroller with WiFi. 
                               # Attention: RTC is the controllers build in RTC, NOT DS3231
                               # https://en.wikipedia.org/wiki/ISO_8601 
+<<<<<<< HEAD
     UTC_offset_hours = +1           # UTC is 0, CET is 1, CEST is 2. Used for time stamp, internal clock it UTC
     TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00" # e. g. for UTC + 1 hour
+=======
+    UTC_offset_hours = +1           # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
+    TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   
+>>>>>>> parent of c141001 (Internal time changed to UTC)
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"   # for UTC      
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"   # for time zone agnostic     
     
@@ -765,29 +770,12 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
 
 
 def get_time_date_str():
-
-    def add_time_offset_hours(utc_time):
-        return time.struct_time(
-                (
-                    utc_time.tm_year,
-                    utc_time.tm_mon,
-                    utc_time.tm_mday,
-                    UTC_offset_hours + utc_time.tm_hour,
-                    utc_time.tm_min,
-                    utc_time.tm_sec,
-                    utc_time.tm_wday,
-                    utc_time.tm_yday,
-                    0,
-                )
-            )
-    
     if not DS3231_present:
-        if sys.implementation.name == "cpython":
-            now = add_time_offset_hours(time.gmtime())
-        else:  #  sys.implementation.name == "circuitpython"
-            now = add_time_offset_hours(time.localtime())
+        now = (
+            time.localtime()
+        )  # local time on PC. This leads to a discrepancy in the dataset.
     else:
-        now = add_time_offset_hours(ds3231_rtc.datetime)
+        now = ds3231_rtc.datetime
     return TIME_FORMAT_PATTERN.format(
         now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec
     )
@@ -975,8 +963,7 @@ try:  # -------- outer error handler loop -------------------
         import adafruit_ntp
         from rtc import RTC
         rtc = RTC()
-        # rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=UTC_offset_hours, cache_seconds=3600).datetime
-        rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=0, cache_seconds=3600).datetime
+        rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=UTC_offset_hours, cache_seconds=3600).datetime
 
     # --------------- collect all sensor names from sensor objects -------------------------------
 
