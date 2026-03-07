@@ -1,22 +1,33 @@
+# name of this profile: MHZ_19_CO2_log_Gundelfingen
+# purpose RPi PicoW or Pico2W http NTP location 220 meter above sea level
+
+# example URLs for data retrieval
+
+# http://192.168.178.143/MHZ_19_CO2_log.tsv
+# http://192.168.178.143/expeptions_log.txt                                
 
 # Attention: you need to rename this file to user_settings.py to activate it
 #                        ------           -------------------    --------
-# (copied from indoor-climate-logger.py code section master lines ~108 - ~179)
+# (copied from indoor-climate-logger.py code section master lines ~125 - )
 
-# name of this profile: Gundelfingen1
-# purpose RPi PicoW or Pico2W http DS3231 location 220 meter above sea level
+                                     
+                                                                            
 
 
 # ---------------------- user settings --------------------------
+
+IPV4 = '192.168.178.42'  
+NETMASK = '255.255.255.0'
+GATEWAY = '192.168.178.1' 
     
 LOG_every_n_seconds = 300
-LOGGER_name = ''
-LOGGER_filename = ''
+LOGGER_name = 'MHZ_19_CO2_logger'          # if left empty the first sensor detected auto-names
+LOGGER_filename = 'MHZ_19_CO2_log.tsv'     # if left empty the first sensor detected auto-names
 
 # select which busses / devices are queried on init
 USE_i2c = True
-USE_MHZ_19_CO2 = False
-USE_ONE_WIRE = False
+USE_MHZ_19_CO2 = True
+USE_ONE_WIRE = True
                             # Attention: For parasite power, I used the library modified by Schulze
                             # and an 820 Ohm (DS18x20) or 450 Ohm (MAX31850) pull-up resistor
                             # A 4700 Ohm pull-up resistor wasn't sufficient for four sensors, but it 
@@ -33,9 +44,9 @@ LOG_EXCPTIONS_filename = 'expeptions_log.txt'
 VERBOSE = True           # data goto console print
 
 USE_HTTP_server = True   # tested with Raspberry PicoW and Pico2W
-IPV4 = '192.168.178.42'  
-NETMASK = '255.255.255.0'
-GATEWAY = '192.168.178.1' 
+                         
+                         
+                          
 SET_RTC_from_NTP = True  # intended for microcontroller with WiFi. 
                           # Attention: RTC is the controllers build in RTC, NOT DS3231
                           # https://en.wikipedia.org/wiki/ISO_8601 
@@ -50,7 +61,7 @@ MONITOR_WIFI_connection = False  # not recommended, may lead to instability
 
 USE_WATCHdog = False     # not recommended, may lead to instability 
                          # every 7 seconds in your code loops to prevent reset
-                         # Attention: True led in combination with 
+                         # Attention: True lead in combination with 
                          # MONITOR_WIFI_connection = True for Gundelfingen 
                          # CO2 logger to Error 205 and non-sceduled reboots
 
@@ -58,7 +69,8 @@ HOURS_between_reboots = 12  # used for HTTP-server to force cold-start and WiFi 
 
 HEIGHT_above_sea_level_in_meter = 260  # for normalizing local atmospheric pressure to sea level
 MAX_log_file_size_in_bytes = 0  # zero means no file size limit set, this gets overwritten by the 
-                  # microcontroller hardware auto-detection, or it may set her manually
+                  # microcontroller type auto-detection, when a 'known' controller is found
+
 
 USE_ALARM_wakeup_sleep = False  # only used for compatible hardware, e.g. RaspberryPi PicoW, 
                                 # may require DS3231 clock
@@ -67,6 +79,6 @@ USE_ALARM_wakeup_sleep = False  # only used for compatible hardware, e.g. Raspbe
 ALARM_SLEEP_HOLDOFF_TIME = 10   # seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
                                 # alarm sleep, which  works on RPi Pico, not on Pico2
 
-MAX_exception_file_size_bytes = 1_000_000 # may be changed by controller type detection
+MAX_exception_file_size_bytes = 1_000_000 # may be changed by microcontroller type auto-detection
 
 # -------------- end of user settings -----------------------------------

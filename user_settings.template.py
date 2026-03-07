@@ -1,17 +1,25 @@
+# name of this profile: MHZ_19_CO2_log_Gundelfingen
+# purpose RPi PicoW or Pico2W http NTP location 220 meter above sea level
+
+# example URLs for data retrieval
+
+# http://192.168.178.143/MHZ_19_CO2_log.tsv
+# http://192.168.178.143/expeptions_log.txt                                
 
 # Attention: you need to rename this file to user_settings.py to activate it
 #                        ------           -------------------    --------
-# (copied from indoor-climate-logger.py code section master lines ~108 - ~179)
-
-# name of this profile: Gundelfingen2
-# purpose RPi PicoW or Pico2W http NTP location 220 meter above sea level
+# (copied from indoor-climate-logger.py code section master lines ~125 - )
 
 
 # ---------------------- user settings --------------------------
+
+IPV4 = '192.168.178.42'  
+NETMASK = '255.255.255.0'
+GATEWAY = '192.168.178.1' 
     
 LOG_every_n_seconds = 300
-LOGGER_name = 'MHZ_19_CO2_logger'
-LOGGER_filename = 'MHZ_19_CO2_log.tsv'
+LOGGER_name = 'MHZ_19_CO2_logger'          # if left empty the first sensor detected auto-names
+LOGGER_filename = 'MHZ_19_CO2_log.tsv'     # if left empty the first sensor detected auto-names
 
 # select which busses / devices are queried on init
 USE_i2c = True
@@ -33,9 +41,6 @@ LOG_EXCPTIONS_filename = 'expeptions_log.txt'
 VERBOSE = True           # data goto console print
 
 USE_HTTP_server = True   # tested with Raspberry PicoW and Pico2W
-IPV4 = '192.168.178.42'  
-NETMASK = '255.255.255.0'
-GATEWAY = '192.168.178.1' 
 SET_RTC_from_NTP = True  # intended for microcontroller with WiFi. 
                           # Attention: RTC is the controllers build in RTC, NOT DS3231
                           # https://en.wikipedia.org/wiki/ISO_8601 
