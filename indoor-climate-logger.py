@@ -151,13 +151,9 @@ except ImportError:  # if no user_settings.py file is found the settings below a
     SET_RTC_from_NTP = True  # intended for microcontroller with WiFi. 
                               # Attention: RTC is the controllers build in RTC, NOT DS3231
                               # https://en.wikipedia.org/wiki/ISO_8601 
-<<<<<<< HEAD
-    UTC_offset_hours = +1           # UTC is 0, CET is 1, CEST is 2. Used for time stamp, internal clock it UTC
-    TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00" # e. g. for UTC + 1 hour
-=======
-    UTC_offset_hours = +1           # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
+    UTC_offset_hours = +1     # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
     TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   
->>>>>>> parent of c141001 (Internal time changed to UTC)
+
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"   # for UTC      
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"   # for time zone agnostic     
     
