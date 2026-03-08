@@ -141,6 +141,8 @@ and plotly packages as well as with spreadsheet processing.
 
 2. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
 With the DS3231 I2C clock, the logged time is based on the clock's 'set' time with no offset added. 
+
+8. NTP time is supported only for Wifi enabled microcontroller
    
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient for configuring 
 multiple loggers with the same indoor-climate-logger.py script. For a single logger, delete user_settings.py and edit 
@@ -155,9 +157,6 @@ the settings in _indoor-climate-logger.py_.
 
 7. On Raspberry Pi kernel driven One-Wire and Blinka I2C are supported.
 
-8. _indoor-climate-logger.py_ either logs temperature measurements with Python's timer or RTC,
-    or with a DS3231 I2C precision clock. On WiFi enabled microcontrollers, NTP
-	is also supported.
 	
 
 12. Why is it indoors? Because it is not low power. Consequently, place the sensors at 
