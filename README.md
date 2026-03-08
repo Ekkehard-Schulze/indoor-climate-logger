@@ -139,10 +139,8 @@ Notes
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-2. The logger reports for a fixed time zone, defined by 'UTC_offset_hours' when using NTP time, or by the time,
-   to which the RTC was set, when using an RTC, e. g. the DS3231 I2C clock.  However, when using a 
-   PC's system time, the time is local legal time. In this case, whenever the switching from or to 
-   daylight savings time occurs, the time zone changes, e. g. from CET to CEST.   
+2. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
+With the DS3231 I2C clock, the logged time is based on the clock's 'set' time with no offset added. 
    
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
 if you want to configure multiple loggers and use and maintain an identical 

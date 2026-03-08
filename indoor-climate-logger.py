@@ -151,7 +151,7 @@ except ImportError:  # if no user_settings.py file is found the settings below a
     SET_RTC_from_NTP = True  # intended for microcontroller with WiFi. 
                               # Attention: RTC is the controllers build in RTC, NOT DS3231
                               # https://en.wikipedia.org/wiki/ISO_8601 
-    UTC_offset_hours = +1     # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
+    UTC_offset_hours = +1     # e. g. UTC is 0, CET is 1, CEST is 2. Used  for NTP time request to set RTC and CPython
     TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   
 
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"   # for UTC      
@@ -204,6 +204,8 @@ USE_ONE_WIRE_temperature_Adafruit_CircuitPy = None
 if sys.implementation.name == "cpython":   # auto-switch to PC-mode for MS_Windows or Linux
     import argparse
     import platform
+    from datetime import timedelta, datetime, timezone
+    UTC_offset_hours_time_delta = timedelta(hours=UTC_offset_hours)
 
     if USE_ONE_WIRE:
         if platform.system() == 'Linux':
@@ -767,9 +769,11 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
 
 def get_time_date_str():
     if not DS3231_present:
-        now = (
-            time.localtime()
-        )  # local time on PC. This leads to a discrepancy in the dataset.
+        if sys.implementation.name == "cpython":
+            d = datetime.now(timezone.utc) + UTC_offset_hours_time_delta
+            now = time.struct_time((d.year, d.month, d.day, d.hour, d.minute, d.second, 0, d.weekday(), 0,   -1))
+        else: # sys.implementation.name == "circuitpython":       
+            now = time.localtime()
     else:
         now = ds3231_rtc.datetime
     return TIME_FORMAT_PATTERN.format(
