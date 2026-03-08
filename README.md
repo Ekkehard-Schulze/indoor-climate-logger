@@ -142,10 +142,9 @@ and plotly packages as well as with spreadsheet processing.
 2. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
 With the DS3231 I2C clock, the logged time is based on the clock's 'set' time with no offset added. 
    
-3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient,
-if you want to configure multiple loggers and use and maintain an identical 
-_indoor-climate-logger.py_  script for all of them. When operating just a single logger, delete user_settings.py and 
-edit the settings in the head section of _indoor-climate-logger.py_ instead.
+3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient for configuring 
+multiple loggers with the same indoor-climate-logger.py script. For a single logger, delete user_settings.py and edit 
+the settings in _indoor-climate-logger.py_. 
 
 4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
