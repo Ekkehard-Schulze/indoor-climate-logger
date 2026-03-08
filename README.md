@@ -29,7 +29,7 @@ Indoor climate data logger
 
 - available on RaspberryPi PicoW and Pico2W
 
-**allows one of three I2C to USB interfaces for PCs**
+**allows three types of I2C to USB interfaces for PCs**
 
 - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
 - FT232H
