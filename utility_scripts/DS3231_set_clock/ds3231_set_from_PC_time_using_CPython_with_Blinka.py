@@ -5,7 +5,7 @@
     
     UTC-offset ours comes from a command-line parameter,
  
-    Requires as USB-I2C hardware, either  RPiPico with U2IF frimware, or FT232H, or MCP2221,  
+    Requires an USB-I2C hardware, either  RPiPico with U2IF frimware, or FT232H, or MCP2221,  
     or, alternatively, RasperryPi with native I2C.
 
     Provides board independent procedure to get i2c bus for 
