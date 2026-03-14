@@ -1,0 +1,11 @@
+# winkey+x a , cd ..., pip install -r filename # on windows
+# sudo pip3 install -r filename   # for all users. without sudo for present user 
+
+ftd2xx   ; sys_platform == 'win32'          # used to discover FT232H driver replacement by MS-Win 
+                                            # auto-update to FTDI thereby removing libusbK
+hidapi                                      # for USB CP2221 for I2C, SPI, 1Wire
+
+Adafruit-Blinka
+Adafruit-PlatformDetect
+adafruit-circuitpython-busdevice            # i2c communication
+adafruit-circuitpython-ds3231               # clock with tcxo

@@ -1,4 +1,4 @@
-'''set DS3231 time. This runs in CircuitPython on the conteoller.
+'''set DS3231 time. This runs in CircuitPython on the controller.
    Manuall restart the controller, when the set-time is reached in real time.
    '''
 
