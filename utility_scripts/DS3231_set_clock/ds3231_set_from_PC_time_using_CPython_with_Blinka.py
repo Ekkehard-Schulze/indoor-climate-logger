@@ -3,7 +3,7 @@
 
     Runs on PC's or RPi's CPython with Blinka library.
     
-    THE UTC-offset-hours comes from a commandline parameter.
+    The UTC-offset-hours comes from a commandline parameter.
  
     Requires USB-I2C bridge hardware, either RPiPico with U2IF frimware, or FT232H, or MCP2221,  
     or, alternatively, RasperryPi with native I2C. The DS3231 must get connectet to this I2C bus.
