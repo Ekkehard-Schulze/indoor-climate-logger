@@ -5,8 +5,8 @@
     
     UTC-offset ours comes from a command-line parameter,
  
-    Requires an USB-I2C hardware, either  RPiPico with U2IF frimware, or FT232H, or MCP2221,  
-    or, alternatively, RasperryPi with native I2C.
+    Requires USB-I2C bridge hardware, either RPiPico with U2IF frimware, or FT232H, or MCP2221,  
+    or, alternatively, RasperryPi with native I2C. The DS3231 must get connectet to this I2C bus.
 
     Provides board independent procedure to get i2c bus for 
     if using Adafruit-Blinka-USB-ICs you may import board only after 
