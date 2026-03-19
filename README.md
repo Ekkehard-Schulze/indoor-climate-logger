@@ -12,7 +12,7 @@ Indoor climate data logger
 **can record**
 
 - precision temperature using up to four I2C sensors
-- general purpose temperature using more than eight One-Wire sensors
+- general purpose temperature using more than eight 1-Wire sensors
 - humidity
 - atmospheric pressure
 - carbon dioxide concentration
@@ -76,7 +76,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use One-Wire on a RaspberryPi, which only depends on the kernel driver.
+  Except you only want to use 1-Wire on a RaspberryPi, which only depends on the kernel driver.
 
 - to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
@@ -84,7 +84,7 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 
 - to start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi 
-  option. The Raspberry Pi supports One-Wire for sensor communication alongside I2C. 
+  option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C. 
 
 Supported sensors
 -------------------------------------------
@@ -100,7 +100,7 @@ of the respective bus in the user settings)
   - bme680   barometric pressure, humidity 3%, temperature ±1°C 
   - tsl2561  illuminance
 
-- One-Wire
+- 1-Wire
   - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
   - DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
   - DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
@@ -111,23 +111,23 @@ of the respective bus in the user settings)
 
 
 
-One-Wire temperature sensors on RaspberryPi/Linux
+1-Wire temperature sensors on RaspberryPi/Linux
 -----------------------------------------------------------
 
 On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for temperature readings. 
-The One-Wire bus enables multiple temperature sensors on a single long cable.
-The Linux kernel auto-discovers One-Wire temperature sensors on startup.
+The 1-Wire bus enables multiple temperature sensors on a single long cable.
+The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 You can connect different types of sensors to the same bus. The kernel 
-supports One-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
+supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
 MAX31850, and DS1825. The latter two read type K thermocouples,
 whereas the others are semiconductor thermometers.
-The One-Wire bus can power sensors using 'external power'
+The 1-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
-To use One-Wire sensors with a Raspberry Pi, activate the One-Wire bus 
+To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
-One-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-between the data line and 3.3 volt. If you prefer crontab triggered One-Wire 
+1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
+between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire 
 sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
 provides a much leaner solution.
 
@@ -155,7 +155,7 @@ the settings in _indoor-climate-logger.py_.
 
 6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
 
-7. On Raspberry Pi kernel driven One-Wire and Blinka I2C are supported.
+7. On Raspberry Pi kernel driven 1-Wire and Blinka I2C are supported.
 
 	
 
@@ -193,8 +193,8 @@ The fork was done to improve performance with 'parasite power' and to allow usag
 additional sensor types. Attention:  in addition to the code modification I needed
 a 820 Ohm pullup resistor if I used more than one DS18X20 Sensor and 450 Ohm für MAX31850,
 instead of the usual 4k7 used in sensor data sheets. This is an indication that the implementation
-of the One-Wire protocol in Micropython/CircuitPython and as well in the Linux kernel does not handle
-One-Wire parasite power in a proper way. Consequently, you can not use parasite power
+of the 1-Wire protocol in Micropython/CircuitPython and as well in the Linux kernel does not handle
+1-Wire parasite power in a proper way. Consequently, you can not use parasite power
 for larger installations, use standard power via a 3-wire connection instead.
 
 
@@ -227,7 +227,7 @@ RaspberryPi Pico, Pico2, PicoW, Pico2W pins and pullup resistors
 
 22: TX  (GP16)
 
-34: One-Wire (GP28) 1 kΩ to 3V3
+34: 1-Wire (GP28) 1 kΩ to 3V3
 
 
 
