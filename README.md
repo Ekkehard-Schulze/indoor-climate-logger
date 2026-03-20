@@ -1,8 +1,6 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
-**same single file script runs on microcontrollers and PCs**
-
 **optional online clima monitoring via WiFi**
 
 - available on RaspberryPi PicoW and Pico2W
