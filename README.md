@@ -1,5 +1,7 @@
-Indoor climate data logger 
+Indoor climate data logger written in CircuitPython/CPython
 =====================
+
+**same single file script runs on microcontrollers and PCs**
 
 **optional online clima monitoring via WiFi**
 
@@ -35,6 +37,7 @@ Indoor climate data logger
 - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
 - FT232H
 - MCP2221
+
 
 For microcontrollers running CircuitPython
 ------------------------------------------
