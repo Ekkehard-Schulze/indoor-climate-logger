@@ -1,13 +1,9 @@
 Indoor climate data logger 
 =====================
 
-**for**
+**allows instant data monitoring via WiFi access**
 
-- microcontrollers running CircuitPython
-
-- MS-Windows PCs using CPython
-
-- Linux PCs/RaspberryPis using CPython
+- available on RaspberryPi PicoW and Pico2W
 
 **can record**
 
@@ -19,15 +15,20 @@ Indoor climate data logger
 - illuminance
 - radiation surface temperature
 
+**for**
+
+- microcontrollers running CircuitPython
+
+- MS-Windows PCs using CPython
+
+- Linux PCs/RaspberryPis using CPython
+
 **uses one out of three time sources**
 
 - NTP time for WiFi enabled microcontrollers
 - DS3231 precision RTC for non-Network applications
 - System time
 
-**allows instant monitoring via WiFi access**
-
-- available on RaspberryPi PicoW and Pico2W
 
 **allows three types of I2C to USB interfaces for PCs**
 
