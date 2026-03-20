@@ -26,8 +26,8 @@ Indoor climate logger for CircuitPython/CPython
 **uses one out of three time sources**
 
 - NTP time for WiFi enabled microcontrollers
-- DS3231 precision RTC for non-Network applications
-- System time
+- DS3231 precision RTC for offline applications
+- System time for PC or Raspberry Pi
 
 
 **allows three types of I2C to USB interfaces for PCs**
