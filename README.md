@@ -1,7 +1,7 @@
 Indoor climate data logger 
 =====================
 
-**allows instant data monitoring via WiFi access**
+**optional online clima monitoring via WiFi**
 
 - available on RaspberryPi PicoW and Pico2W
 
@@ -15,7 +15,7 @@ Indoor climate data logger
 - illuminance
 - radiation surface temperature
 
-**for**
+**implemented for**
 
 - microcontrollers running CircuitPython
 
