@@ -1,4 +1,4 @@
-Indoor climate data logger written in CircuitPython/CPython
+Indoor climate data logger for CircuitPython/CPython
 =====================
 
 **same single file script runs on microcontrollers and PCs**
