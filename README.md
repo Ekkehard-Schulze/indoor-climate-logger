@@ -6,7 +6,7 @@ Indoor climate logger for CircuitPython/CPython
 Features
 --------
 
-- **can record**
+- **records**
 
   - precision temperature using up to four I2C sensors
   - general purpose temperature using more than eight 1-Wire sensors
@@ -18,7 +18,7 @@ Features
   
 - **auto-discovery of sensors**  
 
-- **implemented for**
+- **supported platforms**
 
   - microcontrollers running CircuitPython
 
