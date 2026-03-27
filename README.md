@@ -16,8 +16,6 @@ Features
   - illuminance
   - radiation surface temperature
   
-- **auto-discovery of sensors**  
-
 - **supported platforms**
 
   - microcontrollers running CircuitPython
@@ -26,7 +24,7 @@ Features
 
   - Linux PCs/RaspberryPis using CPython
   
-- **supported sensors**
+- **supported sensors, all with auto-discovery**
 
   - i2c
     - TMP117   temperature 0.1°C precision
