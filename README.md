@@ -52,11 +52,11 @@ Features
   - System time for PC or Raspberry Pi
 
 
-	- **supports three I2C to USB interfaces for PCs**
+- **supports three I2C to USB interfaces for PCs**
 
-	  - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
-	  - FT232H
-	  - MCP2221
+  - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
+  - FT232H
+  - MCP2221
 
 
 For microcontrollers running CircuitPython
@@ -107,30 +107,6 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 - to start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi 
   option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C. 
-
-Supported sensors
--------------------------------------------
-
-Sensors are implemented with auto detect. This, however, requires activation 
-of the respective bus in the user settings.
-
-- i2c
-  - TMP117   temperature 0.1°C precision
-  - ADT7420  temperature 0.2°C precision
-  - mlx90614 temperature IR  0.5°C precision
-  - bme280   barometric pressure, humidity 3%, temperature ±1°C
-  - bme680   barometric pressure, humidity 3%, temperature ±1°C 
-  - tsl2561  illuminance
-
-- 1-Wire
-  - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
-  - DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
-  - DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
-  - MAX31850 ±2°C for temperatures  -200°C to +700°C
-
-- serial rx tx
-  - MH-Z19   carbon dioxide concentration
-
 
 
 1-Wire temperature sensors on RaspberryPi/Linux
