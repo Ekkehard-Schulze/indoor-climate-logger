@@ -120,6 +120,14 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 
 8. NTP time is supported only for Wifi enabled microcontrollers.
 
+3. To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
+via raspi-config. The default Raspberry Pi GPIO pin for 
+1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
+between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire 
+sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
+provides a much leaner solution.
+
+
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
 The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 You can connect different types of sensors to the same bus. The kernel 
@@ -129,12 +137,6 @@ whereas the others are semiconductor thermometers.
 The 1-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
-To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
-via raspi-config. The default Raspberry Pi GPIO pin for 
-1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire 
-sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
-provides a much leaner solution.
    
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient for configuring 
 multiple loggers with the same indoor-climate-logger.py script. For a single logger, delete user_settings.py and edit 
