@@ -49,8 +49,7 @@ For microcontrollers running CircuitPython
 
 - CircuitPython, this code was developed using version 9.2.8 on RaspberrPi Pico2W and Pico2W
 - the _/lib_ folder
-- to copy these hardware drivers from the Adafruit library bundle  to the _/lib_ folder:
-  https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
+- to copy these hardware drivers from the Adafruit library bundle (https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) to the _/lib_ folder: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp.
