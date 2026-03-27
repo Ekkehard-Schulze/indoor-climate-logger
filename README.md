@@ -1,7 +1,7 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
-Writes a tabulator separated text file with ISO 8601 date and time.
+Writes a tabulator separated text file with date and time.
 
 **optional online clima monitoring via WiFi**
 
