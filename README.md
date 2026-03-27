@@ -126,8 +126,7 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 via raspi-config. The default Raspberry Pi GPIO pin for 
 1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
 between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire 
-sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
-provides a much leaner solution.
+sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead.
 
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
