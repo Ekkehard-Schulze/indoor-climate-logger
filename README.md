@@ -96,8 +96,8 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
 Supported sensors
 -------------------------------------------
 
-Sensors are implemented with auto detect, however  auto-detect requires activation 
-of the respective bus in the user settings)
+Sensors are implemented with auto detect. This, however, requires activation 
+of the respective bus in the user settings.
 
 - i2c
   - TMP117   temperature 0.1°C precision
