@@ -53,7 +53,7 @@ For microcontrollers running CircuitPython
   https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
-  adafruit_onewire, adafruit_ds3231, adafruit_ntp.\
+  adafruit_onewire, adafruit_ds3231, adafruit_ntp.
   Copy these to the _/lib_ folder. You may omit the drivers for sensors you do not use.
 - to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
