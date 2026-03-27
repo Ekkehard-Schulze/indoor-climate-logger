@@ -107,11 +107,10 @@ For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
   option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C. 
 
 
-1-Wire temperature sensors on RaspberryPi/Linux
+Notes for 1-Wire temperature sensors on RaspberryPi/Linux
 -----------------------------------------------------------
 
 On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for temperature readings. 
-The 1-Wire bus enables multiple temperature sensors on a single long cable.
 The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 You can connect different types of sensors to the same bus. The kernel 
 supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
