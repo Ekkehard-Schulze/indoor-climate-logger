@@ -130,8 +130,7 @@ provides a much leaner solution.
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
 The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
-You can connect different types of sensors to the same bus. The kernel 
-supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
+ The kernel supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
 MAX31850, and DS1825. The latter two read type K thermocouples,
 whereas the others are semiconductor thermometers.
 The 1-Wire bus can power sensors using 'external power'
