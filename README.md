@@ -25,6 +25,25 @@ Features
   - MS-Windows PCs using CPython
 
   - Linux PCs/RaspberryPis using CPython
+  
+- **Supported sensors**
+
+  - i2c
+    - TMP117   temperature 0.1°C precision
+    - ADT7420  temperature 0.2°C precision
+    - mlx90614 temperature IR  0.5°C precision
+    - bme280   barometric pressure, humidity 3%, temperature ±1°C
+    - bme680   barometric pressure, humidity 3%, temperature ±1°C 
+    - tsl2561  illuminance
+
+  - 1-Wire
+    - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
+    - DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+    - DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+    - MAX31850 ±2°C for temperatures  -200°C to +700°C
+
+  - serial rx tx
+    - MH-Z19   carbon dioxide concentration  
 
 - **uses one of three time sources**
 
@@ -33,11 +52,11 @@ Features
   - System time for PC or Raspberry Pi
 
 
-- **supports three I2C to USB interfaces for PCs**
+	- **supports three I2C to USB interfaces for PCs**
 
-  - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
-  - FT232H
-  - MCP2221
+	  - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
+	  - FT232H
+	  - MCP2221
 
 
 For microcontrollers running CircuitPython
