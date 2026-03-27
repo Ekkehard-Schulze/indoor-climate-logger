@@ -120,6 +120,8 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 
 8. NTP time is supported only for Wifi enabled microcontrollers.
 
+7. On Raspberry Pi I2C is supporte via die Adafruit Blinka library.
+
 3. To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
 1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
@@ -127,7 +129,6 @@ between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire
 sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
 provides a much leaner solution.
 
-7. On Raspberry Pi I2C is supporte via die Adafruit Blinka library.
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
 The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
