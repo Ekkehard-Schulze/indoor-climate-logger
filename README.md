@@ -10,36 +10,36 @@ Features
 
   - available for RaspberryPi PicoW and Pico2W
 
-**can record**
+- **can record**
 
-- precision temperature using up to four I2C sensors
-- general purpose temperature using more than eight 1-Wire sensors
-- humidity
-- atmospheric pressure
-- carbon dioxide concentration
-- illuminance
-- radiation surface temperature
+  - precision temperature using up to four I2C sensors
+  - general purpose temperature using more than eight 1-Wire sensors
+  - humidity
+  - atmospheric pressure
+  - carbon dioxide concentration
+  - illuminance
+  - radiation surface temperature
 
-**implemented for**
+- **implemented for**
 
-- microcontrollers running CircuitPython
+  - microcontrollers running CircuitPython
 
-- MS-Windows PCs using CPython
+  - MS-Windows PCs using CPython
 
-- Linux PCs/RaspberryPis using CPython
+  - Linux PCs/RaspberryPis using CPython
 
-**uses one out of three time sources**
+- **uses one out of three time sources**
 
-- NTP time for WiFi enabled microcontrollers
-- DS3231 precision RTC for offline applications
-- System time for PC or Raspberry Pi
+  - NTP time for WiFi enabled microcontrollers
+  - DS3231 precision RTC for offline applications
+  - System time for PC or Raspberry Pi
 
 
-**allows three types of I2C to USB interfaces for PCs**
+- **allows three types of I2C to USB interfaces for PCs**
 
-- RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
-- FT232H
-- MCP2221
+  - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
+  - FT232H
+  - MCP2221
 
 
 For microcontrollers running CircuitPython
