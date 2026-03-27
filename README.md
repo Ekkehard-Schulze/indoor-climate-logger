@@ -26,7 +26,7 @@ Features
 
   - Linux PCs/RaspberryPis using CPython
   
-- **Supported sensors**
+- **supported sensors**
 
   - i2c
     - TMP117   temperature 0.1°C precision
@@ -45,14 +45,14 @@ Features
   - serial rx tx
     - MH-Z19   carbon dioxide concentration  
 
-- **uses one of three time sources**
+- **supported time sources**
 
   - NTP time for WiFi enabled microcontrollers
   - DS3231 precision RTC for offline applications
   - System time for PC or Raspberry Pi
 
 
-- **supports three I2C to USB interfaces for PCs**
+- **supported I2C to USB interfaces**
 
   - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
   - FT232H
