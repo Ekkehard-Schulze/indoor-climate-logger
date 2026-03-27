@@ -1,14 +1,10 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
-**Writes a text file with data, date and time**
+**Writes a text file with data, date and time; allows access via WiFi when using RPi Pico W.**
 
 Features
 --------
-
-- **optional online clima monitoring via WiFi**
-
-  - available for RaspberryPi PicoW and Pico2W
 
 - **can record**
 
