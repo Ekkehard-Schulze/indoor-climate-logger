@@ -127,6 +127,7 @@ between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire
 sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi, which 
 provides a much leaner solution.
 
+7. On Raspberry Pi I2C is supporte via die Adafruit Blinka library.
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
 The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
@@ -148,7 +149,7 @@ the settings in _indoor-climate-logger.py_.
 
 6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
 
-7. On Raspberry Pi kernel driven 1-Wire and Blinka I2C are supported.
+
 
 	
 
