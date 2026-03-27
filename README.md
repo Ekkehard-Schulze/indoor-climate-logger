@@ -120,7 +120,7 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 
 8. NTP time is supported only for Wifi enabled microcontrollers.
 
-7. On Raspberry Pi I2C is supporte via the Adafruit Blinka library. Activate the I2C bus via raspi-config.
+7. On Raspberry Pi I2C is supported via the Adafruit Blinka library. Activate the I2C bus via raspi-config.
 
 3. To use 1-Wire sensors on a Raspberry Pi, activate the 1-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
