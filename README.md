@@ -3,6 +3,9 @@ Indoor climate logger for CircuitPython/CPython
 
 Writes a tabulator separated text file with date and time.
 
+Features
+--------
+
 **optional online clima monitoring via WiFi**
 
 - available for RaspberryPi PicoW and Pico2W
