@@ -15,6 +15,8 @@ Features
   - carbon dioxide concentration
   - illuminance
   - radiation surface temperature
+  
+- **has auto-discovery of sensors**  
 
 - **implemented for**
 
