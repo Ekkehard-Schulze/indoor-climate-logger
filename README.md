@@ -245,4 +245,4 @@ Screenshots from _plotly_time_series.py_
 **Descriptive statistics** 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/descriptive_statistics_screenshot.webp)
 
-note: Plotly is an interactive data exploration tool
+Note: Plotly is an interactive data exploration tool
