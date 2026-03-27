@@ -9,7 +9,7 @@ Features
 - **records**
 
   - precision temperature using up to four I2C sensors
-  - general purpose temperature using more than eight 1-Wire sensors
+  - general purpose 1-Wire temperature sensors
   - humidity
   - atmospheric pressure
   - carbon dioxide concentration
@@ -234,4 +234,4 @@ Screenshots from _plotly_time_series.py_
 **Descriptive statistics** 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/descriptive_statistics_screenshot.webp)
 
-Note: Plotly is an interactive data exploration tool
+Plotly is an interactive data exploration tool
