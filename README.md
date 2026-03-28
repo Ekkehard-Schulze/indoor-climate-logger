@@ -1,7 +1,7 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
-Creates a text file with data and timestamp; accessible via WiFi on RPi Pico W.
+Creates a text file with data and timestamps; accessible via WiFi on RPi Pico W.
 
 Features
 --------
