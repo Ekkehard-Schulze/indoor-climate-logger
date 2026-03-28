@@ -142,10 +142,11 @@ This script was only tested using external power.
 multiple loggers with the same indoor-climate-logger.py script. For a single logger, delete user_settings.py and edit 
 the settings in _indoor-climate-logger.py_. 
 
-4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
-
 
 5. MH-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
+
+4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
+
 
 6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
 
