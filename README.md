@@ -242,4 +242,5 @@ Plotly is an interactive data exploration tool.
 Example hardware
 ------------------------------------------------
 **Descriptive statistics** 
-![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images\RaspberryPi Pico2 W logger.jpg)
+![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
+                                                                                          
