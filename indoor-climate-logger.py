@@ -108,7 +108,7 @@ import os
 import sys
 import time
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 # ---------------------- user settings --------------------------
 
@@ -152,9 +152,9 @@ except ImportError:  # if no user_settings.py file is found the settings below a
                               # Attention: RTC is the controllers build in RTC, NOT DS3231
                               # https://en.wikipedia.org/wiki/ISO_8601 
     UTC_offset_hours = +1     # e. g. UTC is 0, CET is 1, CEST is 2. Used  for NTP time request to set RTC and CPython
-    TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   
-
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"   # for UTC      
+    TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"   # for CET
+    # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+02:00"   # for CEST  
     # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"   # for time zone agnostic     
     
     MONITOR_WIFI_connection = False  # not recommended, may lead to instability
@@ -183,7 +183,7 @@ except ImportError:  # if no user_settings.py file is found the settings below a
     MAX_exception_file_size_bytes = 1_000_000 # may be changed by controller type detection
 
 # -------------- end of user settings -----------------------------------
-
+quit_after_one_log = False
 
 # ---------- just here for pylint
 i2c = None
@@ -281,13 +281,15 @@ if sys.implementation.name == "cpython":   # auto-switch to PC-mode for MS_Windo
     parser.add_argument('-s', '--LOG_every_n_seconds', default=str(LOG_every_n_seconds), help='Log every second')  # string
     parser.add_argument('-u', '--USB_IC', default="0", help='0:RPi 1: FT232H  2: MCP2221  3: RPi Pico U2IF')  # string
     parser.add_argument("-nf", "--do_not_write_log_file", default=False, help="write no logfile", action="store_true")  # boolean argparse
+    parser.add_argument("-q", "--log_once", default=False, help="quits after single log", action="store_true")  # boolean argparse    
     # --------------  collect arguments
     args = parser.parse_args()
 
     # ------- poke arguments
     if args.USB_IC == "0" and not platform.system() == 'Linux' and not "ARM" in platform.machine().upper():
         parser.print_help()
-        sys.exit("You have to choose an USB-Ic.")    
+        sys.exit("You have to choose an USB-Ic.")
+    quit_after_one_log = args.log_once
     LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
     WRITE_LOG_data_to_file = not args.do_not_write_log_file
     if args.USB_IC not in '0123':
@@ -1062,6 +1064,8 @@ try:  # -------- outer error handler loop -------------------
                     max_exception_file_size,
                     n_lines_to_delete=50,
                 )                
+            if quit_after_one_log:
+                sys.exit()
             if USE_HTTP_server:
                 reboot_counter_for_server -= 1  # reboot every 12 hours
                 if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
