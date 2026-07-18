@@ -241,6 +241,7 @@ Plotly is an interactive data exploration tool.
 
 Example hardware
 ------------------------------------------------
-**Descriptive statistics** 
+**Raspberry Pi Pico 2 W** 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
                                                                                           
+Raspberry Pi Pico 2 W with DS3231 clock and sensors MH-Z19 (CO2), ADT7420 (precision temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (temperature).
