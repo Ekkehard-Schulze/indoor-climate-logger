@@ -185,6 +185,10 @@ except ImportError:  # if no user_settings.py file is found the settings below a
 # -------------- end of user settings -----------------------------------
 quit_after_one_log = False
 
+LOGGER_ID_field_name = "Logger-id"
+
+DATE_TIME_field_name = "Date_time"
+
 # ---------- just here for pylint
 i2c = None
 uart = None
@@ -983,7 +987,7 @@ try:  # -------- outer error handler loop -------------------
     def write_header_line():
         with open(LOGGER_data_dir + os.sep + LOGGER_filename, "a") as log_filel:  # use append mode to prevent deleting data. Append makes a new file if none exists.
             log_filel.write(
-                "logger-id" + SEPARATOR + "Date_time" + sens_header + "\n"
+                LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n"
             )
 
     if not file_exists(LOGGER_data_dir + os.sep + LOGGER_filename) and WRITE_LOG_data_to_file:         # test for file presence to assure a single header line
