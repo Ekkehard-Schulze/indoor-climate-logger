@@ -655,6 +655,30 @@ if USE_i2c:
                 + SEPARATOR + "{:.1f}".format(air) 
             )
 
+    class SCD30_CO2():
+        ''' ----------- sensor SCD30 Sensirion specific code for logger  ------------
+        requires 50 kHz I2c clk
+        '''
+        filename = r"CO2_SCD_30_log.tsv"
+
+        def __init__(self):
+
+            self.LOGGER_name = "SCD30_logger"
+
+            self.my_sensor_names = ['SCD30_CO2', 'SCD30_humidity' ]
+
+            import adafruit_scd30
+            
+            self.scd30 = adafruit_scd30.SCD30(i2c)
+
+        def get_sensor_headers(self):
+            return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
+
+ 
+        def get_measurement_str(self):
+            return f"{SEPARATOR}{self.scd30.CO2:.0f}{SEPARATOR}{self.scd30.relative_humidity:.1f}"
+
+
 if USE_MHZ_19_CO2:
 
     class MHZ_19():
@@ -899,6 +923,9 @@ try:  # -------- outer error handler loop -------------------
 
         if '0x39' in i2c_devices:
             my_sensors.append(tsl2561())
+            
+        if '0x61' in i2c_devices:
+            my_sensors.append(SCD30_CO2())
 
     if USE_ONE_WIRE_temperature_Linux_Kernel:
         my_sensors.append(one_wire_temperature_Linux_kernel())
@@ -1020,7 +1047,11 @@ try:  # -------- outer error handler loop -------------------
     if WRITE_LOG_data_to_file:
         print('\nData logging to ' + LOGGER_data_dir + os.sep + LOGGER_filename + ' in progess....')
     print('Terminate with Strg+C')
-    if LOG_EXCEPTIONS_to_file and (not USE_ALARM_wakeup_sleep or USE_HTTP_server): #skip on deep-sleep re-starts
+    if (
+        LOG_EXCEPTIONS_to_file
+        and (not USE_ALARM_wakeup_sleep or USE_HTTP_server)
+        and not (sys.implementation.name == "cpython" and quit_after_one_log)
+    ):    
         with open(LOGGER_data_dir + os.sep + LOG_EXCPTIONS_filename, "a") as except_log_file:
             try:
                 except_log_file.write(f'{get_time_date_str()} (re)started\n')
