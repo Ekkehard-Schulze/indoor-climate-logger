@@ -1165,11 +1165,12 @@ except Exception as e:
             except:
                 pass
             if sys.implementation.name == "cpython":
-                except_log_file.write(str(e)+' in line '+str(e.__traceback__.tb_lineno)+'\n') # not available in micropython
+                except_log_file.write(f": {e} in line {e.__traceback__.tb_lineno}\n") # not available in micropython
             else: # micropython
-                except_log_file.write(": " + str(e) + ' ... in (main) and we will never know the line where it did happen.\n')
-                                                            # no traceback.format_exc() in micropython, this would require a re-compile! <<<<<<<<<<<<< !!!, see:
-                                                            # https://github.com/micropython/micropython/issues/5110
+                except_log_file.write(f": {e} ... in (main) and we will never know the line where it did happen.\n")
+                # no traceback.format_exc() in micropython, this would require a re-compile! <<<<<<<<<<<<< !!!, see:
+                # https://github.com/micropython/micropython/issues/5110
+                
         if str(e) == 'File header not matching sensors detected':
             raise
         if sys.implementation.name == "circuitpython":
