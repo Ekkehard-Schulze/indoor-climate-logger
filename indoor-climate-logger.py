@@ -657,7 +657,11 @@ if USE_i2c:
 
     class SCD30_CO2():
         ''' ----------- sensor SCD30 Sensirion specific code for logger  ------------
-        requires 50 kHz I2c clk
+        Attention: leads to RaspBerryPi3B crashes and reboots, unless set:
+
+        # clk 50000 for Sensirion SCD30 sensor, 200 ms clock stretching / timeout für scd30 Sensor
+        dtparam=i2c_arm=on,i2c_arm_baudrate=50000,i2c_arm_timeout=200
+        
         '''
         filename = r"CO2_SCD_30_log.tsv"
 
