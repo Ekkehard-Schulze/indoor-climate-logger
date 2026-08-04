@@ -206,6 +206,7 @@ USE_ONE_WIRE_temperature_Adafruit_CircuitPy = None
 # -------------- board and python implementation specific settings ----------------
 
 if sys.implementation.name == "cpython":   # auto-switch to PC-mode for MS_Windows or Linux
+    import traceback
     import argparse
     import platform
     from datetime import timedelta, datetime, timezone
@@ -592,7 +593,15 @@ if USE_i2c:
             return SEPARATOR + str(self.get_single_measurement(self.tsl)) 
 
     class bme280():
-        ''' ----------- sensor BME280 specific code handling one sensor for logger Achtung: 260 Meter Höhe in global var ------------'''
+        ''' ----------- sensor BME280 specific code handling one sensor for 
+        logger Achtung: 260 Meter Höhe in global var ------------
+        
+        202607 202608 attempts using MODE_FORCED before reading and 
+        MODE_SLEEP in setup and after readings
+        did not improve that the temerature value is generally
+        2°C too high and the humidity is 2°C to low
+        compared with ADT7420 and SHT31.
+        '''
 
         filename = "BME280_log.tsv"
 
@@ -1155,10 +1164,10 @@ except Exception as e:
                 except_log_file.write(get_time_date_str())
             except:
                 pass
-            except_log_file.write(": " + str(e) + ' ... in (main) and we will never know the line where it did happen.\n')
-            # except_log_file.write(str(e)+' in line '+str(e.__traceback__.tb_lineno)+'\n') # not available in micropython
-            # except_log_file.write(str(dir(e))+'\n')
-            # except_log_file.write(str(dir(e.__traceback__))+'\n') # ........ no way to log the line number in micropython
+            if sys.implementation.name == "cpython":
+                except_log_file.write(str(e)+' in line '+str(e.__traceback__.tb_lineno)+'\n') # not available in micropython
+            else: # micropython
+                except_log_file.write(": " + str(e) + ' ... in (main) and we will never know the line where it did happen.\n')
                                                             # no traceback.format_exc() in micropython, this would require a re-compile! <<<<<<<<<<<<< !!!, see:
                                                             # https://github.com/micropython/micropython/issues/5110
         if str(e) == 'File header not matching sensors detected':
