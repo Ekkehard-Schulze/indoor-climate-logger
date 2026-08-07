@@ -595,12 +595,11 @@ if USE_i2c:
     class bme280():
         ''' ----------- sensor BME280 specific code handling one sensor for 
         logger Achtung: 260 Meter Höhe in global var ------------
-        
-        202607 202608 attempts using MODE_FORCED before reading and 
-        MODE_SLEEP in setup and after readings
-        did not improve that the temerature value is generally
-        2°C too high and the humidity is 2°C to low
-        compared with ADT7420 and SHT31.
+        Attention: powering bme280 with 5 Volt gives wrong readings,
+        e. g. Temperature 2°C too high, humidity 10 % too low.
+        Gogle AI suggests "MODE_FORCE" for single-shot conversion followed
+        by sleep. However, for the accuracy of the values this seems not
+        to be required.
         '''
 
         filename = "BME280_log.tsv"
@@ -669,8 +668,9 @@ if USE_i2c:
         Attention: leads to RaspBerryPi3B crashes and reboots, unless set:
 
         # clk 50000 for Sensirion SCD30 sensor, 200 ms clock stretching / timeout für scd30 Sensor
-        dtparam=i2c_arm=on,i2c_arm_baudrate=50000,i2c_arm_timeout=200
-        
+        dtparam=i2c_arm=on,i2c_arm_baudrate=50000,i2c_arm_timeout=200 # Attention: still i2c bus hangup crashes on RPi3B
+        now testing
+        dtparam=i2c_arm=on,i2c_arm_baudrate=25000,i2c_arm_timeout=250 # Attention: still i2c bus hangup crashes on RPi3B
         '''
         filename = r"CO2_SCD_30_log.tsv"
 
