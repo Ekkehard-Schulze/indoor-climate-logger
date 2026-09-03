@@ -99,30 +99,29 @@ For microcontrollers running CircuitPython
 	is mounted read/write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB.
 	
-    it is convenient to store these two scripts on the microcontroller	
+    It is convenient to store the latter two CPython scripts on the microcontroller.	
 
 For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 -------------------------------------------------------------
 
 **you need**
 
- - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
+ - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_,
+  except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
 
 - to start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
-  option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C. 
+  option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C using its onboard hardware, and
+  UART serial communication using an FT232R USB to serial converter for MH-Z19.
 
 - on Linux systems you can use the _indoor-climate-logger.py -q_ option to append a data frame
- to the log file when called as a cron-job
+ to the log file when called using a cron-job.
 
 
 Notes
 -------
 
-1. _indoor-climate-logger.py_ writes a tab separated value formatted text file with 
-ISO 8601 date and time. This format is compatible with python's pandas 
-and plotly packages as well as with spreadsheet processing. 
+1. _indoor-climate-logger.py_ writes data to a tab-separated values table using ISO 8601-formatted dates and times. The resulting file is fully compatible with spreadsheet software and Python data libraries, including pandas and plotly.
 
 2. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
 With the DS3231 I2C clock, the logged time is based on the clock's 'set' time with no offset added. 
@@ -134,8 +133,8 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 3. To use 1-Wire sensors on a Raspberry Pi, activate the 1-Wire bus 
 via raspi-config. The default Raspberry Pi GPIO pin for 
 1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-between the data line and 3.3 volt. If you prefer crontab triggered 1-Wire 
-sensor data logging, you can use https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead.
+between the data line and 3.3 volt. If you only need 1-Wire based
+temperature data logging, you can use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead.
 
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
@@ -147,14 +146,8 @@ The 1-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
    
-3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient for configuring 
-multiple loggers with the same indoor-climate-logger.py script. Alternatively, e. g. when operating just a single logger, you can delete user_settings.py and edit the settings in _indoor-climate-logger.py_ accordingly.
 
-
-5. MH-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
-
-
-6. On MS-Windows PCs only I2C-sensors are supported. ADT7420 fails due to a driver bug.
+6. On MS-Windows PCs ADT7420 fails due to a driver bug.
 
 4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
 
@@ -164,7 +157,7 @@ multiple loggers with the same indoor-climate-logger.py script. Alternatively, e
 
 12. Why is it indoors? Because it is not low power. Consequently, place the sensors at 
 least 15 cm away from the controller, to avoid excessive influence of the dissipated thermal 
-power. You may like to sneak a sensor cable to outdors in addition.
+energy. You still may like to sneak a sensor cable to outdors in addition.
 
 Notes for CircuitPython
 ---------------------------------------------------------
