@@ -4,9 +4,9 @@ Indoor climate logger for CircuitPython/CPython
 Features
 --------
 
-* **Data Logging:** Logs data and timestamps directly to a file.
+* **Data Logging:** Logs data and timestamps to a file.
 * **Flexible Access:** Wirelessly retrieve your data via Wi-Fi when using the **Raspberry Pi Pico 2 W**, or use it completely offline.
-* **Cross-Platform & Stable:** Proven stable through years of real-world deployment on the Pico 2 W. It also offers full compatibility with MS-Windows and Linux based PCs, as well with Linux-based Raspberry Pis.
+* **Cross-Platform & Stable:** Proven stable through years of real-world deployment on the Pico 2 W using CircuitPython. It also offers full CPython compatibility for MS-Windows and Linux based PCs, and also for Linux-based Raspberry Pis.
 
 - **records**
 
