@@ -97,6 +97,8 @@ For microcontrollers running CircuitPython
 	After a subsequent reset of the microcontroller, the files system 
 	is mounted read/write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB.
+	
+ - it is convenient to store these two scripts on the microcontroller	
 
 For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 -------------------------------------------------------------
