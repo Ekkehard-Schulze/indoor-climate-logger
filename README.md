@@ -1,10 +1,11 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
+**Logs data and timestamps to a file** 
+
 Features
 --------
 
-* **Logs data and timestamps to a file** 
 * **Flexible Access on Microcontrollers:** Wirelessly retrieve your data via Wi-Fi when using the **Raspberry Pi Pico 2 W**, or use it completely offline.
 * **Cross-Platform & Stable:** Proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using standard CPython and the Adafruit Blinka library.
 
