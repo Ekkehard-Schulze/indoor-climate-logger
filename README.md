@@ -53,7 +53,7 @@ radiation surface temperature
   - System time for PC or Raspberry Pi
 
 
-- **supported I2C to USB interfaces**
+- **supported I2C to USB interfaces for CPython**
 
   - Raspberry Pi Pico with U2IF firmware (https://github.com/adafruit/u2if)
   - FT232H
