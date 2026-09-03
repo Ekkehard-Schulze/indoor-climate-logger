@@ -233,6 +233,12 @@ Raspberry Pi Pico, Pico 2, Pico W, Pico 2 W pins and pullup resistors
 34: 1-Wire (GP28) 1 kΩ to 3V3
 
 
+Example hardware
+------------------------------------------------
+![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
+                                                                                          
+Raspberry Pi Pico 2 W with DS3231 clock module ZS-042 and sensors MH-Z19 (CO2), ADT7420 (indoor precision temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (outdoor temperature).
+
 
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
@@ -245,9 +251,3 @@ Screenshots from _plotly_time_series.py_
 
 Plotly is an interactive data exploration tool.
 
-
-Example hardware
-------------------------------------------------
-![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
-                                                                                          
-Raspberry Pi Pico 2 W with DS3231 clock module ZS-042 and sensors MH-Z19 (CO2), ADT7420 (indoor precision temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (outdoor temperature).
