@@ -16,13 +16,14 @@ Features
   - atmospheric pressure
   - carbon dioxide concentration
   - illuminances
-  - radiation surface temperature
+radiation surface temperature
   
-## 🛠️ Supported Platforms
+- **supported platforms**
 
-* **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
-* **Windows:** Supported on PCs using standard **CPython**.
-* **Linux:** Supported on Linux PCs and **Raspberry Pi single-board computers** using **CPython**.
+  - **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
+  - **Windows:** Supported on PCs using standard **CPython**.
+  - **Linux:** Supported on Linux PCs and **Raspberry Pi single-board computers** using **CPython**.
+
 
   
 - **supported sensors, all with auto-discovery**
