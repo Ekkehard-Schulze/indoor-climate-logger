@@ -1,7 +1,7 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
-**Logs data and timestamps to a file.** 
+Logs data and timestamps to a file.
 
 Features
 --------
