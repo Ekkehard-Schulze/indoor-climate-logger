@@ -57,6 +57,15 @@ Features
   - FT232H
   - MCP2221
 
+### Configuration
+
+You can configure your user settings in one of two ways:
+
+1. **Directly in the main script:** Edit the settings at the top of `_indoor-climate-logger.py`.
+2. **Using a separate configuration file (Recommended):** Copy `user_settings.template.py` and rename it to `user_settings.py`, then apply your changes there.
+
+> ⚠️ **Note:** If `user_settings.py` exists, it will completely override any settings defined in the header of `_indoor-climate-logger.py`.
+
 
 For microcontrollers running CircuitPython
 ------------------------------------------
@@ -72,7 +81,6 @@ For microcontrollers running CircuitPython
 - to edit your user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
-  
 - the main script _indoor-climate-logger.py_ renamed to _code.py_.
 - _boot.py_ to mount the filesystem in write mode
 - if you want to activate WiFi, edit settings.template.toml with your credentials
@@ -100,7 +108,7 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
   Except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
 
-- to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
+- to edit your user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
