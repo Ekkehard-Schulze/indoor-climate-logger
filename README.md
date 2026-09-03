@@ -78,9 +78,6 @@ For microcontrollers running CircuitPython
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp.
-- to edit your user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
-  user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
-  is present, it will override the setting in the head of _indoor-climate-logger.py_.
 - the main script _indoor-climate-logger.py_ renamed to _code.py_.
 - _boot.py_ to mount the filesystem in write mode
 - if you want to activate WiFi, edit settings.template.toml with your credentials
@@ -107,10 +104,6 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
   Except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
-
-- to edit your user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
-  user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
-  is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
 - to start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
