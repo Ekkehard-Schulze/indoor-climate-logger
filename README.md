@@ -110,6 +110,8 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
   USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
   option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C. 
 
+- on Linux systems you can use the _indoor-climate-logger.py -q_ option to append a data frame
+ to the log file when called as a cron-job
 
 
 Notes
