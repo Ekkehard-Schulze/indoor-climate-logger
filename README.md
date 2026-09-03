@@ -140,8 +140,7 @@ The 1-Wire bus can power sensors using 'external power'
 This script was only tested using external power.
    
 3. The optional script _user_settings.py_ overrides the settings in the head of _indoor-climate-logger.py_. This is convenient for configuring 
-multiple loggers with the same indoor-climate-logger.py script. For a single logger, delete user_settings.py and edit 
-the settings in _indoor-climate-logger.py_. 
+multiple loggers with the same indoor-climate-logger.py script. Alternatively, e. g. when operating just a single logger, you can delete user_settings.py and edit the settings in _indoor-climate-logger.py_ accordingly.
 
 
 5. MH-Z19 carbon dioxide measurement is only supported on microcontrollers running Circuit Python.
