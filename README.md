@@ -69,9 +69,10 @@ For microcontrollers running CircuitPython
   adafruit_bme280, adafruit_bme680, 
   adafruit_mlx90614, adafruit_tsl2561,
   adafruit_onewire, adafruit_ds3231, adafruit_ntp.
-- to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
-  _user_settings.template.py_, which then must be saved as user_settings.py. If _user_settings.py_
-  is present, it will override the settings in the head of _indoor-climate-logger.py_.
+- to edit your user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
+  user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
+  is present, it will override the setting in the head of _indoor-climate-logger.py_.
+  
 - the main script _indoor-climate-logger.py_ renamed to _code.py_.
 - _boot.py_ to mount the filesystem in write mode
 - if you want to activate WiFi, edit settings.template.toml with your credentials
