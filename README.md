@@ -2,7 +2,7 @@ Indoor climate logger for CircuitPython/CPython
 =====================
 
 Creates a text file with data and timestamps; accessible via WiFi on RPi Pico2 W. Offline usage is possible as well.
-Stability has been proven in years of use on RaspberryPi Pico2 W. It also runs on PCs and Linux based Raspberry Pis.
+Stability has been proven in years of use on Raspberry Pi Pico 2 W. It also runs on PCs and Linux based Raspberry Pis.
 
 Features
 --------
@@ -23,7 +23,7 @@ Features
 
   - MS-Windows PCs using CPython
 
-  - Linux PCs/RaspberryPis using CPython
+  - Linux PCs/Raspberry Pis using CPython
   
 - **supported sensors, all with auto-discovery**
 
@@ -53,7 +53,7 @@ Features
 
 - **supported I2C to USB interfaces**
 
-  - RaspberryPi Pico with U2IF firmware (https://github.com/adafruit/u2if)
+  - Raspberry Pi Pico with U2IF firmware (https://github.com/adafruit/u2if)
   - FT232H
   - MCP2221
 
@@ -91,20 +91,20 @@ For microcontrollers running CircuitPython
 	is mounted read/write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB.
 
-For MS-Windows PCs, Linux PCs or RaspberryPis running CPython
+For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 -------------------------------------------------------------
 
 **you need**
 
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_.
-  Except you only want to use 1-Wire on a RaspberryPi, which only depends on the kernel driver.
+  Except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
 
 - to edit the user setting either in the head of _indoor-climate-logger.py_, or, alternatively, in the optional script
   user_settings.template.py, which then must be saved as user_settings.py. Attention: If _user_settings.py_
   is present, it will override the setting in the head of _indoor-climate-logger.py_.
 
 - to start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
-  USB-I2C-interface device (RaspberryPi Pico with U2IF, FT232H, or MCP2221) or choose the RaspberryPi 
+  USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
   option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C. 
 
 
@@ -194,7 +194,7 @@ of the 1-Wire protocol in Micropython/CircuitPython and as well in the Linux ker
 for larger installations, use standard power via a 3-wire connection instead.
 
 
-11. The default settings were run on multiple RaspberryPi Pico2Ws using CircuitPython version 9.2.8 
+11. The default settings were run on multiple Raspberry Pi Pico 2 W using CircuitPython version 9.2.8 
 for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
 using the DS3231 precision clock instead of NTP time was also tested for more than 6 month.
 
@@ -213,7 +213,7 @@ to see standard backtraces and to have USB-write access to the controller.
 
 
 
-RaspberryPi Pico, Pico2, PicoW, Pico2W pins and pullup resistors
+Raspberry Pi Pico, Pico 2, Pico W, Pico 2 W pins and pullup resistors
 ----------------------------------------------------------------
  6: SDA (GP4)  2.2 kΩ to 3V3
  
