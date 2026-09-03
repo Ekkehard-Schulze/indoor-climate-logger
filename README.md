@@ -61,10 +61,10 @@ Features
 
 You can configure your user settings in one of two ways:
 
-1. **Directly in the main script:** Edit the settings at the top of `_indoor-climate-logger.py`.
+1. **Directly in the main script:** Edit the settings at the top of `indoor-climate-logger.py`.
 2. **Using a separate configuration file (Recommended):** Copy `user_settings.template.py` and rename it to `user_settings.py`, then apply your changes there.
 
-> ⚠️ **Note:** If `user_settings.py` exists, it will completely override any settings defined in the header of `_indoor-climate-logger.py`.
+> ⚠️ **Note:** If `user_settings.py` exists, it will completely override any settings defined in the header of `indoor-climate-logger.py`.
 
 
 For microcontrollers running CircuitPython
