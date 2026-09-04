@@ -82,7 +82,7 @@ For microcontrollers running CircuitPython
 **you need**
 
 - CircuitPython, this code was developed using version 9.2.8 on RaspberrPi Pico2W and Pico2W
-- the _/lib_ folder
+- the _/lib_ folder from this repository
 - to copy these hardware drivers from the Adafruit library bundle (https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) to the _/lib_ folder: 
   - adafruit_register
   - adafruit_tmp117
@@ -103,7 +103,7 @@ For microcontrollers running CircuitPython
   - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs on CPython, renames 
     _boot.py_ to boot.bak on the microcontroller. After a subsequent reset
 	of the microcontroller, the logged data are accessible via USB. 
-	Use this, if WiFi is not available for data transfer.
+	Use this, if WiFi is not available for data retrieval.
 
  
   - the script _switch_RPiPico_to_write_log_mode.py_, which runs on CPython, renames _boot.bak_ to _boot.py_. 
@@ -113,7 +113,7 @@ For microcontrollers running CircuitPython
 	to read the growing log file via USB.
 	
     It is convenient to store the latter two CPython scripts on the microcontroller in order to have them
-    accessible when needed. They can be accessed and executed from the PC/Linux-Raspberry Pi even when the
+    accessible when needed. They can be executed from the PC/Linux-Raspberry Pi even when the
 	controller is logging data in write mode. These scripts have been tested so far only under MS-Windows.
 
 For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
@@ -248,6 +248,7 @@ Raspberry Pi Linux SBC pins and pullup resistors
  7: 1-Wire (GPIO 4) 4.7 kΩ to 3V3 (do not use parasite power)
 
  use USB to serial interface FT232R to connect MH-Z19.
+
 
 Example hardware
 ------------------------------------------------
