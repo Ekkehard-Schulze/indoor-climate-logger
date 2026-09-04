@@ -93,7 +93,7 @@ For microcontrollers running CircuitPython
   - adafruit_tsl2561
   - adafruit_onewire
   - adafruit_ds3231
-  - adafruit_ntp.
+  - adafruit_ntp
 - the main script _indoor-climate-logger.py_ renamed to _code.py_.
 - _boot.py_ to mount the filesystem in write mode
 - if you want to activate WiFi, edit settings.template.toml with your credentials
