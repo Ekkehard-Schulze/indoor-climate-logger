@@ -83,10 +83,17 @@ For microcontrollers running CircuitPython
 
 - CircuitPython, this code was developed using version 9.2.8 on RaspberrPi Pico2W and Pico2W
 - the _/lib_ folder
-- to copy these hardware drivers from the Adafruit library bundle (https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) to the _/lib_ folder: adafruit_register, adafruit_tmp117, adafruit_adt7410, 
-  adafruit_bme280, adafruit_bme680, 
-  adafruit_mlx90614, adafruit_tsl2561,
-  adafruit_onewire, adafruit_ds3231, adafruit_ntp.
+- to copy these hardware drivers from the Adafruit library bundle (https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) to the _/lib_ folder: 
+  - adafruit_register
+  - adafruit_tmp117
+  - adafruit_adt7410
+  - adafruit_bme280
+  - adafruit_bme680
+  - adafruit_mlx90614
+  - adafruit_tsl2561
+  - adafruit_onewire
+  - adafruit_ds3231
+  - adafruit_ntp.
 - the main script _indoor-climate-logger.py_ renamed to _code.py_.
 - _boot.py_ to mount the filesystem in write mode
 - if you want to activate WiFi, edit settings.template.toml with your credentials
@@ -139,10 +146,8 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 7. On Raspberry Pi I2C is supported via the Adafruit Blinka library. Activate the I2C bus via raspi-config.
 
 3. To use 1-Wire sensors on a Raspberry Pi, activate the 1-Wire bus 
-via raspi-config. The default Raspberry Pi GPIO pin for 
-1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-between the data line and 3.3 volt. If you only need 1-Wire based
-temperature data logging, you can use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead.
+via raspi-config. If you only need 1-Wire based
+temperature data logging, you can alternatively use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead.
 
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
