@@ -7,6 +7,13 @@ Features
 * **Flexible Access on Microcontrollers:** Wirelessly retrieve your data via Wi-Fi when using the **Raspberry&nbsp;Pi&nbsp;Pico&nbsp;2&nbsp;W**, or use it completely offline.
 * **Cross-Platform & Stable:** Proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B and PC using standard CPython and the Adafruit Blinka library.
 
+- **supported platforms**
+
+  - **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
+  - **Windows:** Supported on PCs using standard **CPython**.
+  - **Linux:** Supported on Linux PCs and **Raspberry Pi single-board computers** using **CPython**.
+
+
 - **records**
 
   - precision temperature using up to four I2C sensors
@@ -17,13 +24,6 @@ Features
   - illuminances
 radiation surface temperature
   
-- **supported platforms**
-
-  - **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
-  - **Windows:** Supported on PCs using standard **CPython**.
-  - **Linux:** Supported on Linux PCs and **Raspberry Pi single-board computers** using **CPython**.
-
-
   
 - **supported sensors, all with auto-discovery**
 
