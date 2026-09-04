@@ -86,20 +86,21 @@ For microcontrollers running CircuitPython
   and rename it to settings.toml
   
   **you may like to use**
-  - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs on the PC and renames 
+  - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs on CPython, renames 
     _boot.py_ to boot.bak on the microcontroller. After a subsequent reset
-	of the microcontroller, the logged data are accessibel for the PC. 
-	This is required, if WiFi is not available for data transfer.
+	of the microcontroller, the logged data are accessible via USB. 
+	Use this, if WiFi is not available for data transfer.
 
  
-  - the script _switch_RPiPico_to_write_log_mode.py_, which runs on the PC and renames _boot.bak_ to _boot.py_. 
-    For the
-    convenience of the developer, this script also copies _indoor-climate-logger.py_ to _code.py_. 
+  - the script _switch_RPiPico_to_write_log_mode.py_, which runs on CPython, renames _boot.bak_ to _boot.py_. 
+    For the convenience of the developer, this script also copies _indoor-climate-logger.py_ to _code.py_. 
 	After a subsequent reset of the microcontroller, the files system 
 	is mounted read/write for the controller and the controller starts logging data. It is not possible
 	to read the growing log file via USB.
 	
-    It is convenient to store the latter two CPython scripts on the microcontroller.	
+    It is convenient to store the latter two CPython scripts on the microcontroller in order to have them
+    accessible when needed. They can be accessed and executed from the PC/Linux-Raspberry Pi even when the
+	controller is logging data in write mode. These scripts have been tested so far only under MS-Windows.
 
 For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 -------------------------------------------------------------
@@ -109,7 +110,9 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_,
   except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
 
-- to start the logging script on the command line (e. g. _indoor-climate-logger.py -h_) and specify either an
+- on a PC you need one of the supported I2C to USB interfaces and need to use the -u ... option. 1-Wire is not supported.
+
+- to start the logging script on the command line (e. g. try _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
   option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C using its onboard hardware, and
   UART serial communication using an FT232R USB to serial converter for MH-Z19.

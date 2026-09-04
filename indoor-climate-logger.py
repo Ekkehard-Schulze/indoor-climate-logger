@@ -218,8 +218,6 @@ if sys.implementation.name == "cpython":   # auto-switch to PC-mode for MS_Windo
             USE_ONE_WIRE_temperature_Adafruit_CircuitPy = False
         else:
             raise Exception('1Wire with CPython requires Linux and the 1Wire kernel driver.')
-    if USE_MHZ_19_CO2:
-        raise Exception('MH-Z19 not implemented in CPython.')
     if USE_HTTP_server:
         raise Exception('http-Server not imlemented in CPython.')
     if SET_RTC_from_NTP:
@@ -850,7 +848,7 @@ try:  # -------- outer error handler loop -------------------
         import schulze_one_wire_temperature
 
     # --------------- handle board specific bus inits ------------------------------------------
-    if board.board_id == "raspberry_pi_pico":
+    if board.board_id in ["raspberry_pi_pico", "raspberry_pi_pico2", "raspberry_pi_pico_w", "raspberry_pi_pico2_w"]:
         if USE_i2c:
             i2c = busio.I2C(board.GP5, board.GP4, frequency=100000)  # Circuit py default is 400000
         if USE_MHZ_19_CO2:
@@ -858,19 +856,20 @@ try:  # -------- outer error handler loop -------------------
         if USE_ONE_WIRE_temperature_Adafruit_CircuitPy:
             ow_bus = OneWireBus(board.GP28)
 
-    elif board.board_id in ["raspberry_pi_pico_w", "raspberry_pi_pico2_w"]:
-        if USE_i2c:
-            i2c = busio.I2C(board.GP5, board.GP4, frequency=100000)  # Circuit py default is 400000
-        if USE_MHZ_19_CO2:
-            uart = busio.UART(board.GP16, board.GP17, baudrate=9600, timeout=1)  # RPi Pico, timeout is essential for MH-Z19
-        if USE_ONE_WIRE_temperature_Adafruit_CircuitPy:
-            ow_bus = OneWireBus(board.GP28)
-
-    else:
+    else: # generic Blinka or pyserial
         if USE_i2c:
             i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)  # Circuit py default is 400000
         if USE_MHZ_19_CO2:
-            uart = busio.UART(board.TX, board.RX, baudrate=9600)
+            if os.path.exists("/dev/ttyUSB0"):    # e. g. for RaspberryPi mit FT232RL (internes TX RX ging nicht)
+                                                  # Achtung: das ist NICHT über Blinka / Busio sondern pyserial (kompatibel)
+                import serial
+                uart = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
+            elif os.path.exists("/dev/ttyUSB1"):  # e. g. for RaspberryPi mit FT232RL (internes TX RX ging nicht)
+                                                  # Achtung: das ist NICHT über Blinka / Busio sondern pyserial (kompatibel)
+                import serial
+                uart = serial.Serial("/dev/ttyUSB1", 9600, timeout=1)      
+            else:   
+                uart = busio.UART(board.TX, board.RX, baudrate=9600) # Blinka
 
     DS3231_present = False  # default, gets automatically overwritten if clock is detected
 
@@ -883,8 +882,8 @@ try:  # -------- outer error handler loop -------------------
         i2c.unlock()
 
         i2c_present_str = '\ni2c device(s) '
-        for d in i2c_devices:
-            i2c_present_str += d + ' '
+        for dv in i2c_devices:
+            i2c_present_str += dv + ' '
         # print(i2c_present_str)
 
         # ------------ tcxo clock DS3221 if present ---------------------
