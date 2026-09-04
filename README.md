@@ -110,7 +110,7 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
  - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_,
   except you only want to use 1-Wire on a Raspberry Pi, which only depends on the kernel driver.
 
-- on a PC you need one of the supported I2C to USB interfaces and need to use the -u ... option. 1-Wire is not supported.
+- on a PC you need one of the supported I2C to USB interfaces and ^you need to use the -u ... option to select the device. 1-Wire is not supported.
 
 - to start the logging script on the command line (e. g. try _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
