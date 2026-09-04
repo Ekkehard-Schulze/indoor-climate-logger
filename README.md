@@ -5,7 +5,7 @@ Logs data and timestamps to a file.
 
 Features
 --------
-
+* **Data Logging:** Writes data to a TSV file with ISO 8601 timestamps. Fully compatible with Excel, Google Sheets, and Python (pandas).
 * **Flexible Access on Microcontrollers:** Wirelessly retrieve your data via Wi-Fi when using the **Raspberry&nbsp;Pi&nbsp;Pico&nbsp;2&nbsp;W**, or use it completely offline.
 * **Cross-Platform & Stable:** Proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using standard CPython and the Adafruit Blinka library.
 
