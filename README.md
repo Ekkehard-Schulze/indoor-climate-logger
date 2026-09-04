@@ -234,6 +234,16 @@ Raspberry Pi Pico, Pico 2, Pico W, Pico 2 W pins and pullup resistors
 34: 1-Wire (GP28) 1 kΩ to 3V3
 
 
+Raspberry Pi Linux SBC pins and pullup resistors
+----------------------------------------------------------------
+ 3: SDA (GPIO 2)  2.2 kΩ to 3V3
+ 
+ 5: SCL (GPIO 3)  2.2 kΩ to 3V3
+ 
+ 7: 1-Wire (GPIO 4) 4.7 kΩ to 3V3 (do not use 'parasite power')
+
+ use USB to serial interface FT232R to connect MH-Z19.
+
 Example hardware
 ------------------------------------------------
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
