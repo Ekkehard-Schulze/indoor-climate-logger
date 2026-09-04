@@ -8,7 +8,7 @@ Features
 
   - **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
   - **Linux:** Supported on Linux PCs and **Raspberry Pi single-board computers** using **CPython**.
-  - **Windows:** Supported on PCs using standard **CPython**.
+  - **Windows:** Supported on PCs using **CPython**.
 
 - **data logging**
 
@@ -21,7 +21,7 @@ Features
 
 
 - **cross-Platform & stable** 
-  - proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using standard CPython and the Adafruit Blinka library.
+  - proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using CPython and the Adafruit Blinka library.
 
 - **records**
 
