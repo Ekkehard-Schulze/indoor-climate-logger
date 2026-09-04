@@ -1,8 +1,6 @@
 Indoor climate logger for CircuitPython/CPython
 =====================
 
-Logs data and timestamps to a file.
-
 Features
 --------
 * **Data Logging:** Writes data to a TSV file with ISO 8601 timestamps. Fully compatible with Excel, Google Sheets, and Python (pandas).
@@ -124,9 +122,7 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 Notes
 -------
 
-1. _indoor-climate-logger.py_ writes data to a tab-separated values table using ISO 8601-formatted dates and times. The resulting file is fully compatible with spreadsheet software and Python data libraries, including pandas and plotly.
-
-2. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
+1. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
 With the DS3231 I2C clock, the logged time is based on the clock's 'set' time with no offset added. 
 
 8. NTP time is supported only for Wifi enabled microcontrollers.
