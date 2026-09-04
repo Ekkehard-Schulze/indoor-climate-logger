@@ -7,8 +7,8 @@ Features
 - **supported platforms**
 
   - **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
-  - **Windows:** Supported on PCs using standard **CPython**.
   - **Linux:** Supported on Linux PCs and **Raspberry Pi single-board computers** using **CPython**.
+  - **Windows:** Supported on PCs using standard **CPython**.
 
 - **data logging**
 
