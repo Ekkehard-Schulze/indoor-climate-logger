@@ -127,7 +127,7 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
   UART serial communication using an FT232R USB to serial converter for MH-Z19 not yet supported, but you
   can implement it youself by modifying the name of the serial port in the code.
 
-- on a PC runnung Linux you can use one of the supported I2C to USB interface and you can use 1-Wire if it is supported by your respective hardware and Linux kernel. On-board I2C is not supported. UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
+- on a PC runnung Linux you can use one of the supported I2C to USB interfaces. You only can use 1-Wire if it is supported by your respective hardware and Linux kernel. On-board I2C is not supported. UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
 
 - on a Raspberry Pi running Linux I2C is supported via the Adafruit-Blinka library and 1-Wire via the kernel driver.
   UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
@@ -159,8 +159,8 @@ applying a correction according to the ITS-90 standard.
 
 4. On Linux systems _indoor-climate-logger.py_ uses the Linux kernel driver for 1-Wire temperature sensor readings. 
 The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
- The kernel supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
-MAX31850, and DS1825. The latter two read type K thermocouples,
+ The kernel supports the additional 1-Wire sensor types  DS1822, DS28EA00,
+ and DS1825. The latter reads type K thermocouples,
 whereas the others are semiconductor thermometers.
 The 1-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
