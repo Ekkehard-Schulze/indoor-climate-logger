@@ -147,8 +147,8 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 
 3. To use 1-Wire sensors on a Raspberry Pi, activate the 1-Wire bus 
 via raspi-config. If you only need 1-Wire based
-temperature data logging, you can alternatively use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead. Moreover, the latter script also
-extends the temperaure range of MAX31850 using type K thermocouples to temperatures from -200°C to +1200°C by 
+temperature logging, you can alternatively use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead. The latter script also
+extends the temperaure range of type K thermocouples (using MAX31850) to temperatures from -200°C to +1200°C by 
 applying a correction according to the ITS-90 standard.
 
 
