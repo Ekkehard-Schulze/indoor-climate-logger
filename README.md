@@ -124,16 +124,18 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 - to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_,
 
 - on a PC runnung MS-Windows you need one of the supported I2C to USB interfaces. 1-Wire is not supported. 
+  UART serial communication using an FT232R USB to serial converter for MH-Z19 not yet supported, but you
+  can implement it youself by modifying the name of the serial port in the code.
 
-- on a PC runnung Linux you can use one of the supported I2C to USB interface and you can use 1-Wire if it is supported by your respective hardware and Linux kernel. On-board I2C is not supported.
+- on a PC runnung Linux you can use one of the supported I2C to USB interface and you can use 1-Wire if it is supported by your respective hardware and Linux kernel. On-board I2C is not supported. UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
 
 - on a Raspberry Pi running Linux I2C is supported via the Adafruit-Blinka library and 1-Wire via the kernel driver.
+  UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
 
 - to start the logging script on the command line (e. g. try _indoor-climate-logger.py -h_) and specify either an
   USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
-  using the -u option. The Raspberry Pi supports 1-Wire for sensor communication alongside I2C using its onboard hardware, and
-  UART serial communication using an FT232R USB to serial converter for MH-Z19.
-
+  using the -u option. 
+  
 - on Linux systems you may use the _indoor-climate-logger.py -q_ option to append a single data frame
   to the log file when called using a cron-job. This is the preferred way to use the script on Linux.
 
