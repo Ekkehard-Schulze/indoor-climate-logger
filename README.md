@@ -48,7 +48,7 @@ radiation surface temperature
     - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
     - DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
     - DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
-    - MAX31850 ±2°C for temperatures  -30°C to +600°C
+    - MAX31850 ±2°C for temperatures  -30°C to +600°C (using type K thermocouples)
 
   - serial rx tx
     - MH-Z19   carbon dioxide concentration  
