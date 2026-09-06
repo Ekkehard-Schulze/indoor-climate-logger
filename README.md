@@ -25,7 +25,7 @@ Features
 
 - **records**
 
-  - precision temperature using up to four I2C sensors
+  - accurate temperature using up to four I2C sensors
   - general purpose 1-Wire temperature sensors
   - humidity
   - atmospheric pressure
@@ -37,17 +37,17 @@ radiation surface temperature
 - **supported sensors, all with auto-discovery**
 
   - i2c
-    - TMP117   temperature 0.1°C precision
-    - ADT7420  temperature 0.2°C precision
-    - mlx90614 temperature IR  0.5°C precision
-    - bme280   barometric pressure, humidity 3%, temperature ±1°C
-    - bme680   barometric pressure, humidity 3%, temperature ±1°C 
+    - TMP117   temperature ±0.1°C accuracy
+    - ADT7420  temperature ±0.2°C accuracy
+    - mlx90614 temperature IR ±0.5°C accuracy
+    - bme280   barometric pressure, humidity 3%, temperature ±1°C accuracy
+    - bme680   barometric pressure, humidity 3%, temperature ±1°C accuracy
     - tsl2561  illuminance
 
   - 1-Wire
-    - DS18B20  ±0.5°C Accuracy from -10°C to +85°C
-    - DS18S20  ±0.5°C Accuracy from -10°C to +85°C (obsolete)
-    - DS1820   ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+    - DS18B20  ±0.5°C accuracy from -10°C to +85°C
+    - DS18S20  ±0.5°C accuracy from -10°C to +85°C (obsolete)
+    - DS1820   ±0.5°C accuracy from -10°C to +85°C (obsolete)
     - MAX31850 ±2°C for temperatures  -30°C to +600°C (using type K thermocouples)
 
   - serial rx tx
@@ -56,7 +56,7 @@ radiation surface temperature
 - **supported time sources**
 
   - NTP time for WiFi enabled microcontrollers
-  - DS3231 precision RTC for offline applications
+  - DS3231 extremely accurate RTC for offline applications
   - System time for PC or Raspberry Pi
 
 
@@ -202,7 +202,7 @@ for larger installations, use standard power via a 3-wire connection instead.
 
 11. The default settings were run on multiple Raspberry Pi Pico 2 W using CircuitPython version 9.2.8 
 for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
-using the DS3231 precision clock instead of NTP time was also tested for more than 6 month.
+using the extremely accurate DS3231 clock instead of NTP time was also tested for more than 6 month.
 
 
 
@@ -247,7 +247,7 @@ Example hardware
 ------------------------------------------------
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
                                                                                           
-Raspberry Pi Pico 2 W with DS3231 clock module ZS-042 and sensors MH-Z19 (CO2), ADT7420 (indoor precision temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (outdoor temperature). A prototyping PCB, which provides pullup resistors and bus connectors, is plugged to the Raspberry Pi Pico 2 W.
+Raspberry Pi Pico 2 W with DS3231 clock module ZS-042 and sensors MH-Z19 (CO2), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (outdoor temperature). A prototyping PCB, which provides pullup resistors and bus connectors, is plugged to the Raspberry Pi Pico 2 W.
 
 
 Screenshots from _plotly_time_series.py_
