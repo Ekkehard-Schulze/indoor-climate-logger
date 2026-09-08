@@ -247,11 +247,11 @@ Example hardware
 ------------------------------------------------
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
                                                                                           
-Raspberry Pi Pico 2 W with DS3231 clock module ZS-042 and sensors MH-Z19 (CO2), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (outdoor temperature). A prototyping PCB, which provides pullup resistors and bus connectors, is plugged to the Raspberry Pi Pico 2 W.
+A Raspberry Pi Pico 2 W equipped with a DS3231 (ZS-042) real-time clock module and a suite of sensors: an MH-Z19 for CO2, an ADT7420 for accurate indoor temperature, a BME280 for atmospheric pressure and humidity, and a DS18B20 for outdoor temperature. The setup is connected via a custom prototyping PCB that plugs into the Pico 2 W, providing necessary pull-up resistors and bus connectors. LED, EEPROM and the battery charging circuit were removed from the ZS-042 clock board for power optimization. 
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_3B.jpg)
                                                                                           
-Raspberry Pi 3B with sensors MH-Z19 (CO2, using a FT232R serial UART interface), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity) using a I2C bus PCB, which provides pullup resistors and connectors.
+Raspberry Pi 3B with sensors MH-Z19 (CO2, using a FT232R "A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R serial UART interface), an ADT7420 for accurate indoor temperature, and a BME280 for atmospheric pressure and humidity. The sensors are integrated using an I2C bus PCB that provides pull-up resistors and connectors."serial UART interface), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity) using a I2C bus PCB, which provides pullup resistors and connectors.
 
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
