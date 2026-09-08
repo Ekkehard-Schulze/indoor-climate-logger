@@ -265,8 +265,7 @@ Experimental setup for monitoring mercury arc lamp usage over a two-year period.
 <br/><br/>
 <br/><br/>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
-
-Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C
+Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C.
 <br/><br/>
 <br/><br/>
 Screenshots from _plotly_time_series.py_
