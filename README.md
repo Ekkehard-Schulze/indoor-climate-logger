@@ -241,7 +241,8 @@ Raspberry Pi Linux SBC pins and pullup resistors
  7: 1-Wire (GPIO 4) 4.7 kΩ to 3V3 (do not use parasite power)
 
  use USB to serial interface FT232R to connect MH-Z19.
-
+<br/>
+<br/>
 
 Example hardware
 ------------------------------------------------
