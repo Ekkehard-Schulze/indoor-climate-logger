@@ -37,18 +37,18 @@ radiation surface temperature
 - **supported sensors, all with auto-discovery**
 
   - i2c
-    - TMP117   temperature ±0.1°C accuracy
-    - ADT7420  temperature ±0.2°C accuracy
-    - mlx90614 temperature IR ±0.5°C accuracy
-    - bme280   barometric pressure, humidity 3%, temperature ±1°C accuracy
-    - bme680   barometric pressure, humidity 3%, temperature ±1°C accuracy
+    - TMP117   temperature ±0.1 °C accuracy
+    - ADT7420  temperature ±0.2 °C accuracy
+    - mlx90614 temperature IR ±0.5 °C accuracy
+    - bme280   barometric pressure, humidity 3%, temperature ±1 °C accuracy
+    - bme680   barometric pressure, humidity 3%, temperature ±1 °C accuracy
     - tsl2561  illuminance
 
   - 1-Wire
-    - DS18B20  ±0.5°C accuracy from -10°C to +85°C
-    - DS18S20  ±0.5°C accuracy from -10°C to +85°C (obsolete)
-    - DS1820   ±0.5°C accuracy from -10°C to +85°C (obsolete)
-    - MAX31850 ±2°C for temperatures  -30°C to +600°C (using type K thermocouples)
+    - DS18B20  ±0.5 °C accuracy from -10 °C to +85 °C
+    - DS18S20  ±0.5 °C accuracy from -10 °C to +85 °C (obsolete)
+    - DS1820   ±0.5 °C accuracy from -10 °C to +85 °C (obsolete)
+    - MAX31850 ±2 °C for temperatures  -30 °C to +600 °C (using type K thermocouples)
 
   - serial rx tx
     - MH-Z19   carbon dioxide concentration  
@@ -154,7 +154,7 @@ With the DS3231 I2C clock, the logged time is based on the clock's 'set' time wi
 This script was only tested using external power.
  If you only need 1-Wire based
 temperature logging, you can alternatively use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead. The latter script also
-extends the temperaure range of type K thermocouples (using MAX31850) to temperatures from -200°C to +1200°C by 
+extends the temperaure range of type K thermocouples (using MAX31850) to temperatures from -200 °C to +1200 °C by 
 applying a correction according to the ITS-90 standard.
 
 6. On MS-Windows PCs ADT7420 fails due to a driver bug.
@@ -264,7 +264,7 @@ Experimental setup for monitoring mercury arc lamp usage over a two-year period.
 <br/><br/>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
-Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600°C
+Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C
 
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
