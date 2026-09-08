@@ -249,6 +249,9 @@ Example hardware
                                                                                           
 Raspberry Pi Pico 2 W with DS3231 clock module ZS-042 and sensors MH-Z19 (CO2), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity), and DS18B20 (outdoor temperature). A prototyping PCB, which provides pullup resistors and bus connectors, is plugged to the Raspberry Pi Pico 2 W.
 
+![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_3B.jpg)
+                                                                                          
+Raspberry Pi 3B with sensors MH-Z19 (CO2, via FT232R serial to USB), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity).
 
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
