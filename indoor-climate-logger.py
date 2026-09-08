@@ -303,8 +303,9 @@ if sys.implementation.name == "cpython":   # auto-switch to PC-mode for MS_Windo
 
 elif sys.implementation.name == "circuitpython":
     import board
-    USE_ONE_WIRE_temperature_Linux_Kernel = False
-    USE_ONE_WIRE_temperature_Adafruit_CircuitPy = True
+    if USE_ONE_WIRE:
+        USE_ONE_WIRE_temperature_Linux_Kernel = False
+        USE_ONE_WIRE_temperature_Adafruit_CircuitPy = True
     USE_ALARM_wakeup_sleep = board.board_id == "raspberry_pi_pico"
     if board.board_id in ["raspberry_pi_pico", "raspberry_pi_pico2"]:
         if board.board_id == "raspberry_pi_pico": # tested using CircuitPython 8.x
