@@ -273,7 +273,7 @@ sensors to the equipment</p>
 <br/>
 <br/>
 
-Screenshots from _plotly_time_series.py_
+Screenshots from _plots_and_statistics_of_time_series.py_
 -----------------------------------------
 
 **Time course** 
