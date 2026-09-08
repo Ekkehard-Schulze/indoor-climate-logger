@@ -1,4 +1,4 @@
-after the plotly run these data are actually appendd to the original log file					
+after the plotly run these data are actually appended to the original log file. This is manual excerpt.					
 Sensor	Mean 	Min 	Max 	Stdev 	duration
 CO2	1434.8	350	3149	566.68	47 days 14:29:55
 ADT1	20.55	15.88	22.22	0.42	47 days 14:29:55
