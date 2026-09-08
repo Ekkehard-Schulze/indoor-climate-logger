@@ -254,23 +254,13 @@ A Raspberry Pi Pico 2 W equipped with a DS3231 (ZS-042) real-time clock module a
 <br>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_3B.jpg)
                                                                                           
-A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R serial UART interface), an ADT7420 for accurate indoor temperature, and a BME280 for atmospheric pressure and humidity. The sensors are integrated using an I2C bus PCB that provides pull-up resistors and connectors.
-<br>
-<br>
-<br>
-<br>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_1-Wire_bus.jpg)
-Experimental setup for monitoring mercury arc lamp usage over a two-year period. The system consists of an 8-meter 1-Wire bus cable with six DS18B20 temperature sensors connected to a Raspberry Pi 3B+. Neodymium magnets secure the sensors to the equipment
-<br/>
-<br/>
-<br/>
-<br/>
+<p>Experimental setup for monitoring mercury arc lamp usage over a two-year period. The system consists of an 8-meter 1-Wire bus cable with six DS18B20 temperature sensors connected to a Raspberry Pi 3B+. Neodymium magnets secure the sensors to the equipment.</p>
+<br><br><br><br>
+
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
-Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C.
-<br/>
-<br/>
-<br/>
-<br/>
+<p>Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C.</p>
+<br><br><br><br>
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
 
