@@ -281,6 +281,5 @@ Screenshots from _plotly_time_series.py_
 
 **Descriptive statistics** 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/descriptive_statistics_screenshot.webp)
-
 Screenshot of interactive data visualization using the script plots_and_statistics_of_time_series.py.
 
