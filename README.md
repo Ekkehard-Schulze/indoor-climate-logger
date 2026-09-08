@@ -251,7 +251,7 @@ A Raspberry Pi Pico 2 W equipped with a DS3231 (ZS-042) real-time clock module a
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_3B.jpg)
                                                                                           
-Raspberry Pi 3B with sensors MH-Z19 (CO2, using a FT232R "A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R serial UART interface), an ADT7420 for accurate indoor temperature, and a BME280 for atmospheric pressure and humidity. The sensors are integrated using an I2C bus PCB that provides pull-up resistors and connectors."serial UART interface), ADT7420 (accurate indoor temperature), BME280 (atmospheric pressure and humidity) using a I2C bus PCB, which provides pullup resistors and connectors.
+A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R serial UART interface), an ADT7420 for accurate indoor temperature, and a BME280 for atmospheric pressure and humidity. The sensors are integrated using an I2C bus PCB that provides pull-up resistors and connectors.
 
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
