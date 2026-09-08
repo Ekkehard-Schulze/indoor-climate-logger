@@ -260,14 +260,17 @@ A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R se
 <br>
 <br>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_1-Wire_bus.jpg)
-
 Experimental setup for monitoring mercury arc lamp usage over a two-year period. The system consists of an 8-meter 1-Wire bus cable with six DS18B20 temperature sensors connected to a Raspberry Pi 3B+. Neodymium magnets secure the sensors to the equipment
-<br/><br/>
-<br/><br/>
+<br/>
+<br/>
+<br/>
+<br/>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C.
-<br/><br/>
-<br/><br/>
+<br/>
+<br/>
+<br/>
+<br/>
 Screenshots from _plotly_time_series.py_
 ------------------------------------------------
 
