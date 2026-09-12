@@ -122,8 +122,8 @@ pip install -r CPython-requirements.txt
 
 | Platform | I2C Support | 1-Wire Support | UART (FT232R for MH-Z19) |
 | :--- | :--- | :--- | :--- |
-| **MS-Windows PC** | Supported via I2C-to-USB interface | Not supported | Not yet supported (can be manually added by changing the serial port name in the code) |
-| **Linux PC** | Supported via Adafruit-Blinka, and also via I2C-to-USB interface) | Supported only if native hardware & Linux kernel support it | Supported |
+| **MS-Windows PC** | I2C-to-USB interface supported via Adafruit-Blinka | Not supported | Not yet supported (can be manually added by changing the serial port name in the code) |
+| **Linux PC** | On-board I2C and I2C-to-USB interface supported via Adafruit-Blinka | Supported only if native hardware & Linux kernel support it | Supported |
 | **Raspberry Pi** | Supported via Adafruit-Blinka | Supported via Linux kernel driver | Supported |
 
 ### 3. Usage
