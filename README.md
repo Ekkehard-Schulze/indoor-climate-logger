@@ -108,46 +108,6 @@ You can also use the following helper scripts, which run on your host PC via **C
 
 *Tip: It is convenient to store these two CPython scripts directly on the microcontroller so they are always available. They can be executed from a PC (Windows, Linux, or Raspberry Pi) even while the controller is actively logging data in write mode. Note that these scripts have currently only been tested on MS Windows.*
 
-
-For microcontrollers running CircuitPython
-------------------------------------------
-
-**you need**
-
-- CircuitPython, this code was developed using version 9.2.8 on RaspberrPi Pico2W and Pico2W
-- the _/lib_ folder from this repository
-- to copy these hardware drivers from the Adafruit library bundle (https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) to the _/lib_ folder: 
-  - adafruit_register
-  - adafruit_tmp117
-  - adafruit_adt7410
-  - adafruit_bme280
-  - adafruit_bme680
-  - adafruit_mlx90614
-  - adafruit_tsl2561
-  - adafruit_onewire
-  - adafruit_ds3231
-  - adafruit_ntp
-- the main script _indoor-climate-logger.py_ renamed to _code.py_.
-- _boot.py_ to mount the filesystem in write mode
-- if you want to activate WiFi, edit settings.template.toml with your credentials
-  and rename it to settings.toml
-  
-  **you may like to use**
-  - the script _switch_RPiPico_to_USB_read_log_mode.py_, which runs on CPython, renames 
-    _boot.py_ to boot.bak on the microcontroller. After a subsequent reset
-	of the microcontroller, the logged data are accessible via USB. 
-	Use this, if WiFi is not available for data retrieval.
-
- 
-  - the script _switch_RPiPico_to_write_log_mode.py_, which runs on CPython, renames _boot.bak_ to _boot.py_. 
-    For the convenience of the developer, this script also copies _indoor-climate-logger.py_ to _code.py_. 
-	After a subsequent reset of the microcontroller, the files system 
-	is mounted read/write for the controller and the controller starts logging data. It is not possible
-	to read the growing log file via USB.
-	
-    It is convenient to store the latter two CPython scripts on the microcontroller in order to have them
-    accessible when needed. They can be executed from the PC/Linux-Raspberry Pi even when the
-	controller is logging data in write mode. These scripts have been tested so far only under MS-Windows.
 	
 ## Requirements for Host PCs (Windows, Linux, Raspberry Pi) running CPython
 
@@ -185,28 +145,6 @@ python indoor-climate-logger.py -q
 *Tip: Calling the script with this option via a **cron job** is the preferred and most reliable way to run it on Linux.*
 	
 
-For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
--------------------------------------------------------------
-
-**you need**
-
-- to install the required **Adafruit Blinka** packages using _pip install -r CPython-requirements.txt_,
-
-- on a PC runnung MS-Windows you need one of the supported I2C to USB interfaces. 1-Wire is not supported. 
-  UART serial communication using an FT232R USB to serial converter for MH-Z19 not yet supported, but you
-  can implement it youself by modifying the name of the serial port in the code.
-
-- on a PC runnung Linux you can use one of the supported I2C to USB interfaces. You only can use 1-Wire if it is supported by your respective hardware and Linux kernel. On-board I2C is not supported. UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
-
-- on a Raspberry Pi running Linux I2C is supported via the Adafruit-Blinka library and 1-Wire via the kernel driver.
-  UART serial communication using an FT232R USB to serial converter for MH-Z19 is also supported.
-
-- to start the logging script on the command line (e. g. try _indoor-climate-logger.py -h_) and specify either an
-  USB-I2C-interface device (Raspberry Pi Pico with U2IF, FT232H, or MCP2221) or choose the Raspberry Pi 
-  using the -u option. 
-  
-- on Linux systems you may use the _indoor-climate-logger.py -q_ option to append a single data frame
-  to the log file when called using a cron-job. This is the preferred way to use the script on Linux.
 
 ## Notes
 
@@ -244,84 +182,6 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
   WRITE_LOG_data_to_file = False
   ```
   Then rename `boot.py` to `boot.bak`. This restores full USB write access to the PC and enables standard error backtraces in your terminal.
-
-
-Notes
--------
-
-1. The logger reports time in a fixed time zone defined by 'UTC_offset_hours' when using NTP or CPython time. 
-With the DS3231 I2C clock, the logged time is based on the clock's 'set' time with no offset added. 
-
-8. NTP time is supported only for Wifi enabled microcontrollers.
-
-7. On Raspberry Pi activate the I2C bus and the 1-Wire bus via raspi-config.
- The 1-Wire bus can power sensors using 'external power'
-(three wires) or 'parasite power' (two wires).
-This script was only tested using external power.
- If you only need 1-Wire based
-temperature logging, you can alternatively use a simpler script provided in  https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi instead. The latter script also
-extends the temperaure range of type K thermocouples (using MAX31850) to temperatures from -200 °C to +1200 °C by 
-applying a correction according to the ITS-90 standard.
-
-6. On MS-Windows PCs ADT7420 fails due to a driver bug.
-
-4. The script _plotly_time_series.py_ generates statistics and provides interactive data exploration using Plotly.  Try it using the demo data set _20260222_201501_MHZ_19_CO2_log.tsv_.
-
-12. Why is it indoors? Because it is not low power. Consequently, place the sensors at 
-least 15 cm away from the controller, to avoid excessive influence of the dissipated thermal 
-energy. You still may like to sneak a sensor cable to outdors in addition.
-
-Notes for CircuitPython
----------------------------------------------------------
-
-1. On a microcontroller the limited flash memory is used as rolling storage, to allow for continous infinite operation. 
-Generate a long-term log file by periodic data polling and merging on a secondary system. Find the respective scripts 
-in _./utility_scripts/data_retrieval_merge_and_cleaning_.
-
-1. boot.py mounts the controller's filesystem to read/write during startup, which prevents
-   write access from PC via USB. Moreover, the growing log files can not be read from the PC via USB.
-   This mode is the normal stand alone operation of the logger.
-
-
-1. A Repl command to stop write mode is _import os; os.rename("/boot.py", "/boot.bak")_ followed by a reset.
-Now the filesystem is fully accessible from the PC via USB, however the logger can no longer write
-to its file system. This mode is used to harvest
-the logged data from non WiFi enabled loggers. This setting can also be issued via the USB-serial
- connection using the _switch_RPiPico_to_USB_read_log_mode.py_ script on the PC, when the
-controller is attached via USB.
-
-9.	The adafruit_httpserver module in /lib is source code from CircuitPython version 8.2.6. 
-The respective module of CircuitPython 9.2.8 is not used, because it contains
-incompatible changes.
-
-
-10.	The module schulze_one_wire_temperature.py in /lib is a forked 
-adafruit_ds18x20 source code from CircuitPython version 8.2.6. 
-The fork was done to improve performance with 'parasite power' and to allow usage of
-additional sensor types. Attention:  in addition to the code modification I needed
-a 820 Ohm pullup resistor if I used more than one DS18X20 Sensor and 450 Ohm für MAX31850,
-instead of the usual 4k7 used in sensor data sheets. This is an indication that the implementation
-of the 1-Wire protocol in Micropython/CircuitPython and as well in the Linux kernel does not handle
-1-Wire parasite power in a proper way. Consequently, you can not use parasite power
-for larger installations, use standard power via a 3-wire connection instead.
-
-
-11. The default settings were run on multiple Raspberry Pi Pico 2 W using CircuitPython version 9.2.8 
-for more than 6 month and are therefore tested for stable continuous operation. A variant of the default settings
-using the extremely accurate DS3231 clock instead of NTP time was also tested for more than 6 month.
-
-
-
-1. The setting "LOG_EXCEPTIONS_to_file = True" sends the exception messages to a log file, to preserve them. This file is accessible 
-via http, if the server is set active. However, due to limitations in CicuitPython, these logs
-do not contain the normal backtrace information with line numbers. Moreover, this setting
-prevents error output to the Repl. This mode is the normal stand alone operation of the logger.
-
-
-1. For console debugging and developement set "LOG_EXCEPTIONS_to_file = False",
-and "WRITE_LOG_data_to_file = False" and have boot.py renamed to boot.bak. This allows
-to see standard backtraces and to have USB-write access to the controller.
-  
 
 
 
