@@ -138,7 +138,7 @@ When starting the script, you must specify your hardware setup using the `-u` op
 * Or select the native **Raspberry Pi** hardware directly.
 
 #### Automation on Linux (Cron jobs)
-On Linux systems, you can use the `-q` (quiet/quick) option to append a single data frame to the log file:
+On Linux systems, you can use the `-q` (quit) option to append a single data frame to the log file:
 ```bash
 python indoor-climate-logger.py -q
 ```
