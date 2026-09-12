@@ -148,6 +148,42 @@ For microcontrollers running CircuitPython
     It is convenient to store the latter two CPython scripts on the microcontroller in order to have them
     accessible when needed. They can be executed from the PC/Linux-Raspberry Pi even when the
 	controller is logging data in write mode. These scripts have been tested so far only under MS-Windows.
+	
+## Requirements for Host PCs (Windows, Linux, Raspberry Pi) running CPython
+
+### 1. Prerequisites
+
+First, install the required Adafruit Blinka packages by running:
+```bash
+pip install -r CPython-requirements.txt
+```
+
+### 2. Supported Hardware Compatibility
+
+| Platform | I2C Support | 1-Wire Support | UART (FT232R for MH-Z19) |
+| :--- | :--- | :--- | :--- |
+| **MS-Windows PC** | Supported via I2C-to-USB interface | Not supported | Not yet supported (can be manually added by changing the serial port name in the code) |
+| **Linux PC** | Supported via I2C-to-USB interface (On-board I2C not supported) | Supported only if native hardware & Linux kernel support it | Supported |
+| **Raspberry Pi** | Supported via Adafruit-Blinka | Supported via Linux kernel driver | Supported |
+
+### 3. Usage
+
+To run the logging script, use the command line. You can check the available options by running:
+```bash
+python indoor-climate-logger.py -h
+```
+
+When starting the script, you must specify your hardware setup using the `-u` option:
+* Select an external USB-I2C interface device (e.g., **Raspberry Pi Pico with U2IF**, **FT232H**, or **MCP2221**).
+* Or select the native **Raspberry Pi** hardware directly.
+
+#### Automation on Linux (Cron jobs)
+On Linux systems, you can use the `-q` (quiet/quick) option to append a single data frame to the log file:
+```bash
+python indoor-climate-logger.py -q
+```
+*Tip: Calling the script with this option via a **cron job** is the preferred and most reliable way to run it on Linux.*
+	
 
 For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 -------------------------------------------------------------
