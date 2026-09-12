@@ -75,6 +75,39 @@ You can configure your user settings in one of two ways:
 
 > ⚠️ **Note:** If `user_settings.py` exists, it will completely override any settings defined in the header of `indoor-climate-logger.py`.
 
+## Requirements for CircuitPython Microcontrollers
+
+This project was developed and tested using **CircuitPython 9.2.8** on the **Raspberry Pi Pico 2 W**.
+
+To get started, you will need to copy the following files and folders to your microcontroller:
+
+* The `/lib` folder from this repository.
+* The following hardware drivers from the [Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) (placed inside the `/lib` folder):
+  * `adafruit_register`
+  * `adafruit_tmp117`
+  * `adafruit_adt7410`
+  * `adafruit_bme280`
+  * `adafruit_bme680`
+  * `adafruit_mlx90614`
+  * `adafruit_tsl2561`
+  * `adafruit_onewire`
+  * `adafruit_ds3231`
+  * `adafruit_ntp`
+* The main script `indoor-climate-logger.py`, renamed to `code.py`.
+* The `boot.py` file (required to mount the filesystem in write mode).
+* **Optional WiFi Setup:** If you want to enable WiFi, add your credentials to `settings.template.toml` and rename it to `settings.toml`.
+
+## Optional Utility Scripts
+
+You can also use the following helper scripts, which run on your host PC via **CPython**:
+
+* **`switch_RPiPico_to_USB_read_log_mode.py`**
+  Renames `boot.py` to `boot.bak` on the microcontroller. After resetting the board, the logged data will be accessible via USB. Use this method if WiFi is unavailable for data retrieval.
+* **`switch_RPiPico_to_write_log_mode.py`**
+  Renames `boot.bak` back to `boot.py`. For development convenience, this script also automatically copies `indoor-climate-logger.py` to `code.py`. After a subsequent reset, the filesystem is mounted in read/write mode for the microcontroller, and logging begins. Note that you cannot read the active log file via USB while in this mode.
+
+*Tip: It is convenient to store these two CPython scripts directly on the microcontroller so they are always available. They can be executed from a PC (Windows, Linux, or Raspberry Pi) even while the controller is actively logging data in write mode. Note that these scripts have currently only been tested on MS Windows.*
+
 
 For microcontrollers running CircuitPython
 ------------------------------------------
