@@ -208,6 +208,43 @@ For MS-Windows PCs, Linux PCs or Raspberry Pis running CPython
 - on Linux systems you may use the _indoor-climate-logger.py -q_ option to append a single data frame
   to the log file when called using a cron-job. This is the preferred way to use the script on Linux.
 
+## Notes
+
+* **Time Management:** The logger reports time in a fixed time zone defined by `UTC_offset_hours` when using NTP or CPython time. When using the DS3231 I2C clock, the logged time is based strictly on the clock's set time (no offset is added).
+* **Network Restrictions:** NTP time is only supported on Wi-Fi-enabled microcontrollers.
+* **Raspberry Pi Configuration:** Activate the I2C and 1-Wire buses via `raspi-config`. The 1-Wire bus supports both external power (3-wire) and parasite power (2-wire), though this script has only been tested with external power. 
+  * *Alternative:* If you only need simple 1-Wire temperature logging, consider using the more lightweight script available at [1wire-temperature-logger-RPi](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi). That script also extends the Type K thermocouple range (via MAX31850) from -200 °C to +1200 °C using ITS-90 standard corrections.
+* **Windows Compatibility:** The ADT7420 sensor fails on MS-Windows PCs due to an underlying driver bug.
+* **Data Visualization:** The `plotly_time_series.py` script generates statistics and offers interactive data exploration. You can test it out using the provided demo dataset: `20260222_201501_MHZ_19_CO2_log.tsv`.
+* **Thermal Dissipation Warning:** This is designed as an indoor logger because it is **not** a low-power application. To prevent the controller's dissipated heat from altering your readings, position all sensors at least 15 cm away from the board. You can, however, route an extra sensor cable outdoors.
+
+---
+
+## Notes for CircuitPython
+
+### Storage & Data Retrieval
+* **Rolling Storage:** Due to limited flash memory on microcontrollers, data is stored using a rolling system to enable infinite, continuous operation. To create long-term logs, you should periodically poll and merge the data onto a secondary system using the helper scripts found in `./utility_scripts/data_retrieval_merge_and_cleaning`.
+* **Filesystem Lock (Standalone Mode):** During startup, `boot.py` mounts the filesystem as read/write for the microcontroller. This locks out the PC, meaning you cannot write to the board or read the growing log files over USB. This is the default standalone logging mode.
+* **Unlocking USB Storage:** To safely harvest data from a logger without Wi-Fi, you must disable the local write mode:
+  1. Run the following REPL command: `import os; os.rename("/boot.py", "/boot.bak")`
+  2. Reset the microcontroller.
+  The filesystem will now be fully accessible from your PC via USB, but logging is paused. Alternatively, you can run the host-side script `switch_RPiPico_to_USB_read_log_mode.py` while the board is connected via USB.
+
+### Library & Hardware Quirks
+* **HTTP Server:** The `/lib/adafruit_httpserver` module is sourced from CircuitPython 8.2.6. The version included in CircuitPython 9.2.8 is intentionally skipped due to breaking, incompatible changes.
+* **1-Wire / Parasite Power Warning:** The `/lib/schulze_one_wire_temperature.py` module is a customized fork of `adafruit_ds18x20` (from version 8.2.6), modified to support more sensor types and improve parasite power performance. 
+  * *Hardware Note:* Testing revealed that an 820 Ω pull-up resistor is required when using multiple DS18X20 sensors (and 450 Ω for the MAX31850), instead of the standard 4.7 kΩ resistor. This strongly indicates that the 1-Wire protocol implementation in MicroPython/CircuitPython, as well as the Linux kernel, handles parasite power poorly. For larger setups, **do not use parasite power**—always opt for a standard 3-wire connection.
+
+### Stability & Debugging
+* **Long-Term Testing:** The default settings have been stress-tested on multiple Raspberry Pi Pico 2 W boards running CircuitPython 9.2.8 for over 6 months of continuous, stable operation. A setup utilizing the precise DS3231 hardware clock (instead of NTP) was verified over an identical 6-month period.
+* **Production Logging:** Setting `LOG_EXCEPTIONS_to_file = True` saves exception messages directly to a file (accessible via HTTP if the web server is running). Note that CircuitPython limitations prevent these logs from containing standard backtraces or line numbers. This setting also mutes error outputs to the REPL.
+* **Development Mode:** For live console debugging, use these settings:
+  ```python
+  LOG_EXCEPTIONS_to_file = False
+  WRITE_LOG_data_to_file = False
+  ```
+  Then rename `boot.py` to `boot.bak`. This restores full USB write access to the PC and enables standard error backtraces in your terminal.
+
 
 Notes
 -------
