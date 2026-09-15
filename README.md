@@ -227,13 +227,13 @@ A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R se
 <br>
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_1-Wire_bus.jpg)
-<p> Setup for monitoring multiple temperatures using the 1-Wire bus. The system consists of an 8-meter 1-Wire bus cable with six DS18B20 temperature sensors connected to a Raspberry Pi 3B+.</p>
+<p>**Setup for monitoring multiple temperatures using the 1-Wire bus.** The system consists of an 8-meter bus cable with six DS18B20 temperature sensors connected to a Raspberry Pi 3B+.</p>
 <br/>
 <br/>
 <br/>
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
-<p>Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -30 °C to 600 °C.</p>
+<p>**Setup for monitoring extreme temperatures using the 1-Wire bus.** The system consists of four Type K thermocouples connected via MAX31850 amplifiers to a Raspberry Pi 3B+. This enables temperature measurements ranging from -30 °C to 600 °C.</p>
 <br/>
 <br/>
 <br/>
