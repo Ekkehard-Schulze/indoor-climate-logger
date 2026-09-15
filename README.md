@@ -214,8 +214,7 @@ Example hardware
 ------------------------------------------------
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
                                                                                           
-A **Raspberry Pi Pico 2 W** equipped with a DS3231 (ZS-042) real-time clock module and a suite of sensors: an MH-Z19 for CO2, an ADT7420 for accurate indoor temperature, a BME280 for atmospheric pressure and humidity, and a DS18B20 for outdoor temperature. The setup is connected via a custom prototyping PCB that plugs into the Pico 2 W, providing necessary pull-up resistors and bus connectors. LED, EEPROM and the battery charging circuit were removed from the ZS-042 clock board for power optimization. 
-<br>
+A **Raspberry Pi Pico 2 W** equipped with a DS3231 (ZS-042) real-time clock module and a suite of sensors: an MH-Z19 for CO2, an ADT7420 for accurate indoor temperature, a BME280 for atmospheric pressure and humidity, and a DS18B20 for outdoor temperature. The setup is connected via a custom prototyping PCB that plugs into the Pico 2 W, providing necessary pull-up resistors and bus connectors.
 <br>
 <br>
 
