@@ -233,7 +233,7 @@ A Raspberry Pi 3B equipped with an MH-Z19 CO2 sensor (connected via an FT232R se
 <br/>
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
-<p>**Setup for monitoring extreme temperatures using the 1-Wire bus.** The system consists of four Type K thermocouples connected via MAX31850 amplifiers to a Raspberry Pi 3B+. This enables temperature measurements ranging from -30 °C to 600 °C.</p>
+**Setup for monitoring extreme temperatures using the 1-Wire bus.**<p> The system consists of four Type K thermocouples connected via MAX31850 amplifiers to a Raspberry Pi 3B+. This enables temperature measurements ranging from -30 °C to 600 °C.</p>
 <br/>
 <br/>
 <br/>
