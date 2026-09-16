@@ -149,7 +149,7 @@ python indoor-climate-logger.py -q
 ## Notes
 
 * **Time Management:** The logger reports time in a fixed time zone defined by `UTC_offset_hours` when using NTP or CPython time. When using the DS3231 I2C clock, the logged time is based strictly on the clock's set time (no offset is added).
-* **Network Restrictions:** NTP time is only supported on Wi-Fi-enabled microcontrollers.
+* **Network Restrictions:** NTP time is only supported on Wi-Fi-enabled microcontrollers, on CPython PCs or Raspberry Pis use system time.
 * **Raspberry Pi Configuration:** Activate the I2C and 1-Wire buses via `raspi-config`. The 1-Wire bus supports both external power (3-wire) and parasite power (2-wire), though this script has only been tested with external power. 
   * *Alternative:* If you only need simple 1-Wire temperature logging, consider using the more lightweight script available at [1wire-temperature-logger-RPi](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi). That script also extends the Type K thermocouple range (via MAX31850) from -200 °C to +1200 °C using ITS-90 standard corrections.
 * **Data Visualization:** The `plotly_time_series.py` script generates statistics and offers interactive data exploration. You can test it out using the provided demo dataset: `20260222_201501_MHZ_19_CO2_log.tsv`.
