@@ -31,15 +31,15 @@ Features
   - atmospheric pressure
   - carbon dioxide concentration
   - illuminances
-radiation surface temperature
+  - radiation surface temperature
   
   
 - **supported sensors, all with auto-discovery**
 
   - i2c
-    - TMP117   temperature ±0.1 °C accuracy
-    - ADT7420  temperature ±0.2 °C accuracy
-    - mlx90614 temperature IR ±0.5 °C accuracy
+    - TMP117   temperature ±0.1 °C accuracy from –20&nbsp;°C to +50&nbsp;°C
+    - ADT7420  temperature ±0.2 °C accuracy from −10°C to +85 °C
+    - mlx90614 infrared non-contact temperature from -70…+380°C, see data sheet for accuracy
     - bme280   barometric pressure, humidity 3%, temperature ±1 °C accuracy
     - bme680   barometric pressure, humidity 3%, temperature ±1 °C accuracy
     - tsl2561  illuminance
