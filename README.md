@@ -152,7 +152,6 @@ python indoor-climate-logger.py -q
 * **Network Restrictions:** NTP time is only supported on Wi-Fi-enabled microcontrollers.
 * **Raspberry Pi Configuration:** Activate the I2C and 1-Wire buses via `raspi-config`. The 1-Wire bus supports both external power (3-wire) and parasite power (2-wire), though this script has only been tested with external power. 
   * *Alternative:* If you only need simple 1-Wire temperature logging, consider using the more lightweight script available at [1wire-temperature-logger-RPi](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi). That script also extends the Type K thermocouple range (via MAX31850) from -200 °C to +1200 °C using ITS-90 standard corrections.
-* **Windows Compatibility:** The ADT7420 sensor fails on MS-Windows PCs due to an underlying driver bug.
 * **Data Visualization:** The `plotly_time_series.py` script generates statistics and offers interactive data exploration. You can test it out using the provided demo dataset: `20260222_201501_MHZ_19_CO2_log.tsv`.
 * **Thermal Dissipation Warning:** This is designed as an indoor logger because it is **not** a low-power application. To prevent the controller's dissipated heat from altering your readings, position all sensors at least 15 cm away from the board. You can, however, route an extra sensor cable outdoors.
 
@@ -170,6 +169,7 @@ python indoor-climate-logger.py -q
 
 ### Library & Hardware Quirks
 * **HTTP Server:** The `/lib/adafruit_httpserver` module is sourced from CircuitPython 8.2.6. The version included in CircuitPython 9.2.8 is intentionally skipped due to breaking, incompatible changes.
+* **Windows Compatibility:** The ADT7420 sensor fails on MS-Windows PCs due to an underlying driver bug.
 * **1-Wire / Parasite Power Warning:** The `/lib/schulze_one_wire_temperature.py` module is a customized fork of `adafruit_ds18x20` (from version 8.2.6), modified to support more sensor types and improve parasite power performance. 
   * *Hardware Note:* Testing revealed that an 820 Ω pull-up resistor is required when using multiple DS18X20 sensors (and 450 Ω for the MAX31850), instead of the standard 4.7 kΩ resistor. This strongly indicates that the 1-Wire protocol implementation in MicroPython/CircuitPython, as well as the Linux kernel, handles parasite power poorly. For larger setups, **do not use parasite power**—always opt for a standard 3-wire connection.
 
