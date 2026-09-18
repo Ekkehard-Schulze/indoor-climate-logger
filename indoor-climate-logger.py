@@ -705,7 +705,7 @@ if USE_i2c:
                 "format number, return '' if value is None"
                 return fmt.format(val) if val is not None else ""
 
-            return f"{SEPARATOR}{f(self.scd30.CO2, ':.0f')}{SEPARATOR}{f(self.scd30.relative_humidity, ':.1f')}"
+            return f"{SEPARATOR}{f(self.scd30.CO2, '{:.0f}')}{SEPARATOR}{f(self.scd30.relative_humidity, '{:.1f}')}"            
 
 if USE_MHZ_19_CO2:
 
