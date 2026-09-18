@@ -512,7 +512,9 @@ if USE_i2c:
             time.sleep(2.500)
             if USE_WATCHdog:
                 watchdog.feed()
-            return "{:.2f}".format(tsl._read_temperature())
+            if temp := tsl._read_temperature():
+                return "{:.2f}".format(temp)
+            return "" # for None
 
         def get_measurement_str(self):
             measurement_str = ''
@@ -618,15 +620,22 @@ if USE_i2c:
             return local_pressure + ((local_pressure * 9.80665 * local_heigt_above_sea_level) / (287 * (273 + local_temperature + (local_heigt_above_sea_level / 400))))
 
         def get_measurement_str(self):
+
+            # consider None for formatting number
+            def f(val, fmt):
+                return fmt.format(val) if val is not None else ""
+            
             temp = self.bme280.temperature
             pressure = self.bme280.pressure
-            sea_level_pressure = bme280.sea_barometric_pressure_estimate(pressure, temp, HEIGHT_above_sea_level_in_meter)  # 260 ist Höhe von Gundelfingen
-            return (
-                SEPARATOR + "{:.2f}".format(temp) 
-                + SEPARATOR + "{:.1f}".format(self.bme280.humidity) 
-                + SEPARATOR + "{:.1f}".format(sea_level_pressure) 
+            sea_level_pressure = (
+                bme280.sea_barometric_pressure_estimate(
+                    pressure, temp, HEIGHT_above_sea_level_in_meter
+                )
+                if temp and pressure
+                else None
+                                                                  
             )
-
+            return f"{SEPARATOR}{f(temp, '{:.2f}')}{SEPARATOR}{f(self.bme280.humidity, '{:.1f}')}{SEPARATOR}{f(sea_level_pressure, '{:.1f}')}"
     class bme680():
         ''' ----------- sensor BME680 specific code handling one sensor for logger Achtung: 260 Meter Höhe in global var ------------'''
 
@@ -670,6 +679,9 @@ if USE_i2c:
         dtparam=i2c_arm=on,i2c_arm_baudrate=50000,i2c_arm_timeout=200 # Attention: still i2c bus hangup crashes on RPi3B
         now testing
         dtparam=i2c_arm=on,i2c_arm_baudrate=25000,i2c_arm_timeout=250 # Attention: still i2c bus hangup crashes on RPi3B
+        
+                                                                                                                                                                                     
+
         '''
         filename = r"CO2_SCD_30_log.tsv"
 
@@ -688,8 +700,12 @@ if USE_i2c:
 
  
         def get_measurement_str(self):
-            return f"{SEPARATOR}{self.scd30.CO2:.0f}{SEPARATOR}{self.scd30.relative_humidity:.1f}"
+            # consider None for formatting number
+            def f(val, fmt):
+                "format number, return '' if value is None"
+                return fmt.format(val) if val is not None else ""
 
+            return f"{SEPARATOR}{f(self.scd30.CO2, ':.0f')}{SEPARATOR}{f(self.scd30.relative_humidity, ':.1f')}"
 
 if USE_MHZ_19_CO2:
 
@@ -1165,7 +1181,9 @@ except Exception as e:
             except:
                 pass
             if sys.implementation.name == "cpython":
-                except_log_file.write(f": {e} in line {e.__traceback__.tb_lineno}\n") # not available in micropython
+                except_log_file.write(f": {e} in line {e.__traceback__.tb_lineno}\n")
+                except_log_file.write('-'*70+'\n')
+                except_log_file.write(f"{traceback.format_exc()}\n")                                                  
             else: # micropython
                 except_log_file.write(f": {e} ... in (main) and we will never know the line where it did happen.\n")
                 # no traceback.format_exc() in micropython, this would require a re-compile! <<<<<<<<<<<<< !!!, see:
