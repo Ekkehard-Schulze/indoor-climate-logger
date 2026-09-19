@@ -621,8 +621,8 @@ if USE_i2c:
 
         def get_measurement_str(self):
 
-            # consider None for formatting number
             def f(val, fmt):
+                ''' consider None for formatting '''                
                 return fmt.format(val) if val is not None else ""
             
             temp = self.bme280.temperature
@@ -636,6 +636,8 @@ if USE_i2c:
                                                                   
             )
             return f"{SEPARATOR}{f(temp, '{:.2f}')}{SEPARATOR}{f(self.bme280.humidity, '{:.1f}')}{SEPARATOR}{f(sea_level_pressure, '{:.1f}')}"
+
+
     class bme680():
         ''' ----------- sensor BME680 specific code handling one sensor for logger Achtung: 260 Meter Höhe in global var ------------'''
 
@@ -700,9 +702,9 @@ if USE_i2c:
 
  
         def get_measurement_str(self):
-            # consider None for formatting number
+
             def f(val, fmt):
-                "format number, return '' if value is None"
+                ''' consider None for formatting '''                
                 return fmt.format(val) if val is not None else ""
 
             return f"{SEPARATOR}{f(self.scd30.CO2, '{:.0f}')}{SEPARATOR}{f(self.scd30.relative_humidity, '{:.1f}')}"            
