@@ -21,7 +21,7 @@
 # import os; os.rename("/boot.py", "/boot.bak")
 
 
-'''Indoor-climate-logger.py is a sensor data logger for either: 
+"""Indoor-climate-logger.py is a sensor data logger for either: 
 
  • CircuitPython (tested: 9.2.1) on a microcontroller,
    with I2C, 1Wire, and serial for the MH-Z19 CO2 sensor
@@ -102,7 +102,7 @@ This indicates a non-sufficient power supply for the temperature conversion,
 the MAX31850 gave ~50°C readings in room temperature)
 I think that the micropython 1wire driver does not cover correctly parasitic power,
 however the Arduino implementation does. The same poblems seems to be in the Linux kernel driver.
-'''
+"""
 
 import os
 import sys
@@ -224,11 +224,11 @@ if sys.implementation.name == "cpython":   # auto-switch to PC-mode for MS_Windo
         raise Exception('NTP-time not imlemented in CPython. Use python time.')
 
     def set_i2c_environment_vars_for_Blinka(mode=1):
-        '''prepare for adafruit-blinka on cpython PC'''
+        """prepare for adafruit-blinka on cpython PC"""
 
         def Win_FT232H_with_ftdi_driver_present():
-            '''circuit python requires libusbK driver. Win updates replace this with FTDI driver.
-            This is to detect this failure reason'''
+            """circuit python requires libusbK driver. Win updates replace this with FTDI driver.
+            This is to detect this failure reason"""
             import ftd2xx     # pip install ftd2xx # this is a FTDI module for python 3, not a CircuitPython module
             try:
                 dl = ftd2xx.open(0)           # Open first FTDI device
@@ -333,10 +333,10 @@ elif sys.implementation.name == "micropython":
 
 if USE_ONE_WIRE_temperature_Adafruit_CircuitPy:
     class one_wire_temperature_Adafruit_CircuitPy():
-        ''' ----------- sensor 1wire specific code for logger  ------------
+        """ ----------- sensor 1wire specific code for logger  ------------
         stores list of responding 1Wire sensors.
         Retrieves sensor names and measurements of all sensors at once.
-        '''
+        """
         filename = r"1wire_temperature_log.tsv"
 
         def __init__(self, ow_busl):
@@ -355,11 +355,11 @@ if USE_ONE_WIRE_temperature_Adafruit_CircuitPy:
 
 if USE_ONE_WIRE_temperature_Linux_Kernel:
     class one_wire_temperature_Linux_kernel():
-        ''' ----------- sensor 1wire specific code for logger  ------------
+        """ ----------- sensor 1wire specific code for logger  ------------
         stores list of responding 1Wire sensors.
         Retrieves sensor names and measurements of all sensors at once.
         Attention: log_1wire.py RaspberryPi Kernel driver only see  Ekkehard's utility dir
-        '''
+        """
         filename = r"1wire_temperature_log.tsv"
 
         def __init__(self):
@@ -369,7 +369,7 @@ if USE_ONE_WIRE_temperature_Linux_Kernel:
             self.device_folder_list = glob.glob(self.base_dir + '28*')
 
         def generate_name(self, device_folderl):
-            '''Using 8-bit sum heren, NOT crc8. Saves the purpose as well'''
+            """Using 8-bit sum heren, NOT crc8. Saves the purpose as well"""
             hexl = device_folderl.split('/')[-1].replace('-', '')
             bbb = bytearray.fromhex(hexl)
             return 'DS' + str(sum(bbb) % 256)
@@ -405,10 +405,10 @@ if USE_ONE_WIRE_temperature_Linux_Kernel:
 if USE_i2c:
 
     class ADT7420():
-        ''' ----------- sensor ADT7420 specific code for logger  ------------
+        """ ----------- sensor ADT7420 specific code for logger  ------------
         operates on a list of all four possible sensors and acts on the responding (installed) ones.
         distinguishes ADT7420 from TMP117, both have the same I2C address space.
-        '''
+        """
         filename = r"ADT7420_log.tsv"
 
         def __init__(self):
@@ -439,7 +439,7 @@ if USE_i2c:
             return "{:.2f}".format(tsl.temperature)
 
         def get_single_measurement(self, tsl):
-            '''read with 8x averaging and 250 ms delay'''
+            """read with 8x averaging and 250 ms delay"""
             AVERAGES = 8
             t_tmp = 0
             for _ in range(AVERAGES):
@@ -457,13 +457,13 @@ if USE_i2c:
             return measurement_str
 
     class TMP117_es():
-        '''sensor TMP117 specific code for logger handling 4 sensors
+        """sensor TMP117 specific code for logger handling 4 sensors
 
         Attention: object name TMP117 is already used by Adafruit
 
         Operates on a list of all four possible sensors and acts on the responding (installed) ones.
         distinguishes TMP117 from ADT7420, both have the same I2C address space.
-        '''
+        """
 
         filename = "TMP117_log.tsv"
 
@@ -492,7 +492,7 @@ if USE_i2c:
             return rstr
 
         def get_single_measurement_obsolete_fails(self, tsl):
-            '''20250423 esmod attempt to avoid crash of RPi Pico2_W logger when reading TMP117
+            """20250423 esmod attempt to avoid crash of RPi Pico2_W logger when reading TMP117
             Logger RPi Pico2W mit TMP117 bleibt jeweils nach einigen Stunden und ein paar dutzend
             Datenpunkten ohne Fehlermeldung stehen, unabhängig davon welcher TMP2 Sensor
             verwendet wurde. Die Ursache fand sich in der Temperaturabfrage der TMP117 CircuitPython
@@ -501,11 +501,11 @@ if USE_i2c:
             2500 ms delay, gefolgt von Lesen der Temperatur ohne Statusabfrage ersetzt ergibt ein
             stabiles Verhalten. Offenbar endet diese loop manchmal in einer Endlosschleife
             stabiles Verhalten. Offenbar endet diese loop manchmal in einer Endlosschleife
-            '''
+            """
             return "{:.2f}".format(tsl.take_single_measurement())
 
         def get_single_measurement(self, tsl):
-            '''2500 ms delay instead of poll status every 1 ms'''
+            """2500 ms delay instead of poll status every 1 ms"""
             tsl._mode = self._ONE_SHOT_MODE
             if USE_WATCHdog:
                 watchdog.feed()
@@ -541,7 +541,7 @@ if USE_i2c:
             return val == 0x117
 
     class mlx90614():
-        ''' ----------- Ir temp sensor mlx90614 single sensor specific code for logger  -------'''
+        """ ----------- Ir temp sensor mlx90614 single sensor specific code for logger  -------"""
 
         filename = "mlx90614_log.tsv"
 
@@ -558,8 +558,8 @@ if USE_i2c:
             return SEPARATOR + "{:.2f}".format(self.mlx.ambient_temperature) + SEPARATOR + "{:.2f}".format(self.mlx.object_temperature) 
 
     class tsl2561():
-        ''' ----------- lux sensor tsl2561 specific code for logger handling one sensor.
-        Attention: 10 seconds per measurement variant (using 10x average)  ------------'''
+        """ ----------- lux sensor tsl2561 specific code for logger handling one sensor.
+        Attention: 10 seconds per measurement variant (using 10x average)  ------------"""
 
         filename = "Lux_log.tsv"
 
@@ -579,7 +579,7 @@ if USE_i2c:
             return SEPARATOR + SEPARATOR.join(self.my_sensor_names) 
 
         def get_single_measurement(self, tsl):
-            ''' average of 10 lux measurements with 1 second delay'''
+            """ average of 10 lux measurements with 1 second delay"""
             dlist = []
             for _n in range(0, self.averages):
                 lux = tsl.lux
@@ -594,14 +594,14 @@ if USE_i2c:
             return SEPARATOR + str(self.get_single_measurement(self.tsl)) 
 
     class bme280():
-        ''' ----------- sensor BME280 specific code handling one sensor for 
+        """ ----------- sensor BME280 specific code handling one sensor for 
         logger Achtung: 260 Meter Höhe in global var ------------
         Attention: powering bme280 with 5 Volt gives wrong readings,
         e. g. Temperature 2°C too high, humidity 10 % too low.
         Gogle AI suggests "MODE_FORCE" for single-shot conversion followed
         by sleep. However, for the accuracy of the values this seems not
         to be required.
-        '''
+        """
 
         filename = "BME280_log.tsv"
 
@@ -616,13 +616,13 @@ if USE_i2c:
 
         @classmethod
         def sea_barometric_pressure_estimate(cls, local_pressure, local_temperature, local_heigt_above_sea_level):
-            ''' https://gist.github.com/cubapp/23dd4e91814a995b8ff06f406679abcf  '''
+            """ https://gist.github.com/cubapp/23dd4e91814a995b8ff06f406679abcf  """
             return local_pressure + ((local_pressure * 9.80665 * local_heigt_above_sea_level) / (287 * (273 + local_temperature + (local_heigt_above_sea_level / 400))))
 
         def get_measurement_str(self):
 
             def f(val, fmt):
-                ''' consider None for formatting '''                
+                """ consider None for formatting """                
                 return fmt.format(val) if val is not None else ""
             
             temp = self.bme280.temperature
@@ -639,7 +639,7 @@ if USE_i2c:
 
 
     class bme680():
-        ''' ----------- sensor BME680 specific code handling one sensor for logger Achtung: 260 Meter Höhe in global var ------------'''
+        """ ----------- sensor BME680 specific code handling one sensor for logger Achtung: 260 Meter Höhe in global var ------------"""
 
         filename = "BME680_log.tsv"
 
@@ -655,7 +655,7 @@ if USE_i2c:
 
         @classmethod
         def sea_barometric_pressure_estimate(cls, local_pressure, local_temperature, local_heigt_above_sea_level):
-            ''' https://gist.github.com/cubapp/23dd4e91814a995b8ff06f406679abcf  '''
+            """ https://gist.github.com/cubapp/23dd4e91814a995b8ff06f406679abcf  """
             return local_pressure + ((local_pressure * 9.80665 * local_heigt_above_sea_level) / (287 * (273 + local_temperature + (local_heigt_above_sea_level / 400))))
 
         def get_measurement_str(self):
@@ -674,7 +674,7 @@ if USE_i2c:
             )
 
     class SCD30_CO2():
-        ''' ----------- sensor SCD30 Sensirion specific code for logger  ------------
+        """ ----------- sensor SCD30 Sensirion specific code for logger  ------------
         Attention: leads to RaspBerryPi3B crashes and reboots, unless set:
 
         # clk 50000 for Sensirion SCD30 sensor, 200 ms clock stretching / timeout für scd30 Sensor
@@ -684,7 +684,7 @@ if USE_i2c:
         
                                                                                                                                                                                      
 
-        '''
+        """
         filename = r"CO2_SCD_30_log.tsv"
 
         def __init__(self):
@@ -704,7 +704,7 @@ if USE_i2c:
         def get_measurement_str(self):
 
             def f(val, fmt):
-                ''' consider None for formatting '''                
+                """ consider None for formatting """                
                 return fmt.format(val) if val is not None else ""
 
             return f"{SEPARATOR}{f(self.scd30.CO2, '{:.0f}')}{SEPARATOR}{f(self.scd30.relative_humidity, '{:.1f}')}"            
@@ -712,7 +712,7 @@ if USE_i2c:
 if USE_MHZ_19_CO2:
 
     class MHZ_19():
-        ''' ----------- CO2 sensor MH-Z19 code for logger  ------------'''
+        """ ----------- CO2 sensor MH-Z19 code for logger  ------------"""
         filename = r"MHZ_19_CO2_log.tsv"
 
         def __init__(self):
@@ -782,7 +782,7 @@ if USE_MHZ_19_CO2:
 # on Win or Linux PC running CPython
 
 def file_exists(fnamel):
-    ''''workaround for 'from os.path import exists' which is not available in circuit/micro python'''
+    """'workaround for 'from os.path import exists' which is not available in circuit/micro python"""
     try:
         with open(fnamel, "r") as _f:
             exists = True
@@ -811,8 +811,8 @@ def reset_microcontroller(reset_delay=5):
 
 
 def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
-    '''Delete top part of log data in order to limit file size.
-    The idea is to prune oldest data e.g. once a day'''
+    """Delete top part of log data in order to limit file size.
+    The idea is to prune oldest data e.g. once a day"""
     if 0 < size_limit < os.stat(log_file_namel)[6]:  # micropython uses plain tupel, CPython uses named tupel, which is downwards compatible to plain tupel
         # basename, _extension = os.path.splitext(log_file_namel) # not available in micropython
         # bak_file_name = basename+'.bak'
