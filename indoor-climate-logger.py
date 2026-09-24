@@ -1150,7 +1150,7 @@ try:  # -------- outer error handler loop -------------------
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
             else:
-                time.sleep(1)
+                time.sleep(0.33)  # former used 1
 
         else:  # alternative timing handler for none-http application
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
