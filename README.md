@@ -210,7 +210,9 @@ Raspberry Pi Linux SBC pins and pullup resistors
 <br/>
 <br/>
 
-Example hardware
+---
+
+## Example hardware
 ------------------------------------------------
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
                                                                                           
