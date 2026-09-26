@@ -209,7 +209,7 @@ Raspberry Pi Pico, Pico 2, Pico W, Pico 2 W pins and pullup resistors
 34: 1-Wire (GP28) 1 kΩ to 3V3
 
 
-Raspberry Pi Linux SBC pins and pullup resistors
+Linux-based Raspberry Pi pins and pullup resistors
 ----------------------------------------------------------------
  3: SDA (GPIO 2)  2.2 kΩ to 3V3
  
