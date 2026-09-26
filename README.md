@@ -248,7 +248,8 @@ A **Raspberry Pi 3B** equipped with an MH-Z19 CO2 sensor (connected via an FT232
 <br/>
 <br/>
 
-Screenshots from _plots_and_statistics_of_time_series.py_
+---
+## Screenshots from _plots_and_statistics_of_time_series.py_
 -----------------------------------------
 
 **Time course** 
