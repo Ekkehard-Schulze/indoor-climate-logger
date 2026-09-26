@@ -218,7 +218,7 @@ Raspberry Pi Linux SBC pins and pullup resistors
  use USB to serial interface FT232R to connect MH-Z19.
 <br/>
 <br/>
-
+<br/>
 ---
 ## Example hardware
 <br/>
