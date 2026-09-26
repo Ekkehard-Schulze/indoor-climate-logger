@@ -210,7 +210,7 @@ Raspberry Pi Linux SBC pins and pullup resistors
 <br/>
 <br/>
 
-
+---
 ## Example hardware
 <br/>
 <br/>
