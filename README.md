@@ -74,6 +74,8 @@ You can configure your user settings in one of two ways:
 2. **Using a separate configuration file (Recommended):** Copy `user_settings.template.py` and rename it to `user_settings.py`, then apply your changes there.
 
 > ⚠️ **Note:** If `user_settings.py` exists, it will completely override any settings defined in the header of `indoor-climate-logger.py`.
+<br/>
+<br/>
 
 ---
 ## Requirements for CircuitPython Microcontrollers
@@ -108,6 +110,8 @@ You can also use the following helper scripts, which run on your host PC via **C
   Renames `boot.bak` back to `boot.py`. For development convenience, this script also automatically copies `indoor-climate-logger.py` to `code.py`. After a subsequent reset, the filesystem is mounted in read/write mode for the microcontroller, and logging begins. Note that you cannot read the active log file via USB while in this mode.
 
 *Tip: It is convenient to store these two CPython scripts directly on the microcontroller so they are always available. They can be executed from a PC (Windows, Linux, or Raspberry Pi) even while the controller is actively logging data in write mode. Note that these scripts have currently only been tested on MS Windows.*
+<br/>
+<br/>
 
 ---	
 ## Requirements for Host PCs (Windows, Linux, Raspberry Pi) running CPython
@@ -145,6 +149,8 @@ python indoor-climate-logger.py -q
 ```
 *Tip: Calling the script with this option via a **cron job** is the preferred and most reliable way to run it on Linux.*
 	
+<br/>
+<br/>
 
 ---
 ## Notes
@@ -155,6 +161,8 @@ python indoor-climate-logger.py -q
   * *Alternative:* If you only need simple 1-Wire temperature logging, consider using the more lightweight script available at [1wire-temperature-logger-RPi](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi). That script also extends the Type K thermocouple range (via MAX31850) from -200 °C to +1200 °C using ITS-90 standard corrections.
 * **Data Visualization:** The `plotly_time_series.py` script generates statistics and offers interactive data exploration. You can test it out using the provided demo dataset: `20260222_201501_MHZ_19_CO2_log.tsv`.
 * **Thermal Dissipation Warning:** This is designed as an indoor logger because it is **not** a low-power application. To prevent the controller's dissipated heat from altering your readings, position all sensors at least 15 cm away from the board. You can, however, route an extra sensor cable outdoors.
+<br/>
+<br/>
 
 ---
 
@@ -213,7 +221,6 @@ Raspberry Pi Linux SBC pins and pullup resistors
 
 ---
 ## Example hardware
-<br/>
 <br/>
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/images/Raspberry_Pi_Pico_2_W_logger.jpg)
