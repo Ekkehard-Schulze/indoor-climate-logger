@@ -250,7 +250,6 @@ A **Raspberry Pi 3B** equipped with an MH-Z19 CO2 sensor (connected via an FT232
 
 ---
 ## Screenshots from _plots_and_statistics_of_time_series.py_
------------------------------------------
 
 **Time course** 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/indoor-climate-logger/blob/main/utility_scripts/plotting_and_statistics_with_demo_data/screenshots/time_course_screenshot.webp)
