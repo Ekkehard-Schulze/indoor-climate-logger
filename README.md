@@ -218,7 +218,7 @@ Raspberry Pi Linux SBC pins and pullup resistors
  use USB to serial interface FT232R to connect MH-Z19.
 <br/>
 <br/>
-<br/>
+
 ---
 ## Example hardware
 <br/>
@@ -246,6 +246,7 @@ A **Raspberry Pi 3B** equipped with an MH-Z19 CO2 sensor (connected via an FT232
 **Setup for monitoring extreme temperatures using the 1-Wire bus.**<p> The system consists of four Type K thermocouples connected via MAX31850 amplifiers to a Raspberry Pi 3B+. This enables temperature measurements ranging from -30 °C to 600 °C.</p>
 <br/>
 <br/>
+
 
 ---
 ## Screenshots from _plots_and_statistics_of_time_series.py_
