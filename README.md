@@ -1,5 +1,6 @@
-# Indoor climate logger for CircuitPython/CPython
 ---
+# Indoor climate logger for CircuitPython/CPython
+
 
 Features
 --------
