@@ -5,15 +5,16 @@
 Features
 --------
 
+- **data logging**
+
+  - writes data to a TSV file with ISO 8601 timestamps. Fully compatible with Excel, Google Sheets, and Python (pandas).
+
+
 - **supported platforms**
 
   - **CircuitPython:** Supported on microcontrollers (actively tested on **Raspberry Pi Pico**, **Pico W**, and **Pico 2 W**).
   - **Linux:** Supported on **Linux PCs** and **Raspberry Pi single-board computers** using **CPython**.
   - **Windows:** Supported on **PCs** using **CPython**.
-
-- **data logging**
-
-  - writes data to a TSV file with ISO 8601 timestamps. Fully compatible with Excel, Google Sheets, and Python (pandas).
 
 
 - **flexible access on microcontrollers**
