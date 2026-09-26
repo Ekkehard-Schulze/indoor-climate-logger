@@ -75,6 +75,7 @@ You can configure your user settings in one of two ways:
 
 > ⚠️ **Note:** If `user_settings.py` exists, it will completely override any settings defined in the header of `indoor-climate-logger.py`.
 
+---
 ## Requirements for CircuitPython Microcontrollers
 
 This project was developed and tested using **CircuitPython 9.2.8** on the **Raspberry Pi Pico 2 W**.
@@ -108,7 +109,7 @@ You can also use the following helper scripts, which run on your host PC via **C
 
 *Tip: It is convenient to store these two CPython scripts directly on the microcontroller so they are always available. They can be executed from a PC (Windows, Linux, or Raspberry Pi) even while the controller is actively logging data in write mode. Note that these scripts have currently only been tested on MS Windows.*
 
-	
+---	
 ## Requirements for Host PCs (Windows, Linux, Raspberry Pi) running CPython
 
 ### 1. Prerequisites
@@ -145,7 +146,7 @@ python indoor-climate-logger.py -q
 *Tip: Calling the script with this option via a **cron job** is the preferred and most reliable way to run it on Linux.*
 	
 
-
+---
 ## Notes
 
 * **Time Management:** The logger reports time in a fixed time zone defined by `UTC_offset_hours` when using NTP or CPython time. When using the DS3231 I2C clock, the logged time is based strictly on the clock's set time (no offset is added).
