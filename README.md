@@ -251,7 +251,7 @@ A **Raspberry Pi 3B** equipped with an MH-Z19 CO2 sensor (connected via an FT232
 
 
 ---
-## Interactive Visualization
+## Interactive data visualization
 
 
 **Time course** 
