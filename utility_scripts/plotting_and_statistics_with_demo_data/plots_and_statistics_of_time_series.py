@@ -211,7 +211,7 @@ def main():
     starttime = df[Date_time_field_name].iloc[0]
     endtime = df[Date_time_field_name].iloc[-1]
     log_duration = endtime - starttime
-    my_title = df['logger-id'][1] if 'logger-id' in df.columns else default_title        
+    my_title = df[LOGGER_ID_field_name][1] if LOGGER_ID_field_name in df.columns else default_title        
     
     # --------------- working on data -----------------------------------
 
@@ -220,6 +220,7 @@ def main():
         print("Writing statistics file...")
         prefix = last_datetime_str + "_statistics_"
         sfile_name_xlsx = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".xlsx") 
+        sfile_name_ods = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".ods") 
         sfile_name_tsv = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".tsv")                
         df_stats = df.describe()
         try:
@@ -227,19 +228,27 @@ def main():
         except:
             pass
         df_stats['duration'] = log_duration
-        try:
+        try: # .csv
             df_stats.to_csv(sfile_name_tsv, index=True, sep=STATS_file_separator)
         except PermissionError:
             print('Failed to open statistics file.\nClose other application (e.g. Excel) blocking ' + sfile_name_tsv + '\n')
             input('Press Enter to quit.')
             sys.exit()         
-        try:
+        try: # .xlsx
             df_stats.rename(columns={'duration': 'duration [d]'}, inplace=True)
             df_stats.to_excel(sfile_name_xlsx, index=True)
         except PermissionError:
             print('Failed to open statistics file.\nClose other application (e.g. Excel) blocking ' + sfile_name_xlsx + '\n')
             input('Press Enter to quit.')
-            sys.exit()        
+            sys.exit() 
+        try: # .ods
+            # df_stats.rename(columns={'duration': 'duration [d]'}, inplace=True)
+            df_stats.to_excel(sfile_name_ods, index=True, engine='odf')
+        except PermissionError:
+            print('Failed to open statistics file.\nClose other application (e.g. Excel) blocking ' + sfile_name_ods + '\n')
+            input('Press Enter to quit.')
+            sys.exit()
+            
         
         #write_statistics_file(df, sfile_name, accepted_sensors)
 
@@ -308,16 +317,24 @@ def main():
 
         # ----------- all fig calculated, now generate output ----------------
         if SAVE_interactive_html_plot:
+
             print("Writing timeline plot to interactive html...")
             last_datetime = str(df[Date_time_field_name].iloc[-1]).replace(":", "_")
             stem_prefix = last_datetime + "_interactive_time_plot_"
             #f_html_name = str(pathlib.Path(logger_tsv_file).parent) + os.sep + stem_prefix + str(pathlib.Path(logger_tsv_file).stem) + ".html"
             f_html_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, stem_prefix, ".html") 
+            plotly.offline.plot(fig_time, filename=f_html_name, auto_open=False)            
+
             print("Writing violin plot to interactive html...")
-            plotly.offline.plot(fig_time, filename=f_html_name, auto_open=False)
             stem_prefix = last_datetime + "_interactive_violin_plot_"
             f_html_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, stem_prefix, ".html")                    
             plotly.offline.plot(fig_violin, filename=f_html_name, auto_open=False)            
+
+            if BAT_voltage_field_name in df.columns:
+                print("Writing battery voltage plot to interactive html...")
+                stem_prefix = last_datetime + "_interactive_battery_voltage_plot_"
+                f_html_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, stem_prefix, ".html")                    
+                plotly.offline.plot(fig_bat, filename=f_html_name, auto_open=False)            
             
 
         if DO_interactive_browser_plot:
@@ -358,7 +375,7 @@ def main():
     if WRITE_LOG_data_as_open_doc_ods_file:
         print("Writing log data to open document file...")        
         efile_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, last_datetime_str + "_", ".ods")        
-        df.to_excel(efile_name, index=False)
+        df.to_excel(efile_name, index=False, engine='odf')
 
 
 if __name__ == '__main__':
