@@ -24,7 +24,7 @@
 # import os; os.rename("/boot.py", "/boot.bak")
 
 
-""" Indoor-climate-logger.py is a sensor data logger for either:
+"""Indoor-climate-logger.py is a sensor data logger for either:
 
  • CircuitPython (tested: 9.2.1) on a microcontroller,
    with I2C, 1Wire, and serial for the MH-Z19 CO2 sensor
@@ -227,7 +227,7 @@ try:
         "MAX_exception_file_size_bytes",
     ]
 
-# Dynamically override defaults if defined in user_settings
+    # Dynamically override defaults if defined in user_settings
     for _key in _settings_keys:
         if hasattr(user_settings, _key):
             globals()[_key] = getattr(user_settings, _key)
@@ -887,7 +887,6 @@ if USE_i2c:
                 + f"{air:.1f}"
             )
 
-
     class SCD30_CO2:
         """----------- sensor SCD30 Sensirion specific code for logger  ------------
         Attention: leads to RaspBerryPi3B crashes and reboots, unless set:
@@ -982,7 +981,7 @@ if USE_MHZ_19_CO2:
                             try:
                                 except_log_file.write(get_time_date_str())
                             except OSError:
-                                pass  # Ignoriert den Fehler genau wie contextlib.suppress. Context lib is not available on CircuitPython 9.2.8
+                                pass  # Ignoriert den Fehler genau wie contextlib.suppress. Contextlib is not available on CircuitPython 9.2.8
                             except_log_filel.write(
                                 "MH-Z19 exception, attempt nr. " + str(attempts) + "\n"
                             )
@@ -1114,14 +1113,9 @@ if (
     and not dir_exists(LOGGER_data_dir)
 ):
     os.mkdir(LOGGER_data_dir)
-exceptions_file_path = f"{LOGGER_data_dir}{os.sep}{LOG_EXCPTIONS_filename}"    
-if (
-    not file_exists(exceptions_file_path)
-    and LOG_EXCEPTIONS_to_file
-):
-    with open(
-        exceptions_file_path, "a"
-    ) as except_log_file:
+exceptions_file_path = f"{LOGGER_data_dir}{os.sep}{LOG_EXCPTIONS_filename}"
+if not file_exists(exceptions_file_path) and LOG_EXCEPTIONS_to_file:
+    with open(exceptions_file_path, "a") as except_log_file:
         except_log_file.write("Exceptions raised:\n")
 
 try:  # -------- outer error handler loop -------------------
@@ -1330,7 +1324,7 @@ try:  # -------- outer error handler loop -------------------
             pool, tz_offset=UTC_offset_hours, cache_seconds=3600
         ).datetime
 
-    log_file_path = f"{LOGGER_data_dir}{os.sep}{LOGGER_filename}"                                                  
+    log_file_path = f"{LOGGER_data_dir}{os.sep}{LOGGER_filename}"
     # --------------- collect all sensor names from sensor objects -------------------------------
 
     sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])
@@ -1348,10 +1342,12 @@ try:  # -------- outer error handler loop -------------------
         and not dir_exists(LOGGER_data_dir)
     ):
         os.mkdir(LOGGER_data_dir)
-    # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here!!!
+
+    # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here,
+    # use 'target-version = "py38"' for ruff in pyproject.toml
     def write_header_line():
-# use append mode to prevent deleting data. Append makes a new file if none exists.        
-        with open(log_file_path, "a") as log_filel:  
+        # use append mode to prevent deleting data. Append makes a new file if none exists.
+        with open(log_file_path, "a") as log_filel:
             log_filel.write(
                 LOGGER_ID_field_name
                 + SEPARATOR
@@ -1361,15 +1357,12 @@ try:  # -------- outer error handler loop -------------------
             )
 
     if (
-        not file_exists(log_file_path)
-        and WRITE_LOG_data_to_file
+        not file_exists(log_file_path) and WRITE_LOG_data_to_file
     ):  # test for file presence to assure a single header line
         write_header_line()
 
     # test if found log file header matches detected sensors
-    elif WRITE_LOG_data_to_file and file_exists(
-        log_file_path
-    ):
+    elif WRITE_LOG_data_to_file and file_exists(log_file_path):
         with open(log_file_path) as log_file:
             file_head_line = log_file.readline()
         # file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:-1])
@@ -1410,8 +1403,9 @@ try:  # -------- outer error handler loop -------------------
         and (not USE_ALARM_wakeup_sleep or USE_HTTP_server)
         and not (sys.implementation.name == "cpython" and quit_after_one_log)
     ):
-        try:   # contextlib.suppress not available on Micropython
-    # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here!!!
+        try:  # contextlib.suppress not available on Micropython
+            # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here!!!
+            # use 'target-version = "py38"' for ruff in pyproject.toml
             with open(exceptions_file_path, "a") as except_log_file:
                 except_log_file.write(f"{get_time_date_str()} (re)started\n")
         except OSError:
@@ -1529,13 +1523,11 @@ except Exception as e:
     if LOG_EXCEPTIONS_to_file:
         if VERBOSE:
             print(e)
-        with open(
-            exceptions_file_path, "a"
-        ) as except_log_file:
+        with open(exceptions_file_path, "a") as except_log_file:
             try:
                 except_log_file.write(get_time_date_str())
             except OSError:
-                pass            
+                pass
             if sys.implementation.name == "cpython":
                 except_log_file.write(f": {e} in line {e.__traceback__.tb_lineno}\n")
                 except_log_file.write("-" * 70 + "\n")
