@@ -29,7 +29,9 @@ utcTime = str( int(time.time()) )
 
 pythonInject = r'''
 import os
+import microcontroller
 os.rename("/boot.py", "/boot.bak")
+microcontroller.reset()
 '''.splitlines()[1:]
 
 
@@ -37,8 +39,8 @@ if not picoPorts:
     print("No Raspberry Pi Pico found")
 else:
     picoSerialPort = picoPorts[0].device
-    print( '\nRaspberry Pi Pico found at '+str(picoSerialPort)+'...\n' )    
     with serial.Serial(picoSerialPort) as s:
+        
         s.write(b'\x03')   # interrupt the currently running code
         time.sleep(1.3)        
         s.write(b'\x03')   # (do it twice to be certain)
@@ -48,15 +50,14 @@ else:
         for code in pythonInject:
             s.write(bytes(code+'\r\n', 'ascii'))
             time.sleep(0.05)
-        time.sleep(0.3)
+        time.sleep(0.25)
         s.write(b'\x04')   # exit raw REPL and run injected code
-        time.sleep(0.3)   # give it time to run (observe the LED pulse)
+        time.sleep(0.25)   # give it time to run (observe the LED pulse)
 
         s.write(b'\x02')   # switch to normal REPL mode
         time.sleep(0.5)    # give it time to complete
         s.write(b'\x04')   # execute a 'soft reset' and trigger 'main.py'
 
-
+    print( '\nRaspberry Pi Pico found at '+str(picoSerialPort)+'\n' )
     print('\nboot.py renamed to boot.bak\n')
-    print('\nReset device manually to reboot.\n')    
-    time.sleep(3.0)
+    time.sleep(1.5)

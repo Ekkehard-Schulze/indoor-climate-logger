@@ -109,7 +109,6 @@ however the Arduino implementation does. The same poblems seems to be in the Lin
 20261008 switched to ruff linting and formatting
 """
 
-import contextlib
 import os
 import sys
 import time
@@ -167,24 +166,23 @@ USE_WATCHdog = False  # not recommended, may lead to instability
 # MONITOR_WIFI_connection = True for Gundelfingen
 # CO2 logger to Error 205 and non-sceduled reboots
 
-HOURS_between_reboots = (
-    12  # used for HTTP-server to force cold-start and WiFi re-connect
-)
+# used for HTTP-server to force cold-start and WiFi re-connect
+HOURS_between_reboots = 12
 
-HEIGHT_above_sea_level_in_meter = (
-    260  # for normalizing local atmospheric pressure to sea level
-)
-MAX_log_file_size_in_bytes = (
-    0  # zero means no file size limit set, this gets overwritten by the
-)
+# for normalizing local atmospheric pressure to sea level
+HEIGHT_above_sea_level_in_meter = 260
+
+# zero means no file size limit set, this gets overwritten by the
 # microcontroller hardware auto-detection, or it may set her manually
+MAX_log_file_size_in_bytes = 0
 
-USE_ALARM_wakeup_sleep = (
-    False  # only used for compatible hardware, e.g. RaspberryPi PicoW,
-)
+# only used for compatible hardware, e.g. RaspberryPi PicoW,
 # may require DS3231 clock
 # not available on RPi Pico2 or Pico2_W, MS-Windows or
 # Linux, auto-set to false on Windows, linux
+USE_ALARM_wakeup_sleep = False
+
+
 ALARM_SLEEP_HOLDOFF_TIME = 10  # seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
 # alarm sleep, which  works on RPi Pico, not on Pico2
 
@@ -981,8 +979,10 @@ if USE_MHZ_19_CO2:
                 except Exception as el:
                     if LOG_EXCEPTIONS_to_file:
                         with open(LOG_EXCPTIONS_filename, "a") as except_log_filel:
-                            with contextlib.suppress(OSError):
-                                except_log_filel.write(get_time_date_str())
+                            try:
+                                except_log_file.write(get_time_date_str())
+                            except OSError:
+                                pass  # Ignoriert den Fehler genau wie contextlib.suppress. Context lib is not available on CircuitPython 9.2.8
                             except_log_filel.write(
                                 "MH-Z19 exception, attempt nr. " + str(attempts) + "\n"
                             )
@@ -1348,11 +1348,10 @@ try:  # -------- outer error handler loop -------------------
         and not dir_exists(LOGGER_data_dir)
     ):
         os.mkdir(LOGGER_data_dir)
-
+    # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here!!!
     def write_header_line():
-        with (
-            open(log_file_path, "a") as log_filel
-        ):  # use append mode to prevent deleting data. Append makes a new file if none exists.
+# use append mode to prevent deleting data. Append makes a new file if none exists.        
+        with open(log_file_path, "a") as log_filel:  
             log_filel.write(
                 LOGGER_ID_field_name
                 + SEPARATOR
@@ -1411,13 +1410,12 @@ try:  # -------- outer error handler loop -------------------
         and (not USE_ALARM_wakeup_sleep or USE_HTTP_server)
         and not (sys.implementation.name == "cpython" and quit_after_one_log)
     ):
-        with (
-            open(
-                exceptions_file_path, "a"
-            ) as except_log_file,
-            contextlib.suppress(OSError),
-        ):
-            except_log_file.write(f"{get_time_date_str()} (re)started\n")
+        try:   # contextlib.suppress not available on Micropython
+    # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here!!!
+            with open(exceptions_file_path, "a") as except_log_file:
+                except_log_file.write(f"{get_time_date_str()} (re)started\n")
+        except OSError:
+            pass
 
     # ------------------- main loop ------------------------------------
 
@@ -1534,8 +1532,10 @@ except Exception as e:
         with open(
             exceptions_file_path, "a"
         ) as except_log_file:
-            with contextlib.suppress(OSError):
+            try:
                 except_log_file.write(get_time_date_str())
+            except OSError:
+                pass            
             if sys.implementation.name == "cpython":
                 except_log_file.write(f": {e} in line {e.__traceback__.tb_lineno}\n")
                 except_log_file.write("-" * 70 + "\n")
