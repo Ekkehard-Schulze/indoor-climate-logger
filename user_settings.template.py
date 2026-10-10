@@ -24,7 +24,7 @@ GATEWAY = "192.168.178.1"
 LOG_every_n_seconds = 300
 LOGGER_name = "MHZ_19_CO2_logger"  # if left empty the first sensor detected auto-names
 # if left empty the first sensor detected auto-names
-LOGGER_filename =     "MHZ_19_CO2_log.tsv"  
+LOGGER_filename = "MHZ_19_CO2_log.tsv"
 
 # select which busses / devices are queried on init
 USE_i2c = True
@@ -50,14 +50,16 @@ SET_RTC_from_NTP = True  # intended for microcontroller with WiFi.
 # Attention: RTC is the controllers build in RTC, NOT DS3231
 # https://en.wikipedia.org/wiki/ISO_8601
 UTC_offset_hours = +1  # e. g. UTC is 0, CET is 1, CEST is 2. Used  for NTP time request to set RTC and CPython
-TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"  # use this style to indicate RTC time zone
+# use this style to indicate RTC time zone
+TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"
 # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"     # for UTC
 # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"      # for time zone agnostic
 
-MONITOR_WIFI_connection = False  # not recommended, may lead to instability
+# not recommended, may lead to instability
+MONITOR_WIFI_connection = False
 
-
-USE_WATCHdog = False  # not recommended, may lead to instability
+# not recommended, may lead to instability
+USE_WATCHdog = False
 # every 7 seconds in your code loops to prevent reset
 # Attention: True lead in combination with
 # MONITOR_WIFI_connection = True for Gundelfingen
@@ -67,7 +69,7 @@ USE_WATCHdog = False  # not recommended, may lead to instability
 HOURS_between_reboots = 12
 
 # for normalizing local atmospheric pressure to sea level
-HEIGHT_above_sea_level_in_meter = 
+HEIGHT_above_sea_level_in_meter = 260
 
 # zero means no file size limit set, this gets overwritten by the
 # microcontroller type auto-detection, when a 'known' controller is found
@@ -79,7 +81,8 @@ USE_ALARM_wakeup_sleep = False
 # may require DS3231 clock
 # not available on RPi Pico2 or Pico2_W, MS-Windows or
 # Linux, auto-set to false on Windows, linux
-ALARM_SLEEP_HOLDOFF_TIME = 10  # seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
+# seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
+ALARM_SLEEP_HOLDOFF_TIME = 10
 # alarm sleep, which  works on RPi Pico, not on Pico2
 
 # may be changed by microcontroller type auto-detection

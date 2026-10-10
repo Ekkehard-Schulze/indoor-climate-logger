@@ -18,8 +18,9 @@ target-version = "py38"
 
 # extend-exclude (which ensures you don't accidentally overwrite Ruff's default ignores like 
 extend-exclude = [
-    "z_older_versions",
-	"batch runs/z_outdated",
+    "lib",
+  #  "example_configurations",
+  # "utility_scripts",    
 ]
 
 # Set the maximum line length (different to Black's default of 88)
@@ -36,13 +37,15 @@ select = [
     "UP",  # Modern Python upgrades (pyupgrade) # Achtung: das kann MicroPython inkompatibel sein!
     "B",   # Common bug prevention (flake8-bugbear)
     "SIM", # Code simplification advice (flake8-simplify)
+	# die obigen E Regeln verhindern ein 'except:' ohne jede Angabe, fixen das aber als 'except Exception'
+	# "BLE", # Macht 'except Exception': (blindes Abfangen von Exceptions) sichtbar und erzwingt Genauigkeit
 ]
 
 # 2. Ignore specific rules you don't care about
 ignore = [
     "E501", # Skip line-length errors (let the formatter handle it)
-	"SIM105",  # Verhindert den Vorschlag, 'contextlib.suppress' zu importieren, 
-	           # welche in Micropython nicht existiert, die Regel stammt aus "UP" # pyupgrade
+    "SIM105",  # Verhindert den Vorschlag, 'contextlib.suppress' zu importieren, 
+               # welche in Micropython nicht existiert, die Regel stammt aus "UP" # pyupgrade
 ]
 
 

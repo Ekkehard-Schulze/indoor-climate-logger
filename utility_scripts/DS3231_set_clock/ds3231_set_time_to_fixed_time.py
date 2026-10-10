@@ -1,6 +1,6 @@
-'''set DS3231 time. This runs in CircuitPython on the controller.
-   Manually restart the controller, when the coded set-time is reached in real time.
-   '''
+"""set DS3231 time. This runs in CircuitPython on the controller.
+Manually restart the controller, when the coded set-time is reached in real time.
+"""
 
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
@@ -11,8 +11,9 @@
 # for working with hardware vs. software I2C.
 
 import time
-import board
+
 import adafruit_ds3231
+import board
 
 DO_SET_TIME = True
 
@@ -27,7 +28,7 @@ days = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun
 # pylint: disable-msg=using-constant-test
 if DO_SET_TIME:  # change to True if you want to set the time!
     #                     year, mon, date, hour, min, sec, wday, yday, isdst
-    t = time.struct_time((2025, 12, 31, 20, 53, 00, 0,-3, 365, 0))
+    t = time.struct_time((2025, 12, 31, 20, 53, 00, 0, -3, 365, 0))
     # you must set year, mon, date, hour, min, sec and weekday
     # yearday is not supported, isdst can be set but we don't do anything with it at this time
     print("Setting time to:", t)  # uncomment for debugging
@@ -39,10 +40,6 @@ if DO_SET_TIME:  # change to True if you want to set the time!
 while True:
     t = rtc.datetime
     # print(t)     # uncomment for debugging
-    print(
-        "The date is {} {}/{}/{}".format(
-            days[int(t.tm_wday)], t.tm_mday, t.tm_mon, t.tm_year
-        )
-    )
-    print("The time is {}:{:02}:{:02}".format(t.tm_hour, t.tm_min, t.tm_sec))
+    print(f"The date is {days[int(t.tm_wday)]} {t.tm_mday}/{t.tm_mon}/{t.tm_year}")
+    print(f"The time is {t.tm_hour}:{t.tm_min:02}:{t.tm_sec:02}")
     time.sleep(1)  # wait a second

@@ -6,7 +6,6 @@
 # Attention: REPL kann remove the boot.py from the USB-read only locked file system:
 # import os; os.rename("/boot.py", "/boot.bak")
 
-import board
 import storage
 
 storage.remount(mount_path="/", readonly=False)

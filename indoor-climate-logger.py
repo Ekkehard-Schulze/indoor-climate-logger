@@ -183,7 +183,9 @@ MAX_log_file_size_in_bytes = 0
 USE_ALARM_wakeup_sleep = False
 
 
-ALARM_SLEEP_HOLDOFF_TIME = 10  # seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
+ALARM_SLEEP_HOLDOFF_TIME = (
+    10  # seconds, used to get REPL access before sleep. This wastes battery. Better use button on startup to exit.
+)
 # alarm sleep, which  works on RPi Pico, not on Pico2
 
 MAX_exception_file_size_bytes = 1_000_000  # may be changed by controller type detection
@@ -281,9 +283,7 @@ class NTPNotInCPython(Exception):
 
 # -------------- board and python implementation specific settings ----------------
 
-if (
-    sys.implementation.name == "cpython"
-):  # auto-switch to PC-mode for MS_Windows or Linux
+if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Windows or Linux
     import argparse
     import platform
     import traceback
@@ -296,9 +296,7 @@ if (
             USE_ONE_WIRE_temperature_Linux_Kernel = True
             USE_ONE_WIRE_temperature_Adafruit_CircuitPy = False
         else:
-            raise OneWireNotAvailableError(
-                "1Wire with CPython requires Linux and the 1Wire kernel driver."
-            )
+            raise OneWireNotAvailableError("1Wire with CPython requires Linux and the 1Wire kernel driver.")
     # if USE_MHZ_19_CO2:
     #    raise Exception('MH-Z19 not implemented in CPython.')
     if USE_HTTP_server:
@@ -410,11 +408,7 @@ if (
     args = parser.parse_args()
 
     # ------- poke arguments
-    if (
-        args.USB_IC == "0"
-        and platform.system() != "Linux"
-        and "ARM" not in platform.machine().upper()
-    ):
+    if args.USB_IC == "0" and platform.system() != "Linux" and "ARM" not in platform.machine().upper():
         parser.print_help()
         sys.exit("You have to choose an USB-Ic.")
     quit_after_one_log = args.log_once
@@ -443,9 +437,7 @@ elif sys.implementation.name == "circuitpython":
         )  # may be required for RPi Pico battery power, see https://www.youtube.com/watch?v=mCYB9tjsF0I Fix A Raspberry Pi Pico That Won't Run Code TUTORIAL
 
     elif board.board_id in ["raspberry_pi_pico_w", "raspberry_pi_pico2_w"]:
-        if (
-            board.board_id == "raspberry_pi_pico_w"
-        ):  # use CircuitPython 8.x, not >= 9.x due to memory shortage
+        if board.board_id == "raspberry_pi_pico_w":  # use CircuitPython 8.x, not >= 9.x due to memory shortage
             MAX_log_file_size_in_bytes = 150_000  # use <45% of free flash size to prevent exhaustion of flash storage and to allow file duplication for truncation
         elif board.board_id == "raspberry_pi_pico2_w":  # tested using CircuitPython 9.x
             MAX_log_file_size_in_bytes = 1_000_000  # use <45% of free flash size to prevent exhaustion of flash storage and to allow file duplication for truncation
@@ -454,9 +446,7 @@ elif sys.implementation.name == "circuitpython":
         )  # may be required for RPi Pico battery power, see https://www.youtube.com/watch?v=mCYB9tjsF0I Fix A Raspberry Pi Pico That Won't Run Code TUTORIAL
 
 elif sys.implementation.name == "micropython":
-    sys.exit(
-        "\nThis code is for circuitpython or CPython with Adafruit-blinka. It does not run on micropython\n"
-    )
+    sys.exit("\nThis code is for circuitpython or CPython with Adafruit-blinka. It does not run on micropython\n")
 
 # -------------- end of  board and python implementation specific settings ----------------
 
@@ -477,28 +467,18 @@ if USE_ONE_WIRE_temperature_Adafruit_CircuitPy:
         def __init__(self, ow_busl):
             self.LOGGER_name = "1wire_logger"
             self.my_DS18X20_MAX31850_sensors = [
-                schulze_one_wire_temperature.DS18X20_MAX31850(ow_busl, ds)
-                for ds in ow_bus.scan()
+                schulze_one_wire_temperature.DS18X20_MAX31850(ow_busl, ds) for ds in ow_bus.scan()
             ]
-            self.my_DS18X20_MAX31850_sensors.sort(
-                key=lambda x: x.es_name, reverse=False
-            )
+            self.my_DS18X20_MAX31850_sensors.sort(key=lambda x: x.es_name, reverse=False)
 
         def get_sensor_headers(self):
-            return "".join(
-                [SEPARATOR + sens.es_name for sens in self.my_DS18X20_MAX31850_sensors]
-            )
+            return "".join([SEPARATOR + sens.es_name for sens in self.my_DS18X20_MAX31850_sensors])
 
         def get_single_measurement(self, sens):
             return f"{sens.temperature:.2f}"
 
         def get_measurement_str(self):
-            return "".join(
-                [
-                    SEPARATOR + self.get_single_measurement(sens)
-                    for sens in self.my_DS18X20_MAX31850_sensors
-                ]
-            )
+            return "".join([SEPARATOR + self.get_single_measurement(sens) for sens in self.my_DS18X20_MAX31850_sensors])
 
 
 if USE_ONE_WIRE_temperature_Linux_Kernel:
@@ -581,11 +561,9 @@ if USE_i2c:
             for n, _ts in enumerate(self.my_sensors):
                 try:
                     if not TMP117_es.is_TMP117(0x48 + n):
-                        self.my_sensors[n] = adafruit_adt7410.ADT7410(
-                            i2c, address=0x48 + n
-                        )
+                        self.my_sensors[n] = adafruit_adt7410.ADT7410(i2c, address=0x48 + n)
                         self.my_sensors[n].high_resolution = True
-                except ValueError:
+                except (OSError, RuntimeError, ValueError):
                     pass
 
         def get_sensor_headers(self):
@@ -646,10 +624,8 @@ if USE_i2c:
                 try:
                     if TMP117_es.is_TMP117(0x48 + n):
                         self.my_sensors[n] = TMP117(i2c, address=0x48 + n)
-                        self.my_sensors[
-                            n
-                        ].averaged_measurements = AverageCount.AVERAGE_64X
-                except ValueError:
+                        self.my_sensors[n].averaged_measurements = AverageCount.AVERAGE_64X
+                except (OSError, RuntimeError, ValueError):
                     pass
 
         def get_sensor_headers(self):
@@ -701,10 +677,8 @@ if USE_i2c:
                 i2c.writeto(addrl, bytes([TMP117_Device_ID_register]))
                 result = bytearray(2)
                 i2c.readfrom_into(addrl, result)
-                val = (
-                    (result[0] << 8) + result[1]
-                ) & 0b0000111111111111  # 16 bit, erase revision nr bits
-            except OSError:
+                val = ((result[0] << 8) + result[1]) & 0b0000111111111111  # 16 bit, erase revision nr bits
+            except (OSError, RuntimeError, ValueError):
                 pass
             finally:
                 i2c.unlock()
@@ -726,12 +700,7 @@ if USE_i2c:
             return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
 
         def get_measurement_str(self):
-            return (
-                SEPARATOR
-                + f"{self.mlx.ambient_temperature:.2f}"
-                + SEPARATOR
-                + f"{self.mlx.object_temperature:.2f}"
-            )
+            return SEPARATOR + f"{self.mlx.ambient_temperature:.2f}" + SEPARATOR + f"{self.mlx.object_temperature:.2f}"
 
     class tsl2561:
         """----------- lux sensor tsl2561 specific code for logger handling one sensor.
@@ -746,17 +715,11 @@ if USE_i2c:
             self.my_sensor_names = [
                 "Lux",
             ]
-            self.tsl = adafruit_tsl2561.TSL2561(
-                i2c
-            )  # Create the TSL2561 instance, passing in the I2C bus
-            self.tsl.enabled = (
-                True  # Create the TSL2561 instance, passing in the I2C bus
-            )
+            self.tsl = adafruit_tsl2561.TSL2561(i2c)  # Create the TSL2561 instance, passing in the I2C bus
+            self.tsl.enabled = True  # Create the TSL2561 instance, passing in the I2C bus
             time.sleep(0.15)  # wait for finish of sensor init, required?
             self.tsl.gain = 0  # Set gain 0=1x, 1=16x
-            self.tsl.integration_time = (
-                2  # Set integration time (0=13.7ms, 1=101ms, 2=402ms, or 3=manual)
-            )
+            self.tsl.integration_time = 2  # Set integration time (0=13.7ms, 1=101ms, 2=402ms, or 3=manual)
             self.averages = 1  # number of repeated and averaged measuremens
             self.delay = 0  # delay between measurements
 
@@ -801,16 +764,11 @@ if USE_i2c:
             return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
 
         @classmethod
-        def sea_barometric_pressure_estimate(
-            cls, local_pressure, local_temperature, local_heigt_above_sea_level
-        ):
+        def sea_barometric_pressure_estimate(cls, local_pressure, local_temperature, local_heigt_above_sea_level):
             """https://gist.github.com/cubapp/23dd4e91814a995b8ff06f406679abcf"""
             return local_pressure + (
                 (local_pressure * 9.80665 * local_heigt_above_sea_level)
-                / (
-                    287
-                    * (273 + local_temperature + (local_heigt_above_sea_level / 400))
-                )
+                / (287 * (273 + local_temperature + (local_heigt_above_sea_level / 400)))
             )
 
         def get_measurement_str(self):
@@ -822,9 +780,7 @@ if USE_i2c:
             temp = self.bme280.temperature
             pressure = self.bme280.pressure
             sea_level_pressure = (
-                bme280.sea_barometric_pressure_estimate(
-                    pressure, temp, HEIGHT_above_sea_level_in_meter
-                )
+                bme280.sea_barometric_pressure_estimate(pressure, temp, HEIGHT_above_sea_level_in_meter)
                 if temp and pressure
                 else None
             )
@@ -845,25 +801,18 @@ if USE_i2c:
                 "BME_pressure",
                 "BME_air",
             ]
-            self.bme680 = adafruit_bme680.Adafruit_BME680_I2C(
-                i2c, address=0x77, debug=False
-            )
+            self.bme680 = adafruit_bme680.Adafruit_BME680_I2C(i2c, address=0x77, debug=False)
             self.bme680.sea_level_pressure = 1013.25
 
         def get_sensor_headers(self):
             return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
 
         @classmethod
-        def sea_barometric_pressure_estimate(
-            cls, local_pressure, local_temperature, local_heigt_above_sea_level
-        ):
+        def sea_barometric_pressure_estimate(cls, local_pressure, local_temperature, local_heigt_above_sea_level):
             """https://gist.github.com/cubapp/23dd4e91814a995b8ff06f406679abcf"""
             return local_pressure + (
                 (local_pressure * 9.80665 * local_heigt_above_sea_level)
-                / (
-                    287
-                    * (273 + local_temperature + (local_heigt_above_sea_level / 400))
-                )
+                / (287 * (273 + local_temperature + (local_heigt_above_sea_level / 400)))
             )
 
         def get_measurement_str(self):
@@ -946,9 +895,7 @@ if USE_MHZ_19_CO2:
             attempts = 0
             while True:
                 attempts += 1
-                uart.write(
-                    bytearray([0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79])
-                )
+                uart.write(bytearray([0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79]))
                 time.sleep(1)
                 result = []
 
@@ -982,12 +929,8 @@ if USE_MHZ_19_CO2:
                                 except_log_file.write(get_time_date_str())
                             except OSError:
                                 pass  # Ignoriert den Fehler genau wie contextlib.suppress. Contextlib is not available on CircuitPython 9.2.8
-                            except_log_filel.write(
-                                "MH-Z19 exception, attempt nr. " + str(attempts) + "\n"
-                            )
-                            except_log_filel.write(
-                                str(el) + " ... in MH-Z19 get_single_measurement.\n"
-                            )
+                            except_log_filel.write("MH-Z19 exception, attempt nr. " + str(attempts) + "\n")
+                            except_log_filel.write(str(el) + " ... in MH-Z19 get_single_measurement.\n")
                             # log_file.write(str(e)+' in line '+str(e.__traceback__.tb_lineno)+'\n') # not available in micropython
                             # log_file.write(str(dir(e))+'\n')
                             # log_file.write(str(dir(e.__traceback__))+'\n') # ........ no way to log the line number in python
@@ -1005,13 +948,11 @@ if USE_MHZ_19_CO2:
                 0,
                 410,
             ):  # first real value ends init_phase
-                self.init_phase_is_on = False  # switch instance boolean here, because get_measurement_str is an instance method
-            if (
-                self.init_phase_is_on and CO2val == 410 or CO2val == 0
-            ):  # whereas MHZ_19.get_single_measurement() is a class method
-                CO2valstr = ""
-            else:
-                CO2valstr = str(CO2val)
+                self.init_phase_is_on = (
+                    False  # switch instance boolean here, because get_measurement_str is an instance method
+                )
+            CO2valstr = "" if (self.init_phase_is_on and CO2val == 410) or CO2val == 0 else str(CO2val)
+
             return SEPARATOR + CO2valstr
 
 
@@ -1067,9 +1008,7 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
         os.rename(log_file_namel, bak_file_name)
         with open(bak_file_name) as oldfile, open(log_file_namel, "w") as newfile:
             for n, line in enumerate(oldfile):
-                if (
-                    n == 0 or n > n_lines_to_delete
-                ):  # keep header, trucate top n data lines
+                if n == 0 or n > n_lines_to_delete:  # keep header, trucate top n data lines
                     newfile.write(line)
         os.remove(bak_file_name)
 
@@ -1096,9 +1035,7 @@ def get_time_date_str():
             now = time.localtime()
     else:
         now = ds3231_rtc.datetime
-    return TIME_FORMAT_PATTERN.format(
-        now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec
-    )
+    return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
 # --------- main  ----------------------------
@@ -1107,11 +1044,7 @@ if MAX_log_file_size_in_bytes:
     max_exception_file_size = int(MAX_log_file_size_in_bytes * 0.05)
 else:
     max_exception_file_size = MAX_exception_file_size_bytes
-if (
-    (LOG_EXCEPTIONS_to_file or WRITE_LOG_data_to_file)
-    and LOGGER_data_dir != ""
-    and not dir_exists(LOGGER_data_dir)
-):
+if (LOG_EXCEPTIONS_to_file or WRITE_LOG_data_to_file) and LOGGER_data_dir != "" and not dir_exists(LOGGER_data_dir):
     os.mkdir(LOGGER_data_dir)
 exceptions_file_path = f"{LOGGER_data_dir}{os.sep}{LOG_EXCPTIONS_filename}"
 if not file_exists(exceptions_file_path) and LOG_EXCEPTIONS_to_file:
@@ -1139,9 +1072,7 @@ try:  # -------- outer error handler loop -------------------
         "raspberry_pi_pico2_w",
     ]:
         if USE_i2c:
-            i2c = busio.I2C(
-                board.GP5, board.GP4, frequency=100000
-            )  # Circuit py default is 400000
+            i2c = busio.I2C(board.GP5, board.GP4, frequency=100000)  # Circuit py default is 400000
         if USE_MHZ_19_CO2:
             uart = busio.UART(
                 board.GP16, board.GP17, baudrate=9600, timeout=1
@@ -1151,20 +1082,14 @@ try:  # -------- outer error handler loop -------------------
 
     else:  # generic Blinka or pyserial
         if USE_i2c:
-            i2c = busio.I2C(
-                board.SCL, board.SDA, frequency=100000
-            )  # Circuit py default is 400000
+            i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)  # Circuit py default is 400000
         if USE_MHZ_19_CO2:
-            if os.path.exists(
-                "/dev/ttyUSB0"
-            ):  # e. g. for RaspberryPi mit FT232RL (internes TX RX ging nicht)
+            if os.path.exists("/dev/ttyUSB0"):  # e. g. for RaspberryPi mit FT232RL (internes TX RX ging nicht)
                 # Achtung: das ist NICHT über Blinka / Busio sondern pyserial (kompatibel)
                 import serial
 
                 uart = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
-            elif os.path.exists(
-                "/dev/ttyUSB1"
-            ):  # e. g. for RaspberryPi mit FT232RL (internes TX RX ging nicht)
+            elif os.path.exists("/dev/ttyUSB1"):  # e. g. for RaspberryPi mit FT232RL (internes TX RX ging nicht)
                 # Achtung: das ist NICHT über Blinka / Busio sondern pyserial (kompatibel)
                 import serial
 
@@ -1172,9 +1097,7 @@ try:  # -------- outer error handler loop -------------------
             else:
                 uart = busio.UART(board.TX, board.RX, baudrate=9600)  # Blinka
 
-    DS3231_present = (
-        False  # default, gets automatically overwritten if clock is detected
-    )
+    DS3231_present = False  # default, gets automatically overwritten if clock is detected
 
     if USE_i2c:
         # -------------- scan i2c bus --------------------------------
@@ -1276,9 +1199,7 @@ try:  # -------- outer error handler loop -------------------
         # base64.b64decode(os.getenv("CIRCUITPY_WIFI_SSID")).decode("utf-8"),    # added char = to have string len a multiple of 4. This decodes properly
         # base64.b64decode(os.getenv("CIRCUITPY_WIFI_PASSWORD")).decode("utf-8"), #
         # )
-        wifi.radio.connect(
-            os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD")
-        )
+        wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
         print("Connected to WiFi")
         pool = socketpool.SocketPool(wifi.radio)
 
@@ -1320,9 +1241,7 @@ try:  # -------- outer error handler loop -------------------
         from rtc import RTC
 
         rtc = RTC()
-        rtc.datetime = adafruit_ntp.NTP(
-            pool, tz_offset=UTC_offset_hours, cache_seconds=3600
-        ).datetime
+        rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=UTC_offset_hours, cache_seconds=3600).datetime
 
     log_file_path = f"{LOGGER_data_dir}{os.sep}{LOGGER_filename}"
     # --------------- collect all sensor names from sensor objects -------------------------------
@@ -1336,11 +1255,7 @@ try:  # -------- outer error handler loop -------------------
     )  # get name from sensor object if no other name was pre-defined
 
     # ------------------- init log file and log dir  ------------------------
-    if (
-        LOGGER_data_dir != ""
-        and WRITE_LOG_data_to_file
-        and not dir_exists(LOGGER_data_dir)
-    ):
+    if LOGGER_data_dir != "" and WRITE_LOG_data_to_file and not dir_exists(LOGGER_data_dir):
         os.mkdir(LOGGER_data_dir)
 
     # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here,
@@ -1348,13 +1263,7 @@ try:  # -------- outer error handler loop -------------------
     def write_header_line():
         # use append mode to prevent deleting data. Append makes a new file if none exists.
         with open(log_file_path, "a") as log_filel:
-            log_filel.write(
-                LOGGER_ID_field_name
-                + SEPARATOR
-                + DATE_TIME_field_name
-                + sens_header
-                + "\n"
-            )
+            log_filel.write(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n")
 
     if (
         not file_exists(log_file_path) and WRITE_LOG_data_to_file
@@ -1369,10 +1278,7 @@ try:  # -------- outer error handler loop -------------------
         file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:])
         if file_sens_header.strip() != sens_header.strip() and REJECT_sensor_changes:
             raise HeaderMismatchError("File header not matching sensors detected")
-        if (
-            file_sens_header.strip() != sens_header.strip()
-            and not REJECT_sensor_changes
-        ):
+        if file_sens_header.strip() != sens_header.strip() and not REJECT_sensor_changes:
             write_header_line()
 
     # ----------------- init logger ----------------------------------
@@ -1390,13 +1296,7 @@ try:  # -------- outer error handler loop -------------------
 
     # -------------- startup message file logging --------------------------
     if WRITE_LOG_data_to_file:
-        print(
-            "\nData logging to "
-            + LOGGER_data_dir
-            + os.sep
-            + LOGGER_filename
-            + " in progess...."
-        )
+        print("\nData logging to " + LOGGER_data_dir + os.sep + LOGGER_filename + " in progess....")
     print("Terminate with Strg+C")
     if (
         LOG_EXCEPTIONS_to_file
@@ -1413,7 +1313,9 @@ try:  # -------- outer error handler loop -------------------
 
     # ------------------- main loop ------------------------------------
 
-    while True:  # if http_server is running this loop runs every second for http poll and writes data every LOG_every_n_seconds
+    while (
+        True
+    ):  # if http_server is running this loop runs every second for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
         # time check if http_server running
@@ -1422,26 +1324,19 @@ try:  # -------- outer error handler loop -------------------
             watchdog.feed()
         # re-connect wifi if connection broke
         if USE_HTTP_server and MONITOR_WIFI_connection and not wifi.radio.connected:
-            wifi.radio.connect(
-                os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD")
-            )
+            wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
             pool = socketpool.SocketPool(wifi.radio)
 
         now_monotonic_time = time.monotonic()
         if (
-            now_monotonic_time - last_monotonic_log_time >= LOG_every_n_seconds
-            or not USE_HTTP_server
+            now_monotonic_time - last_monotonic_log_time >= LOG_every_n_seconds or not USE_HTTP_server
         ):  # no time check if http_server is not running
             # last_log_time = time.time()
             last_monotonic_log_time = now_monotonic_time
 
-            sensor_measurements = "".join(
-                [sensor.get_measurement_str() for sensor in my_sensors]
-            )
+            sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
-            logline = (
-                LOGGER_name + SEPARATOR + get_time_date_str() + sensor_measurements
-            )
+            logline = LOGGER_name + SEPARATOR + get_time_date_str() + sensor_measurements
 
             if VERBOSE:
                 print(logline)
@@ -1465,10 +1360,7 @@ try:  # -------- outer error handler loop -------------------
                 sys.exit()
             if USE_HTTP_server:
                 reboot_counter_for_server -= 1  # reboot every 12 hours
-                if (
-                    reboot_counter_for_server <= 0
-                    and sys.implementation.name == "circuitpython"
-                ):
+                if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
                     reset_microcontroller(reset_delay=3)
         # Process waiting www requests
         if USE_HTTP_server:
@@ -1476,9 +1368,7 @@ try:  # -------- outer error handler loop -------------------
                 pool_result = server.poll()
             except OSError as e:
                 with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
-                    except_log_filem.write(
-                        f"{get_time_date_str()} {e} in http server poll\n"
-                    )
+                    except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
             if USE_ALARM_wakeup_sleep:
                 # 1 second light sleep to save some power
                 time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + 1)
@@ -1489,26 +1379,18 @@ try:  # -------- outer error handler loop -------------------
                 time.sleep(1)
 
         else:  # alternative timing handler for none-http application
-            if (
-                LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME
-                and USE_ALARM_wakeup_sleep
-            ):
+            if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                 time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
                 remaining_time = LOG_every_n_seconds - (
-                    ALARM_SLEEP_HOLDOFF_TIME
-                    + (time.monotonic() - last_monotonic_log_time)
+                    ALARM_SLEEP_HOLDOFF_TIME + (time.monotonic() - last_monotonic_log_time)
                 )
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
-                    time_alarm = alarm.time.TimeAlarm(
-                        monotonic_time=time.monotonic() + remaining_time
-                    )
+                    time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
                     # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
-                remaining_time = LOG_every_n_seconds - (
-                    time.monotonic() - last_monotonic_log_time
-                )
+                remaining_time = LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
                     time.sleep(remaining_time)
@@ -1533,9 +1415,7 @@ except Exception as e:
                 except_log_file.write("-" * 70 + "\n")
                 except_log_file.write(f"{traceback.format_exc()}\n")
             else:  # micropython
-                except_log_file.write(
-                    f": {e} ... in (main) and we will never know the line where it did happen.\n"
-                )
+                except_log_file.write(f": {e} ... in (main) and we will never know the line where it did happen.\n")
                 # no traceback.format_exc() in micropython, this would require a re-compile! <<<<<<<<<<<<< !!!, see:
                 # https://github.com/micropython/micropython/issues/5110
 
