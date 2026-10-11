@@ -23,8 +23,8 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ### 📊 Accessing Your Data
 Once running, you can retrieve your data locally at the following URLs:
-* 📋 **Data Log:** http://192.168.178
-* ⚠️ **Exception Log:** http://192.168.178 *(Note: Verify if the filename typo "expeptions" is required by your script)*
+* 📋 **Data Log:** http://192.168.178/logger-data.tsv
+* ⚠️ **Exception Log:** http://192.168.178/expeptions.txt
 
 ---
 
