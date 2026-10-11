@@ -28,7 +28,7 @@ LOGGER_data_dir = "logger_data"
 LOG_EXCEPTIONS_to_file = False
 SEPARATOR = "\t"
 
-LOG_EXCPTIONS_filename = "expeptions_log.txt"
+LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
 USE_HTTP_server = False  # tested with Raspberry PicoW and Pico2W

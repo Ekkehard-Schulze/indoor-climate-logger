@@ -5,7 +5,7 @@
 # example URLs for data retrieval
 
 # http://192.168.178.143/MHZ_19_CO2_log.tsv
-# http://192.168.178.143/expeptions_log.txt
+# http://192.168.178.143/exceptions_log.txt
 
 # Attention: you need to rename this file to user_settings.py to activate it
 #                        ------           -------------------    --------
@@ -42,7 +42,7 @@ LOGGER_data_dir = "logger_data"
 LOG_EXCEPTIONS_to_file = True
 SEPARATOR = "\t"
 
-LOG_EXCPTIONS_filename = "expeptions_log.txt"
+LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
