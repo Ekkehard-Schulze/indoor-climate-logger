@@ -28,11 +28,15 @@ python indoor-climate-logger.py --USB_IC 1
 ### 🔌 Available USB-to-I2C Interfaces
 When launching the script, select your hardware by passing the corresponding number to the `-u` / `--USB_IC` argument:
 * `0`: RPi (Not applicable on Windows)
-* `1`: **FT232H**
+* `1`: **FT232H** *(Note: If using an FT232R, see driver requirements below)*
 * `2`: **MCP2221**
 * `3`: **RPi Pico U2IF**
 
 *Example:* Use `python indoor-climate-logger.py -u 2` or `python indoor-climate-logger.py --USB_IC 2` if you are using an MCP2221 breakout board.
+
+> [!IMPORTANT]
+> **FTDI / FT232R Driver Note:**  
+> If you are using an **FT232R**, the script will fail with the standard Windows default FTDI driver installed. To make it work, you must replace the default driver with the **libusbK** driver using the tool **Zadig**.
 
 ### 📊 Accessing Your Data
 Once running, you can retrieve your data locally by accessing the generated log files within your application folder.
