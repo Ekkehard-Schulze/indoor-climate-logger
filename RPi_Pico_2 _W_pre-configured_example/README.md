@@ -12,7 +12,7 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ## 🚀 Quick Start
 
-1. **Copy** the configuration files to the root directory of your microcontroller.
+1. **Copy** all files and directories to the root directory of your microcontroller.
 2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` on your PC using a standard CPython interpreter.
 
 **What this script does automatically:**
