@@ -852,7 +852,7 @@ if USE_i2c:
 
             self.LOGGER_name = "SCD30_logger"
 
-            self.my_sensor_names = ["CO2", "SCD_humidity"]
+            self.my_sensor_names = ["SCD_CO2", "SCD_humidity"]
 
             import adafruit_scd30
 

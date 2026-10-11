@@ -15,3 +15,4 @@ adafruit-circuitpython-mlx90614             # ir thermometer
 adafruit-circuitpython-tsl2561              # light sensor lux
 adafruit-circuitpython-tmp117               # Texas Instruments NIST tracable thermometer +/- 0.1°C accuracy
 adafruit-circuitpython-adt7410              # this might be ADT7420 compatible
+adafruit-circuitpython-scd30                # Sensirion i2c-Sensor

@@ -45,6 +45,7 @@ Features
     - bme280   barometric pressure, humidity 3%, temperature ±1 °C accuracy
     - bme680   barometric pressure, humidity 3%, temperature ±1 °C accuracy
     - tsl2561  illuminance
+	- SCD30    carbon dioxide concentration
 
   - 1-Wire
     - DS18B20  ±0.5 °C accuracy from -10 °C to +85 °C

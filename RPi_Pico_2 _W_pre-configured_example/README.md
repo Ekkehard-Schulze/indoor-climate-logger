@@ -31,7 +31,7 @@ Once running, you can retrieve your data locally at the following URLs:
 ## 🛠️ Features & Supported Hardware
 
 * **WLAN Data Serving:** Hosts a local web server to expose log files.
-* **I2C Thermosensors:** Supports all I2C sensors listed in main repository README
+* **I2C Sensors:** Supports all I2C sensors listed in main repository README
 * **1-Wire Thermosensors:** Supports all 1-Wire sensors listed in main repository README
 
 ---
