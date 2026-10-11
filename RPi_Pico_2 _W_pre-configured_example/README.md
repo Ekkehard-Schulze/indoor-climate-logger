@@ -4,6 +4,12 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ---
 
+## 📋 Prerequisites
+
+* **CircuitPython 9.8** must be pre-installed on your microcontroller before setting up this configuration.
+
+---
+
 ## 🚀 Quick Start
 
 1. **Copy** the configuration files to the root directory of your microcontroller.
@@ -17,8 +23,8 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ### 📊 Accessing Your Data
 Once running, you can retrieve your data locally at the following URLs:
-* 📋 **Data Log:** http://192.168.178.143/logger-data.tsv
-* ⚠️ **Exception Log:** http://192.168.178.143/expeptions_log.txt *(Note: Verify if the filename typo "expeptions" is required by your script)*
+* 📋 **Data Log:** http://192.168.178
+* ⚠️ **Exception Log:** http://192.168.178 *(Note: Verify if the filename typo "expeptions" is required by your script)*
 
 ---
 
