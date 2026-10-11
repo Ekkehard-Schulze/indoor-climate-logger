@@ -19,7 +19,7 @@ GATEWAY = '192.168.178.1'
     
 LOG_every_n_seconds = 300
 LOGGER_name = 'Pico2W_logger_1'          # if left empty the first sensor detected auto-names
-LOGGER_filename = 'logger-data.tsv'     # if left empty the first sensor detected auto-names
+LOGGER_filename = 'logger_data.tsv'     # if left empty the first sensor detected auto-names
 
 # select which busses / devices are queried on init
 USE_i2c = True
