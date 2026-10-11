@@ -97,6 +97,7 @@ To get started, you will need to copy the following files and folders to your mi
   * `adafruit_mlx90614`
   * `adafruit_tsl2561`
   * `adafruit_onewire`
+  * `adafruit_scd30`
   * `adafruit_ds3231`
   * `adafruit_ntp`
 * The main script `indoor-climate-logger.py`, renamed to `code.py`.

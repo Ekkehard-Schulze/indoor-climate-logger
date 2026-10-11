@@ -28,7 +28,7 @@ pip install -r requirements_for_CPython.txt
 2. **Run the main application script** `indoor-climate-logger.py` directly from your terminal:
 
 ```bash
-python indoor-climate-logger.py
+python3 ./indoor-climate-logger.py
 ```
 
 **What the system does automatically:**
