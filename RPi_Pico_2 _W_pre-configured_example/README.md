@@ -32,13 +32,17 @@ serving data using WLAN
 - alternatively, you can set 
 
 USE_HTTP_server = False
+
+
 SET_RTC_from_NTP = False
 
 in user_settings.py
 
 to run this without WLAN on Raspberry Pi Pico or Raspberry Pi Pico2
 
-For trouble shooting connect to Thonny and start code py
+###For trouble shooting 
+
+connect to Thonny and start code py
 from Thonny. This show you the connection to the WLAN,
 the sensor discovery and the start of data logging.
 
