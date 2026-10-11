@@ -102,16 +102,22 @@ To get started, you will need to copy the following files and folders to your mi
 * The `boot.py` file (required to mount the filesystem in write mode).
 * **Optional WiFi Setup:** If you want to enable WiFi, add your credentials to `settings.template.toml` and rename it to `settings.toml`.
 
-## Optional Utility Scripts
+## 🛠️ Optional Utility Scripts
 
 You can also use the following helper scripts, which run on your host PC via **CPython**:
 
-* **`switch_RPiPico_to_USB_read_log_mode.py`**
-  Renames `boot.py` to `boot.bak` on the microcontroller. After resetting the board, the logged data will be accessible via USB. Use this method if WiFi is unavailable for data retrieval.
-* **`switch_RPiPico_to_write_log_mode.py`**
-  Renames `boot.bak` back to `boot.py`. For development convenience, this script also automatically copies `indoor-climate-logger.py` to `code.py`. After a subsequent reset, the filesystem is mounted in read/write mode for the microcontroller, and logging begins. Note that you cannot read the active log file via USB while in this mode.
+* ### `switch_RPiPico_to_USB_read_log_mode.py`
+  Renames `boot.py` to `boot.bak` on the microcontroller. The board will reset, and **subsequently the logged data will be accessible via USB**. 
+  * **Use case:** Use this method if WiFi is unavailable for data retrieval, or if you need to modify data directly on the microcontroller.
 
-*Tip: It is convenient to store these two CPython scripts directly on the microcontroller so they are always available. They can be executed from a PC (Windows, Linux, or Raspberry Pi) even while the controller is actively logging data in write mode. Note that these scripts have currently only been tested on MS Windows.*
+* ### `switch_RPiPico_to_write_log_mode.py`
+  Renames `boot.bak` back to `boot.py`. For development convenience, this script also automatically copies `indoor-climate-logger.py` to `code.py`. The board will reset, the filesystem is mounted in read/write mode for the microcontroller, and **logging begins**.
+  * **Note:** You cannot read the active log file via USB or modify files while in this mode.
+
+> [!TIP]
+> **Pro-Tip:** Store these two CPython scripts directly on the microcontroller so they are always available. They can be executed from a host PC (Windows, Linux, or Raspberry Pi) even while the controller is actively logging data. 
+> 
+> *Current status: These scripts have only been tested on Windows.*
 <br/>
 <br/>
 
