@@ -1,45 +1,54 @@
-# 🍓 Raspberry Pi Pico W Configuration Example
+# 🍓 Indoor Climate Logger Configuration Example
 
-An example configuration for logging and serving sensor data over WLAN using the Raspberry Pi Pico W.
+An example configuration for logging sensor data locally on a **Windows PC** using a USB-to-I2C interface hardware module.
 
 ---
 
 ## 📋 Prerequisites
 
-* **CircuitPython 9.8** must be pre-installed on your microcontroller before setting up this configuration.
+* **Python 3 (CPython)** must be installed on your Windows system.
+* Ensure you have the necessary **dependencies** installed before running the application:
+
+```cmd
+pip install -r requirements_for_CPython.txt
+```
 
 ---
 
 ## 🚀 Quick Start
 
-1. **Copy** all files and directories to the root directory of your microcontroller.
-2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontrollers base directory using your PC's CPython interpreter.
+1. **Copy** all files and directories to any folder of your choice on your PC.
+2. **Open your command prompt** (cmd) or PowerShell in that directory.
+3. **Run the main application script** `indoor-climate-logger.py` and specify your USB-to-I2C bridge hardware using the `-u` or `--USB_IC` flag:
 
-**What this script does automatically:**
-* Renames the necessary files and folders.
-* Restarts your controller.
-* Connects to your WLAN network.
-* Starts logging data and serving it directly to the web.
+```cmd
+python indoor-climate-logger.py -u 1
+```
+
+### 🔌 Available USB-to-I2C Interfaces
+When launching the script, select your hardware by passing the corresponding number to the `-u` argument:
+* `0`: RPi (Not applicable on Windows)
+* `1`: **FT232H**
+* `2`: **MCP2221**
+* `3`: **RPi Pico U2IF**
+
+*Example:* Use `python indoor-climate-logger.py -u 2` if you are using an MCP2221 breakout board.
 
 ### 📊 Accessing Your Data
-Once running, you can retrieve your data locally at the following URLs:
-* 📋 **Data Log:** http://192.168.178.143/logger_data.tsv
-* ⚠️ **Exception Log:** http://192.168.178.143/exceptions_log.txt
+Once running, you can retrieve your data locally by accessing the generated log files within your application folder.
 
 ---
 
 ## 🛠️ Features & Supported Hardware
 
-* **WLAN Data Serving:** Hosts a local web server to expose log files.
-* **I2C Sensors:** Supports all I2C sensors listed in main repository README
-* **1-Wire Thermosensors:** Supports all 1-Wire sensors listed in main repository README
+* **Local Storage Logging:** Saves data directly to your local drive.
+* **I2C Sensors:** Supports all I2C sensors listed in the main repository README via a supported USB interface.
 
 ---
 
 ## ⚙️ Configuration
 
-1. **Network Setup:** Enter your WLAN credentials in the `settings.toml` file.
-2. **Offline Mode (Optional):** To run this without WLAN on a standard **Raspberry Pi Pico** or **Pico 2**, change the following lines in `user_settings.py`:
+1. **Offline Operation:** Ensure the following lines are set in `user_settings.py` since network features are disabled:
    ```python
    USE_HTTP_server = False
    SET_RTC_from_NTP = False
@@ -49,6 +58,5 @@ Once running, you can retrieve your data locally at the following URLs:
 
 ## 🔍 Troubleshooting
 
-* **Live Debugging:** Connect your Pico to **Thonny IDE** and run `code.py`. This allows you to monitor the WLAN connection process, sensor discovery status, and the initialization of the data logger.
-* **On-Device Storage:** Raw data is stored locally on the microcontroller in the `/logger_data` folder.
-* **USB Data Access:** To safely read data over a USB connection, the controller must start up in **non-writing mode**. Please refer to the main repository README for instructions on toggling this mode.
+* **Live Debugging:** Run the script from the command line to monitor sensor discovery status and the initialization of the data logger via standard console output.
+* **On-Device Storage:** Raw data is stored locally in the `/logger_data` folder within your application directory.
