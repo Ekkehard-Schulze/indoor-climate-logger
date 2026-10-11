@@ -20,6 +20,10 @@ Before running the script, you must download the **Adafruit CircuitPython Bundle
 * `adafruit_ntp`
 * `adafruit_scd30`
 
+> [!IMPORTANT]
+> **Version Compatibility:**  
+> The library bundle files you download **must match the major version of CircuitPython** installed on your microcontroller (e.g., use the version 9.x bundle if your device is running CircuitPython 9.x). Mismatched versions will cause initialization and runtime errors.
+
 ---
 
 ## 🚀 Quick Setup
