@@ -22,17 +22,17 @@ pip install -r requirements_for_CPython.txt
 3. **Run the main application script** `indoor-climate-logger.py` and specify your USB-to-I2C bridge hardware using the `-u` or `--USB_IC` flag:
 
 ```cmd
-python indoor-climate-logger.py -u 1
+python indoor-climate-logger.py --USB_IC 1
 ```
 
 ### 🔌 Available USB-to-I2C Interfaces
-When launching the script, select your hardware by passing the corresponding number to the `-u` argument:
+When launching the script, select your hardware by passing the corresponding number to the `-u` / `--USB_IC` argument:
 * `0`: RPi (Not applicable on Windows)
 * `1`: **FT232H**
 * `2`: **MCP2221**
 * `3`: **RPi Pico U2IF**
 
-*Example:* Use `python indoor-climate-logger.py -u 2` if you are using an MCP2221 breakout board.
+*Example:* Use `python indoor-climate-logger.py -u 2` or `python indoor-climate-logger.py --USB_IC 2` if you are using an MCP2221 breakout board.
 
 ### 📊 Accessing Your Data
 Once running, you can retrieve your data locally by accessing the generated log files within your application folder.
@@ -43,16 +43,6 @@ Once running, you can retrieve your data locally by accessing the generated log 
 
 * **Local Storage Logging:** Saves data directly to your local drive.
 * **I2C Sensors:** Supports all I2C sensors listed in the main repository README via a supported USB interface.
-
----
-
-## ⚙️ Configuration
-
-1. **Offline Operation:** Ensure the following lines are set in `user_settings.py` since network features are disabled:
-   ```python
-   USE_HTTP_server = False
-   SET_RTC_from_NTP = False
-   ```
 
 ---
 
