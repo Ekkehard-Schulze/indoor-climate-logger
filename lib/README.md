@@ -1,12 +1,12 @@
 # ⚠️ CircuitPython Environment Only
 
-This directory contains configurations explicitly designed for **CircuitPython** environments. It is not compatible with standard desktop CPython or standalone Linux systems without a proper hardware abstraction layer.
+This directory contains hardware drivers explicitly designed for **CircuitPython** environments. They are not compatible with standard desktop CPython or standalone Linux systems. Manually copy the content of this folder into your device's local **`/lib`** folder.
 
 ---
 
-## 🔌 Required Hardware Drivers
+## 🔌 Additionally required Hardware Drivers
 
-Before running the script, you must download the **Adafruit CircuitPython Bundle** and manually copy the following driver files/folders into your device's local **`/lib`** folder:
+Before running the script, you must download the drivers from the **[Adafruit CircuitPython Bundle]**(https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) (placed inside the `/lib` folder)and manually copy the following driver files/folders into your device's local **`/lib`** folder:
 
 * `adafruit_register`
 * `adafruit_tmp117`
