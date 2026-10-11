@@ -13,17 +13,17 @@
 
 # ---------------------- user settings --------------------------
 
-IPV4 = '192.168.178.42'  
+IPV4 = '192.168.178.143'  
 NETMASK = '255.255.255.0'
 GATEWAY = '192.168.178.1' 
     
 LOG_every_n_seconds = 300
-LOGGER_name = 'MHZ_19_CO2_logger'          # if left empty the first sensor detected auto-names
-LOGGER_filename = 'MHZ_19_CO2_log.tsv'     # if left empty the first sensor detected auto-names
+LOGGER_name = ''          # if left empty the first sensor detected auto-names
+LOGGER_filename = ''     # if left empty the first sensor detected auto-names
 
 # select which busses / devices are queried on init
 USE_i2c = True
-USE_MHZ_19_CO2 = True
+USE_MHZ_19_CO2 = False
 USE_ONE_WIRE = True
                             # Attention: For parasite power, I used the library modified by Schulze
                             # and an 820 Ohm (DS18x20) or 450 Ohm (MAX31850) pull-up resistor
@@ -61,7 +61,7 @@ USE_WATCHdog = False     # not recommended, may lead to instability
 
 HOURS_between_reboots = 12  # used for HTTP-server to force cold-start and WiFi re-connect
 
-HEIGHT_above_sea_level_in_meter = 260  # for normalizing local atmospheric pressure to sea level
+HEIGHT_above_sea_level_in_meter = 160  # for normalizing local atmospheric pressure to sea level
 MAX_log_file_size_in_bytes = 0  # zero means no file size limit set, this gets overwritten by the 
                   # microcontroller type auto-detection, when a 'known' controller is found
 
