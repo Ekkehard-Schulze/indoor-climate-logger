@@ -1,12 +1,19 @@
-# 🐧 Indoor Climate Logger Configuration Example
+# 🐧 Raspberry Pi 3B Configuration Example
 
-An example configuration for logging sensor data locally using a standard **Linux-based system**.
+An example configuration for logging sensor data locally using a **Raspberry Pi 3B** running Linux.
 
 ---
 
 ## 📋 Prerequisites
 
-* **Python 3 (CPython)** must be installed on your Linux system.
+* **Python 3 (CPython)** must be installed on your Raspberry Pi.
+* **Hardware Interfaces:** Ensure that **I2C** and **1-Wire** are enabled on your Raspberry Pi 3B. You can activate them via the terminal configuration tool:
+
+```bash
+sudo raspi-config
+```
+*Navigate to `Interface Options` to enable both **I2C** and **1-Wire**, then reboot your Pi.*
+
 * Ensure you have the necessary **dependencies** installed before running the application:
 
 ```bash
@@ -17,7 +24,7 @@ pip install -r requirements_for_CPython.txt
 
 ## 🚀 Quick Start
 
-1. **Copy** all files and directories to any directory of your choice on your system.
+1. **Copy** all files and directories to any directory of your choice on your Raspberry Pi.
 2. **Run the main application script** `indoor-climate-logger.py` directly from your terminal:
 
 ```bash
@@ -46,6 +53,7 @@ Once running, you can retrieve your data locally by accessing the generated log 
 
 * **Local Storage Logging:** Saves data directly to the internal storage.
 * **I2C Sensors:** Supports all I2C sensors listed in the main repository README.
+* **1-Wire Thermosensors:** Supports all 1-Wire sensors listed in the main repository README.
 
 ---
 
