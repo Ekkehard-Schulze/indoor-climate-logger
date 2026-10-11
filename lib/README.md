@@ -6,7 +6,7 @@ This directory contains hardware drivers explicitly designed for **CircuitPython
 
 ## 🔌 Additionally required Hardware Drivers
 
-Before running the script, you must download the drivers from the **[Adafruit CircuitPython Bundle]**(https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) (placed inside the `/lib` folder)and manually copy the following driver files/folders into your device's local **`/lib`** folder:
+Before running the script, you must download the drivers from the **[Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases)** and manually copy the required driver files or folders into your device's local **`/lib`** folder.
 
 * `adafruit_register`
 * `adafruit_tmp117`
