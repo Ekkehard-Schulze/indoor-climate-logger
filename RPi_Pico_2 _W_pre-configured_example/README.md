@@ -2,7 +2,7 @@
 # Example configuration for Raspberry Pi Pico W
 
 Copy this to the base directory of your microcontroller.
-Then start the script "switch_RPiPico_to_USB_read_log_mode.py"
+Then start the script `switch_RPiPico_to_USB_read_log_mode.py`
 in the base directory of you folder, using the CPython interpreter
 of your PC. This will do some renaming of files and folder,
 restart your controller, connect to your WLAN, start logging
@@ -27,7 +27,7 @@ serving data using WLAN
 
 ### To get this going
 
-- enter your WLAN credintials in settings.toml`
+- enter your WLAN credintials in `settings.toml`
 
 - alternatively, you can set 
 
