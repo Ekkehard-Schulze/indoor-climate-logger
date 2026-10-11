@@ -31,12 +31,12 @@ serving data using WLAN
 
 - alternatively, you can set 
 
-USE_HTTP_server = False
+´USE_HTTP_server = False´
 
 
-SET_RTC_from_NTP = False
+´SET_RTC_from_NTP = False´
 
-in user_settings.py
+in ´user_settings.py´
 
 to run this without WLAN on Raspberry Pi Pico or Raspberry Pi Pico2
 
