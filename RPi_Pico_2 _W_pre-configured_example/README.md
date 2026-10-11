@@ -40,7 +40,7 @@ in `user_settings.py`
 
 to run this without WLAN on Raspberry Pi Pico or Raspberry Pi Pico2
 
-###For trouble shooting 
+### For trouble shooting 
 
 connect to Thonny and start code py
 from Thonny. This show you the connection to the WLAN,
