@@ -1,4 +1,4 @@
-# 🍓 Indoor Climate Logger Configuration Example
+# 🪟 Indoor Climate Logger Configuration Example
 
 An example configuration for logging sensor data locally on a **Windows PC** using a USB-to-I2C interface hardware module.
 
