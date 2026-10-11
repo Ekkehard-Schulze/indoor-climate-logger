@@ -1,45 +1,45 @@
-# 🍓 Raspberry Pi Pico W Configuration Example
+# 🍓 Raspberry Pi Configuration Example
 
-An example configuration for logging and serving sensor data over WLAN using the Raspberry Pi Pico W.
+An example configuration for logging sensor data locally using a standard **Raspberry Pi** running Linux.
 
 ---
 
 ## 📋 Prerequisites
 
-* **CircuitPython 9.8** must be pre-installed on your microcontroller before setting up this configuration.
+* **Python 3 (CPython)** must be installed on your Raspberry Pi.
+* Ensure you have the necessary **dependencies** installed before running the application:
+
+```bash
+pip install -r requirements_for_CPython.txt
+```
 
 ---
 
 ## 🚀 Quick Start
 
-1. **Copy** all files and directories to the root directory of your microcontroller.
-2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontrollers base directory using your PC's CPython interpreter.
+1. **Copy** all files and directories to any directory of your choice on your Raspberry Pi.
+2. **Run the main application script** (e.g., `code.py` or your main script execution command) directly from your terminal.
 
-**What this script does automatically:**
-* Renames the necessary files and folders.
-* Restarts your controller.
-* Connects to your WLAN network.
-* Starts logging data and serving it directly to the web.
+**What the system does automatically:**
+* Initializes connected sensors.
+* Starts logging data directly to local storage.
 
 ### 📊 Accessing Your Data
-Once running, you can retrieve your data locally at the following URLs:
-* 📋 **Data Log:** http://192.168.178.143/logger_data.tsv
-* ⚠️ **Exception Log:** http://192.168.178.143/exceptions_log.txt
+Once running, you can retrieve your data locally by accessing the generated log files within your application folder.
 
 ---
 
 ## 🛠️ Features & Supported Hardware
 
-* **WLAN Data Serving:** Hosts a local web server to expose log files.
-* **I2C Sensors:** Supports all I2C sensors listed in main repository README
-* **1-Wire Thermosensors:** Supports all 1-Wire sensors listed in main repository README
+* **Local Storage Logging:** Saves data directly to the internal storage.
+* **I2C Sensors:** Supports all I2C sensors listed in the main repository README.
+* **1-Wire Thermosensors:** Supports all 1-Wire sensors listed in the main repository README.
 
 ---
 
 ## ⚙️ Configuration
 
-1. **Network Setup:** Enter your WLAN credentials in the `settings.toml` file.
-2. **Offline Mode (Optional):** To run this without WLAN on a standard **Raspberry Pi Pico** or **Pico 2**, change the following lines in `user_settings.py`:
+1. **Offline Operation:** Ensure the following lines are set in `user_settings.py` since network features are disabled:
    ```python
    USE_HTTP_server = False
    SET_RTC_from_NTP = False
@@ -49,6 +49,5 @@ Once running, you can retrieve your data locally at the following URLs:
 
 ## 🔍 Troubleshooting
 
-* **Live Debugging:** Connect your Pico to **Thonny IDE** and run `code.py`. This allows you to monitor the WLAN connection process, sensor discovery status, and the initialization of the data logger.
-* **On-Device Storage:** Raw data is stored locally on the microcontroller in the `/logger_data` folder.
-* **USB Data Access:** To safely read data over a USB connection, the controller must start up in **non-writing mode**. Please refer to the main repository README for instructions on toggling this mode.
+* **Live Debugging:** Run the main script directly from your terminal to monitor sensor discovery status and the initialization of the data logger via standard output.
+* **On-Device Storage:** Raw data is stored locally in the `/logger_data` folder within your application directory.
