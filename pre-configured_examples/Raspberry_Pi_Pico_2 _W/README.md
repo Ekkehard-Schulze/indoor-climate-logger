@@ -23,7 +23,7 @@ An example configuration for logging and serving sensor data over WLAN using the
    GATEWAY = '192.168.178.1'
    ```
 
-> 💡 **Note:** Replace `192.168.178.143` with your microcontroller's actual IP address configuration if yours is different.
+> 💡 **Note:** Replace `192.168.178.xxx` with your microcontroller's actual IP address configuration if yours is different.
 
 
 2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontrollers base directory using your PC's CPython interpreter.
