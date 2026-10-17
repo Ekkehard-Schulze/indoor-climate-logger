@@ -35,7 +35,7 @@ Once running, you can retrieve your data locally by accessing the on-device file
 
 ## ⚙️ Configuration
 
-1. **Offline Operation:** Ensure the following lines are set in `user_settings.py` since the standard Pico and Pico 2 do not feature wireless connectivity:
+1. **Offline Operation:** The following lines are already set in `user_settings.py` since the standard Pico and Pico 2 do not feature wireless connectivity:
    ```python
    USE_HTTP_server = False
    SET_RTC_from_NTP = False
