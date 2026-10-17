@@ -33,9 +33,14 @@ An example configuration for logging and serving sensor data over WLAN using the
 * Starts logging data and serving it directly to the web.
 
 ### 📊 Accessing Your Data
-Once running, you can retrieve your data locally at the following URLs:
-* 📋 **Data Log:** http://192.168.178.143/logger_data.tsv
-* ⚠️ **Exception Log:** http://192.168.178.143/exceptions_log.txt
+
+Once running, you can retrieve your data locally at the URLs below. 
+
+> 💡 **Note:** Replace `192.168.178.143` with your microcontroller's actual IP address configuration if yours is different.
+
+* 📋 **Data Log:** http://192.168.178
+* ⚠️ **Exception Log:** http://192.168.178
+
 
 ---
 
