@@ -41,7 +41,7 @@ For periodic logging, you can run the script via a cron job using the `-q` optio
 * **Example Crontab Entry:** To log data automatically every 15 minutes, add the following line to your `crontab -e`:
 
 ```text
-*/15 * * * * cd /path/to/your/folder && python indoor-climate-logger.py -q
+*/15 * * * * cd /path/to/your/folder && python indoor-climate-logger.py -q >/dev/null 2>>/dev/null
 ```
 
 ### 📊 Accessing Your Data
