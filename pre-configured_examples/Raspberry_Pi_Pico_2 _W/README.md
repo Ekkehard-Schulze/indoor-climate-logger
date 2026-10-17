@@ -12,8 +12,18 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ## 🚀 Quick Start
 
-1. **Copy** all files and directories to the root directory of your microcontroller.
-1. **Network Setup:** Enter your WLAN credentials in the `settings.toml` file.
+1. **Dateien kopieren:** Kopiere alle Dateien und Verzeichnisse in das Stammverzeichnis (Root) deines Mikrocontrollers.
+2. **Netzwerk einrichten:** 
+   * Trage deine WLAN-Zugangsdaten in die Datei `settings.toml` ein.
+   * Trage deine IP-Konfiguration in die Datei `user_settings.py` wie folgt ein:
+
+   ```python
+   IPV4 = '192.168.178.143'
+   NETMASK = '255.255.255.0'
+   GATEWAY = '192.168.178.1'
+   ```
+
+
 2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontrollers base directory using your PC's CPython interpreter.
 
 **What this script does automatically:**
