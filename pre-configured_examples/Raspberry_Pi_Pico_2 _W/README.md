@@ -10,6 +10,12 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ---
 
+## ⚙️ Configuration
+
+1. **Network Setup:** Enter your WLAN credentials in the `settings.toml` file.
+
+---
+
 ## 🚀 Quick Start
 
 1. **Copy** all files and directories to the root directory of your microcontroller.
@@ -33,17 +39,6 @@ Once running, you can retrieve your data locally at the following URLs:
 * **WLAN Data Serving:** Hosts a local web server to expose log files.
 * **I2C Sensors:** Supports all I2C sensors listed in main repository README
 * **1-Wire Thermosensors:** Supports all 1-Wire sensors listed in main repository README
-
----
-
-## ⚙️ Configuration
-
-1. **Network Setup:** Enter your WLAN credentials in the `settings.toml` file.
-2. **Offline Mode (Optional):** To run this without WLAN on a standard **Raspberry Pi Pico** or **Pico 2**, change the following lines in `user_settings.py`:
-   ```python
-   USE_HTTP_server = False
-   SET_RTC_from_NTP = False
-   ```
 
 ---
 
