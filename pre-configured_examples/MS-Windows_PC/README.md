@@ -47,7 +47,9 @@ Once running, you can retrieve your data locally by accessing the generated log 
 
 * **Local Storage Logging:** Saves data directly to your local drive.
 * **I2C Sensors:** Supports all I2C sensors listed in the main repository README via a supported USB interface.
-⚠️ **Note:** The ADT7420 sensor fails on MS-Windows PCs due to an underlying driver bug.
+⚠️ 
+    **Note:** The ADT7420 sensor fails on MS-Windows PCs due to an underlying driver bug.
+
 ---
 
 ## 🔍 Troubleshooting
