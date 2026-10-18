@@ -17,7 +17,7 @@ pip install -r requirements_for_CPython.txt
 
 ## 🚀 Quick Start
 
-1. **Copy** all files and directories to any folder of your choice on your PC.
+1. **Copy** `indoor-climate-logger.py` and optionally also `user_settings.py` to your working directory.
 2. **Open your command prompt** (cmd) or PowerShell in that directory.
 3. **Run the main application script** `indoor-climate-logger.py` and specify your USB-to-I2C bridge hardware using the `-u` or `--USB_IC` flag:
 

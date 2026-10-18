@@ -24,7 +24,7 @@ pip install -r requirements_for_CPython.txt
 
 ## 🚀 Quick Start
 
-1. **Copy** all files and directories to any directory of your choice on your Raspberry Pi.
+1. **Copy** `indoor-climate-logger.py` and optionally also `user_settings.py` to your working directory.
 2. **Run the main application script** `indoor-climate-logger.py` directly from your terminal:
 
 ```bash
