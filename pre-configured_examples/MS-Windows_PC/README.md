@@ -19,14 +19,11 @@ pip install -r requirements_for_CPython.txt
 
 1. **Copy** `indoor-climate-logger.py` and optionally also `user_settings.py` to your working directory.
 2. **Open your command prompt** (cmd) or PowerShell in that directory.
-3. **Run the main application script** `indoor-climate-logger.py` and specify your USB-to-I2C bridge hardware using the `-u` or `--USB_IC` flag:
+3. **Run the main application script** `indoor-climate-logger.py` and specify your USB-to-I2C bridge hardware using the `-u` or `--USB_IC` flag, e.g. for FT232R:
 
 ```cmd
 python indoor-climate-logger.py --USB_IC 1
 ```
-
-> 💡 **Tip:** You can run `python3 ./indoor-climate-logger.py -h` to view all available command-line options and configurations.
-
 
 ### 🔌 Available USB-to-I2C Interfaces
 When launching the script, select your hardware by passing the corresponding number to the `-u` / `--USB_IC` argument:
@@ -35,7 +32,9 @@ When launching the script, select your hardware by passing the corresponding num
 * `2`: **MCP2221**
 * `3`: **RPi Pico U2IF**
 
-*Example:* Use `python indoor-climate-logger.py -u 2` or `python indoor-climate-logger.py --USB_IC 2` if you are using an MCP2221 breakout board.
+
+> 💡 **Tip:** You can run `python3 ./indoor-climate-logger.py -h` to view all available command-line options and configurations.
+
 
 > [!IMPORTANT]
 > **FTDI / FT232R Driver Note:**  
