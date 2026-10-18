@@ -25,6 +25,9 @@ pip install -r requirements_for_CPython.txt
 python indoor-climate-logger.py --USB_IC 1
 ```
 
+> 💡 **Tip:** You can run `python3 ./indoor-climate-logger.py -h` to view all available command-line options and configurations.
+
+
 ### 🔌 Available USB-to-I2C Interfaces
 When launching the script, select your hardware by passing the corresponding number to the `-u` / `--USB_IC` argument:
 * `0`: RPi (Not applicable on Windows)

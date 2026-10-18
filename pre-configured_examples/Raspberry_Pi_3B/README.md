@@ -31,6 +31,8 @@ pip install -r requirements_for_CPython.txt
 python3 ./indoor-climate-logger.py
 ```
 
+> 💡 **Tip:** You can run `python3 ./indoor-climate-logger.py -h` to view all available command-line options and configurations.
+
 **What the system does automatically:**
 * Initializes connected sensors.
 * Starts logging data directly to local storage.
@@ -61,3 +63,4 @@ Once running, you can retrieve your data locally by accessing the generated log 
 
 * **Live Debugging:** Run the main script directly from your terminal without the `-q` option to monitor sensor discovery status and the initialization of the data logger via standard output.
 * **On-Device Storage:** Raw data is stored locally in the `/logger_data` folder within your application directory.
+
