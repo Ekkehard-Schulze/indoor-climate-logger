@@ -18,9 +18,9 @@ An example configuration for logging and serving sensor data over WLAN using the
    * Trage deine IP-Konfiguration in die Datei `user_settings.py` wie folgt ein:
 
    ```python
-   IPV4 = '192.168.178.143'
-   NETMASK = '255.255.255.0'
-   GATEWAY = '192.168.178.1'
+   IPV4 = "192.168.178.143"
+   NETMASK = "255.255.255.0"
+   GATEWAY = "192.168.178.1"
    ```
 
 > 💡 **Note:** Replace `192.168.178.xxx` with your microcontroller's actual IP address configuration if yours is different.
