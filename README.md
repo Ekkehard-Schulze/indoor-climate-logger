@@ -85,24 +85,47 @@ You can configure your user settings in one of two ways:
 
 This project was developed and tested using **CircuitPython 9.2.8** on the **Raspberry Pi Pico 2 W**.
 
-To get started, you will need to copy the following files and folders to your microcontroller:
+### Installation Steps
 
-* The `/lib` folder from this repository (it is CircuitPython-version agnostic).
-* The following hardware drivers from the [Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) (placed inside the `/lib` folder. The drivers must match your CircuitPython-version. You may omit drivers you are not using. Instead of manual driver installation, you can try circup install --auto (untested).):
-  * `adafruit_register`
-  * `adafruit_tmp117`
-  * `adafruit_adt7410`
-  * `adafruit_bme280`
-  * `adafruit_bme680`
-  * `adafruit_mlx90614`
-  * `adafruit_tsl2561`
-  * `adafruit_onewire`
-  * `adafruit_scd30`
-  * `adafruit_ds3231`
-  * `adafruit_ntp`
-* The main script `indoor-climate-logger.py`, renamed to `code.py`.
-* The `boot.py` file (required to mount the filesystem in write mode).
-* **Optional WiFi Setup:** If you want to enable WiFi, add your credentials to `settings.template.toml` and rename it to `settings.toml`.
+To get started, copy the following files and folders to your microcontroller's root directory:
+
+1. **The `/lib` folder:** Copy this folder directly from the repository (it is CircuitPython-version agnostic).
+2. **Hardware Drivers:** Download the matching **9.x bundle** from the [Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) and place the required drivers into your local `/lib` folder. 
+   * *Note:* You only need to copy the drivers for the sensors you are actually using.
+3. **The main script:** Copy `indoor-climate-logger.py` and rename it to `code.py`.
+4. **Boot configuration:** Copy the `boot.py` file (required to mount the filesystem in write mode).
+
+---
+
+### Required Drivers
+
+If you choose to install drivers manually, you will need:
+
+* `adafruit_register`
+* `adafruit_tmp117`
+* `adafruit_adt7410`
+* `adafruit_bme280`
+* `adafruit_bme680`
+* `adafruit_mlx90614`
+* `adafruit_tsl2561`
+* `adafruit_onewire`
+* `adafruit_scd30`
+* `adafruit_ds3231`
+* `adafruit_ntp`
+
+💡 **Tip (Alternative Automated Installation):** Instead of manual copying, you can try using the command-line tool `circup` to install dependencies automatically:
+```bash
+circup install --auto
+```
+*(Please note: The automated installation method is currently untested for this project).*
+
+---
+
+### Optional WiFi Setup
+If you want to enable WiFi network features:
+1. Add your credentials to `settings.template.toml`.
+2. Rename the file to `settings.toml`.
+
 
 ## 🛠️ Optional Utility Scripts
 
