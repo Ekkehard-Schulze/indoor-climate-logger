@@ -1168,7 +1168,7 @@ try:  # -------- outer error handler loop -------------------
 
     if USE_HTTP_server:
         # import base64   # this led to Exceptions in main loop and could not be used
-        from adafruit_httpserver_cp8 import (
+        from adafruit_httpserver_cp8_source import (
             FileResponse,
             # REQUEST_HANDLED_RESPONSE_SENT,
             Request,

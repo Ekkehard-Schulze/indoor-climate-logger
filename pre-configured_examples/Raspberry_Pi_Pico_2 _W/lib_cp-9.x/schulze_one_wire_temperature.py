@@ -32,8 +32,6 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_DS18x20.git"
 
 import time
 
-from schulze_micropy_workarounds import zfl
-
 from micropython import const
 from adafruit_onewire.device import OneWireDevice
 
@@ -56,6 +54,11 @@ RESOLUTION = (9, 10, 11, 12)
 # Maximum conversion delay in seconds, from DS18B20 datasheet.
 _CONVERSION_DELAY = {9: 0.09375, 10: 0.1875, 11: 0.375, 12: 0.750}
 
+
+def zfl(s, width):
+    # Pads the provided string with leading 0's to suit the specified 'chrs' length
+    # Force # characters, fill with leading 0's
+    return '{:0>{w}}'.format(s, w=width)
 
 
 class DS18X20_MAX31850:

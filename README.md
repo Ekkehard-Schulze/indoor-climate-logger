@@ -88,7 +88,7 @@ This project was developed and tested using **CircuitPython 9.2.8** on the **Ras
 To get started, you will need to copy the following files and folders to your microcontroller:
 
 * The `/lib` folder from this repository (it is CircuitPython-version agnostic).
-* The following hardware drivers from the [Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases) (placed inside the `/lib` folder. The drivers must match your CircuitPython-version. You may omit drivers you are not using. Instead of manual driver installation, you can try circup install --auto (untested).):
+* The following hardware drivers from the [Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases). Place them inside the `/lib` folder. The drivers must match your CircuitPython-version. You may omit drivers you are not using. Instead of manual driver installation, you can try `circup install --auto` (untested).):
   * `adafruit_register`
   * `adafruit_tmp117`
   * `adafruit_adt7410`
