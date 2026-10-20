@@ -189,7 +189,7 @@ combination with CPython's time functions.
 
 ### Library & Hardware Quirks
 * **HTTP Server:** The `/lib/adafruit_httpserver` module is sourced from CircuitPython 8.2.6. The version included in CircuitPython 9.2.8 is intentionally skipped due to breaking, incompatible changes.
-> ⚠️ **Note:** The URL to access the data has a second double-slash, e.g. http://192.168.178.143**//**logger_data.tsv
+> ⚠️ **Note:** The URL to access the data has **a second double-slash**, e.g. http://192.168.178.143//logger_data.tsv
 * **Windows Compatibility:** The ADT7420 sensor fails on MS-Windows PCs due to an underlying driver bug.
 * **1-Wire / Parasite Power Warning:** The `/lib/schulze_one_wire_temperature.py` module is a customized fork of `adafruit_ds18x20` (from version 8.2.6), modified to support more sensor types and improve parasite power performance. 
   * *Hardware Note:* Testing revealed that an 820 Ω pull-up resistor is required when using multiple DS18X20 sensors (and 450 Ω for the MAX31850), instead of the standard 4.7 kΩ resistor. This strongly indicates that the 1-Wire protocol implementation in MicroPython/CircuitPython, as well as the Linux kernel, handles parasite power poorly. For larger setups, **do not use parasite power**—always opt for a standard 3-wire connection.
