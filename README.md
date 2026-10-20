@@ -91,6 +91,7 @@ To get started, you will need to copy the following files and folders to your mi
 * The main script `indoor-climate-logger.py`, renamed to `code.py`.
 * The `boot.py` file (required to mount the filesystem in write mode).
 * **Optional WiFi Setup:** If you want to enable WiFi, add your credentials to `settings.template.toml` and rename it to `settings.toml`.
+* Optionaly your user_settings.py configuration file.
 * Install the harware drivers matching your CuircuitPython major version using `circup install --auto`, see https://learn.adafruit.com/keep-your-circuitpython-libraries-on-devices-up-to-date-with-circup/overview .
 Alternatively, place the drivers from the  [Adafruit CircuitPython Bundle](https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases)  inside the `/lib` folder. The drivers must match your CircuitPython-version. You may omit drivers you are not using. 
   * `adafruit_register`
