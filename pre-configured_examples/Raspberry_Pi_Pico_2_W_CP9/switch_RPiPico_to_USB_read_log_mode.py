@@ -19,10 +19,10 @@ from serial.tools import list_ports
 
 # Attention: the time delays are critical!
 
-picoPorts_a = list(list_ports.grep("2E8A:0005")) # Micropython Pico, Pico 2, Pico W Pico 2 W
-picoPorts_b = list(list_ports.grep("239A:80F4")) # Adafruit Pico     CircuitPython
+picoPorts_a = list(list_ports.grep("2E8A:0005"))  # Micropython Pico, Pico 2, Pico W Pico 2 W
+picoPorts_b = list(list_ports.grep("239A:80F4"))  # Adafruit Pico     CircuitPython
 picoWPorts = list(list_ports.grep("239A:8120"))  # Adafruit Pico   W CircuitPython
-pico2WPorts = list(list_ports.grep("239A:8162")) # Adafruit Pico 2 W CircuitPython
+pico2WPorts = list(list_ports.grep("239A:8162"))  # Adafruit Pico 2 W CircuitPython
 
 picoPorts = picoPorts_a + picoPorts_b + picoWPorts + pico2WPorts
 
@@ -61,5 +61,5 @@ else:
         s.write(b"\x04")  # execute a 'soft reset' and trigger 'main.py'
 
     print("\nRaspberry Pi Pico found at " + str(picoSerialPort) + "\n")
-    print("\nboot.py renamed to boot.bak\n")
-    time.sleep(1.5)
+    print("\nboot.py renamed to boot.bak and controller reset.\n")
+    time.sleep(6)
