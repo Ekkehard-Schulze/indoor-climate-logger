@@ -81,7 +81,7 @@ def set_i2c_environment_vars_for_Blinka(mode=1):
                 1
             ]  # put IC-specifying env var in py code instead of administrating the environment in windows
 
-        if ("BLINKA_FT232H", "1") in USB_IC_selector_for_Blinka[mode] and Win_FT232H_with_ftdi_driver_present():
+        if (("BLINKA_FT232H", "1") in USB_IC_selector_for_Blinka[mode]) and Win_FT232H_with_ftdi_driver_present():
             sys.exit("\nno libusbK driver for FT232H present. Use Zadig first.\n")
     elif platform.system() == "Linux" or platform.system() == "Darwin":
         for blinka_ic in USB_IC_selector_for_Blinka[mode]:

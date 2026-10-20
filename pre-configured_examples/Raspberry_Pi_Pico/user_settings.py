@@ -3,7 +3,7 @@
 
 # example URLs for data retrieval
 
-# http://192.168.178.143//logger-data.tsv
+# http://192.168.178.143//logger_data.tsv
 # http://192.168.178.143//exceptions_log.txt
 
 # Attention: you need to rename this file to user_settings.py to activate it

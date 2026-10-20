@@ -1,9 +1,9 @@
-"""DS3231 set on microcontroller. Use Thonny IDE to
-tranfer PC-system time on startup to the controller.
+"""DS3231 set on microcontroller running CircuitPathon. 
+Use Thonny IDE to tranfer PC-system time on startup to the controller.
 Then set DS3231 with optional offset_hours using the controller's local time.
 
 Attention: offset does not handle hour overflows, and fails repectively in these border cases.
-This quick and dirty approach was done, because micropython has not
+This quick and dirty approach was done, because micropython has no
 datetime module providing timedelta. Could have tried Adafruit_datetime in CircuitPython instead.
 """
 

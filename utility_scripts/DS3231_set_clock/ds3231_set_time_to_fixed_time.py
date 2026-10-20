@@ -1,5 +1,6 @@
 """set DS3231 time. This runs in CircuitPython on the controller.
-Manually restart the controller, when the coded set-time is reached in real time.
+Manually restart the controller exactly when the coded set-time is reached in real time, and 
+then delete this code before the next restart.
 """
 
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries

@@ -54,11 +54,11 @@ else:
             time.sleep(0.05)
         time.sleep(0.25)
         s.write(b"\x04")  # exit raw REPL and run injected code
-        time.sleep(0.25)  # give it time to run (observe the LED pulse)
+        # time.sleep(0.25)  # give it time to run (observe the LED pulse)
 
-        s.write(b"\x02")  # switch to normal REPL mode
-        time.sleep(0.5)  # give it time to complete
-        s.write(b"\x04")  # execute a 'soft reset' and trigger 'main.py'
+        # s.write(b"\x02")  # switch to normal REPL mode
+        # time.sleep(0.5)  # give it time to complete
+        # s.write(b"\x04")  # execute a 'soft reset' and trigger 'main.py'
 
     print("\nRaspberry Pi Pico found at " + str(picoSerialPort) + "\n")
     print("\nboot.py renamed to boot.bak and controller reset.\n")
