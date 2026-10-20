@@ -83,7 +83,7 @@ You can configure your user settings in one of two ways:
 ---
 ## Requirements for CircuitPython Microcontrollers
 
-This project was developed and tested using **CircuitPython 9.2.8** on the **Raspberry Pi Pico 2 W**.
+This project was developed and tested using **CircuitPython 9.2.8** on the **Raspberry Pi Pico 2 W**. A short test was succesfully done using **CircuitPython 10.3**.
 
 To get started, you will need to copy the following files and folders to your microcontroller:
 

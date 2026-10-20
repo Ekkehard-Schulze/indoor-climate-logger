@@ -6,7 +6,7 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ## 📋 Prerequisites
 
-* The library is for **CircuitPython 9.x.x**. For higer versions try to run `circup update --all` (not tested).
+* The library is for **CircuitPython 9.x.x**. For higer versions run `circup install --auto --upgrade`.
 
 ---
 
