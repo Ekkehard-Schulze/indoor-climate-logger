@@ -320,19 +320,15 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
 
         if platform.system() == "Windows":
             for blinka_ic in USB_IC_selector_for_Blinka[mode]:
-                os.environ[blinka_ic[0]] = blinka_ic[
-                    1
-                ]  # put IC-specifying env var in py code instead of administrating the environment in windows
-            if (
-                "BLINKA_FT232H",
-                "1",
-            ) in USB_IC_selector_for_Blinka and Win_FT232H_with_ftdi_driver_present():
+                # put IC-specifying env var in py code instead of administrating the environment in windows
+                os.environ[blinka_ic[0]] = blinka_ic[1]
+            # if FT232H IC is selected reject FTDI driver, we need libusbK
+            if (("BLINKA_FT232H", "1") in USB_IC_selector_for_Blinka[mode]) and Win_FT232H_with_ftdi_driver_present():
                 sys.exit("\nno libusbK driver for FT232H present. Use Zadig first.\n")
         elif platform.system() == "Linux" or platform.system() == "Darwin":
             for blinka_ic in USB_IC_selector_for_Blinka[mode]:
-                os.environ[blinka_ic[0]] = blinka_ic[
-                    1
-                ]  # put IC-specifying env var in py code instead of administrating the
+                # put IC-specifying env var in py code instead of administrating the
+                os.environ[blinka_ic[0]] = blinka_ic[1]
 
     parser = argparse.ArgumentParser(
         description="Ekkehard's environment logger for CPython on PC or RaspberryPi using Blinka, \nor CircuitPython on RaspberryPi Pico or PicoW with http server",
