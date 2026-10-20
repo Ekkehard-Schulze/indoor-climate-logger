@@ -6,16 +6,16 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 ## 📋 Prerequisites
 
-* **CircuitPython 9.8** must be pre-installed on your microcontroller before setting up this configuration.
+* The library is for **CircuitPython 9.x.x**. For higer versions try to run ``circup update --all` (not tested).
 
 ---
 
 ## 🚀 Quick Start
 
-1. **Dateien kopieren:** Kopiere alle Dateien und Verzeichnisse in das Stammverzeichnis (Root) deines Mikrocontrollers.
-2. **Netzwerk einrichten:** 
-   * Trage deine WLAN-Zugangsdaten in die Datei `settings.toml` ein.
-   * Trage deine IP-Konfiguration in die Datei `user_settings.py` wie folgt ein:
+1. **Copy files:** Copy all files and directories to the root directory of your microcontroller.
+2. **Set up network:** 
+   * Enter your Wi-Fi credentials into the `settings.toml` file.
+   * Enter your IP configuration into the `user_settings.py` file as follows:
 
    ```python
    IPV4 = "192.168.178.143"

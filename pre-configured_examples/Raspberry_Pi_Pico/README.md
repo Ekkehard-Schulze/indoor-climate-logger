@@ -6,7 +6,7 @@ An example configuration for logging sensor data locally using the **Raspberry P
 
 ## 📋 Prerequisites
 
-* **CircuitPython 9.8** must be pre-installed on your microcontroller before setting up this configuration.
+* The library is for **CircuitPython 9.x.x**. For higer versions try to run ``circup update --all` (not tested).
 
 ---
 
