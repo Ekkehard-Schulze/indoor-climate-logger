@@ -72,10 +72,10 @@ Intended to be run from the PC's CPython interpreter"""
 # Attention: the time delays are critical!
 
 
-picoPorts_a = list(list_ports.grep("2E8A:0005"))
-picoPorts_b = list(list_ports.grep("239A:80F4"))
-picoWPorts = list(list_ports.grep("239A:8120"))
-pico2WPorts = list(list_ports.grep("239A:8162"))
+picoPorts_a = list(list_ports.grep("2E8A:0005")) # Micropython Pico, Pico 2, Pico W Pico 2 W
+picoPorts_b = list(list_ports.grep("239A:80F4")) # Adafruit Pico     CircuitPython
+picoWPorts = list(list_ports.grep("239A:8120"))  # Adafruit Pico   W CircuitPython
+pico2WPorts = list(list_ports.grep("239A:8162")) # Adafruit Pico 2 W CircuitPython
 
 picoPorts = picoPorts_a + picoPorts_b + picoWPorts + pico2WPorts
 

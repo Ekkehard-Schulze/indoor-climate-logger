@@ -191,52 +191,15 @@ ALARM_SLEEP_HOLDOFF_TIME = (
 MAX_exception_file_size_bytes = 1_000_000  # may be changed by controller type detection
 
 
-# =====================================================================
-# 2. CLEAN IMPORT OF USER SETTINGS FROM FILE OVERRIDING THE DEFAULTS
-# =====================================================================
+# --------- test if user_setting.py is available --------------
+# optionally load  user_setting.py from file. Attention: this overwrites the settings above.
+
 try:
-    import user_settings
-
-    # List of all allowed configuration variables
-    _settings_keys = [
-        "IPV4",
-        "NETMASK",
-        "GATEWAY",
-        "LOG_every_n_seconds",
-        "LOGGER_name",
-        "LOGGER_filename",
-        "USE_i2c",
-        "USE_MHZ_19_CO2",
-        "USE_ONE_WIRE",
-        "REJECT_sensor_changes",
-        "WRITE_LOG_data_to_file",
-        "LOGGER_data_dir",
-        "LOG_EXCEPTIONS_to_file",
-        "SEPARATOR",
-        "LOG_EXCPTIONS_filename",
-        "VERBOSE",
-        "USE_HTTP_server",
-        "SET_RTC_from_NTP",
-        "UTC_offset_hours",
-        "TIME_FORMAT_PATTERN",
-        "MONITOR_WIFI_connection",
-        "USE_WATCHdog",
-        "HOURS_between_reboots",
-        "HEIGHT_above_sea_level_in_meter",
-        "MAX_log_file_size_in_bytes",
-        "USE_ALARM_wakeup_sleep",
-        "ALARM_SLEEP_HOLDOFF_TIME",
-        "MAX_exception_file_size_bytes",
-    ]
-
-    # Dynamically override defaults if defined in user_settings
-    for _key in _settings_keys:
-        if hasattr(user_settings, _key):
-            globals()[_key] = getattr(user_settings, _key)
+    from user_settings import *  # noqa: F403 # ruff ignore
 
 except ImportError:
-    if VERBOSE:
-        print("No user_settings.py found. Using default settings.")
+    pass
+
 
 # -------------- end of user settings -----------------------------------
 
@@ -1205,7 +1168,7 @@ try:  # -------- outer error handler loop -------------------
 
     if USE_HTTP_server:
         # import base64   # this led to Exceptions in main loop and could not be used
-        from adafruit_httpserver import (
+        from adafruit_httpserver_cp8_source import (
             FileResponse,
             # REQUEST_HANDLED_RESPONSE_SENT,
             Request,
@@ -1214,7 +1177,9 @@ try:  # -------- outer error handler loop -------------------
 
         server = Server(pool, LOGGER_data_dir, debug=True)
 
-        @server.route("/")
+        @server.route("/")  # this leads to double-slash before the file name, which is wrong http syntax
+        #@server.route("")    # tried to have single slash bfore the the file name, however this fails.
+        
         def base(request: Request):
             """
             Serve the default index.html file.

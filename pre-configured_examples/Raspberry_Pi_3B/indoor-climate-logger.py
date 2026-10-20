@@ -1177,7 +1177,9 @@ try:  # -------- outer error handler loop -------------------
 
         server = Server(pool, LOGGER_data_dir, debug=True)
 
-        @server.route("/")
+        @server.route("/")  # this leads to double-slash before the file name, which is wrong http syntax
+        #@server.route("")    # tried to have single slash bfore the the file name, however this fails.
+        
         def base(request: Request):
             """
             Serve the default index.html file.

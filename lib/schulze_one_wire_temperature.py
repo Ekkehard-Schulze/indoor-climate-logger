@@ -55,12 +55,6 @@ RESOLUTION = (9, 10, 11, 12)
 _CONVERSION_DELAY = {9: 0.09375, 10: 0.1875, 11: 0.375, 12: 0.750}
 
 
-def zfl(s, width):
-    # Pads the provided string with leading 0's to suit the specified 'chrs' length
-    # Force # characters, fill with leading 0's
-    return '{:0>{w}}'.format(s, w=width)
-
-
 class DS18X20_MAX31850:
     """Class which provides interface to DS18X20 temperature sensor
        extended by Ekkehard for MAX31850 typeK
@@ -104,7 +98,9 @@ class DS18X20_MAX31850:
             self._buf = bytearray(9)
             self._conv_delay = _CONVERSION_DELAY[12]  # pessimistic default
             nprefix = 'DS' if address.family_code in (0x10, 0x28) else 'K'
-            self.es_name = nprefix+zfl(str(address.crc), 3)     # use ROM CRC for sensor name
+            #self.es_name = nprefix+zfl(str(address.crc), 3) # use ROM CRC for sensor name. 3 digits, left padded with 0
+            # self.es_name = f"{nprefix}{address.crc:0>3}"   # use ROM CRC for sensor name. 3 digits, left padded with 0
+            self.es_name = f"{nprefix}{address.crc:03d}"     # use ROM CRC for sensor name. 3 digits, left padded with 0
         else:
             raise ValueError("Incorrect family code in device address.")
 
