@@ -30,7 +30,8 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 **What this script does automatically:**
 * Renames the necessary files and folders.
-* Restarts your controller.
+* Restarts your controller, 
+which then:
 * Connects to your WLAN network.
 * Starts logging data and serving it directly to the web.
 
@@ -40,9 +41,8 @@ Once running, you can retrieve your data locally at the URLs below.
 
 > 💡 **Note:** Replace `192.168.178.143` with your microcontroller's actual IP address configuration if yours is different.
 
-* 📋 **Data Log:** http://192.168.178
-* ⚠️ **Exception Log:** http://192.168.178
-
+* 📋 **Data Log:** http://192.168.178.143//logger-data.tsv
+* ⚠️ **Exception Log:** http://192.168.178.143//exceptions_log.txt
 
 ---
 
