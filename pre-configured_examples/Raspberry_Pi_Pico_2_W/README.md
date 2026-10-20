@@ -40,7 +40,7 @@ Once running, you can retrieve your data locally at the URLs below.
 
 > 💡 **Note:** Replace `192.168.178.143` with your microcontroller's actual IP address configuration if yours is different.
 
-* 📋 **Data Log:** http://192.168.178.143//logger-data.tsv
+* 📋 **Data Log:** http://192.168.178.143//logger_data.tsv
 * ⚠️ **Exception Log:** http://192.168.178.143//exceptions_log.txt
 
 ---
