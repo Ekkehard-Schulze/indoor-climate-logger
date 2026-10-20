@@ -30,8 +30,7 @@ An example configuration for logging and serving sensor data over WLAN using the
 
 **What this script does automatically:**
 * Renames the necessary files and folders.
-* Restarts your controller, 
-which then:
+* Restarts your controller, which then...
 * Connects to your WLAN network.
 * Starts logging data and serving it directly to the web.
 

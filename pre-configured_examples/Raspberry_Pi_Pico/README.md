@@ -17,7 +17,7 @@ An example configuration for logging sensor data locally using the **Raspberry P
 
 **What this script does automatically:**
 * Renames the necessary files and folders.
-* Restarts your controller.
+* Restarts your controller, which then...
 * Starts logging data directly to the local storage.
 
 ### 📊 Accessing Your Data
