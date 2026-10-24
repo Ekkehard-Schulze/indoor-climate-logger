@@ -13,7 +13,7 @@ An example configuration for logging sensor data locally using the **Raspberry P
 ## 🚀 Quick Start
 
 1. **Copy** all files and directories to the root directory of your microcontroller.
-2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontroller's base directory using your PC's CPython interpreter.
+2. **Run the setup script** `switch_RPiPico_to_write_log_mode.py` in the microcontroller's base directory using your PC's CPython interpreter.
 
 **What this script does automatically:**
 * Renames boot.bak to boot.py

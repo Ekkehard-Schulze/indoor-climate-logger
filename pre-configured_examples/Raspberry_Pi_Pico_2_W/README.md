@@ -1,6 +1,6 @@
 # 🍓 Raspberry Pi Pico W Configuration Example
 
-An example configuration for logging and serving sensor data over WLAN using the Raspberry Pi Pico W.
+An example configuration for logging and serving sensor data over WLAN using the Raspberry Pi Pico 2 W or Pico W.
 
 ---
 
@@ -24,7 +24,7 @@ An example configuration for logging and serving sensor data over WLAN using the
 > 💡 **Note:** Replace `192.168.178.xxx` with your microcontroller's actual IP address configuration if yours is different.
 
 
-2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontrollers base directory using your PC's CPython interpreter.
+2. **Run the setup script** `switch_RPiPico_to_write_log_mode.py` in the microcontrollers base directory using your PC's CPython interpreter.
 
 **What this script does automatically:**
 * Renames boot.bak to boot.py
