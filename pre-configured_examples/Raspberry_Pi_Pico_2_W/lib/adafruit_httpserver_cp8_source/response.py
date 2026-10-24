@@ -8,36 +8,35 @@
 """
 
 try:
+    from typing import Optional, Dict, Union, Tuple, Generator, Any
     from socket import socket
-    from typing import Any, Dict, Generator, Optional, Tuple, Union
-
     from socketpool import SocketPool
 except ImportError:
     pass
 
-import hashlib
-import json
 import os
+import json
 from binascii import b2a_base64
-from errno import EAGAIN, ECONNRESET, ENOTCONN, ETIMEDOUT
+import hashlib
+from errno import EAGAIN, ECONNRESET, ETIMEDOUT, ENOTCONN
 
 from .exceptions import (
     BackslashInPathError,
     FileNotExistsError,
     ParentDirectoryReferenceError,
 )
-from .headers import Headers
 from .mime_types import MIMETypes
 from .request import Request
 from .status import (
-    FOUND_302,
-    MOVED_PERMANENTLY_301,
-    OK_200,
-    PERMANENT_REDIRECT_308,
-    SWITCHING_PROTOCOLS_101,
-    TEMPORARY_REDIRECT_307,
     Status,
+    SWITCHING_PROTOCOLS_101,
+    OK_200,
+    MOVED_PERMANENTLY_301,
+    FOUND_302,
+    TEMPORARY_REDIRECT_307,
+    PERMANENT_REDIRECT_308,
 )
+from .headers import Headers
 
 
 class Response:  # pylint: disable=too-few-public-methods
@@ -76,7 +75,9 @@ class Response:  # pylint: disable=too-few-public-methods
         self._request = request
         self._body = body
         self._status = status if isinstance(status, Status) else Status(*status)
-        self._headers = headers.copy() if isinstance(headers, Headers) else Headers(headers)
+        self._headers = (
+            headers.copy() if isinstance(headers, Headers) else Headers(headers)
+        )
         self._cookies = cookies.copy() if cookies else {}
         self._content_type = content_type
         self._size = 0
@@ -88,9 +89,13 @@ class Response:  # pylint: disable=too-few-public-methods
     ) -> None:
         headers = self._headers.copy()
 
-        response_message_header = f"HTTP/1.1 {self._status.code} {self._status.text}\r\n"
+        response_message_header = (
+            f"HTTP/1.1 {self._status.code} {self._status.text}\r\n"
+        )
 
-        headers.setdefault("Content-Type", content_type or self._content_type or MIMETypes.DEFAULT)
+        headers.setdefault(
+            "Content-Type", content_type or self._content_type or MIMETypes.DEFAULT
+        )
         headers.setdefault("Content-Length", content_length)
         headers.setdefault("Connection", "close")
 
@@ -102,10 +107,14 @@ class Response:  # pylint: disable=too-few-public-methods
                 response_message_header += f"{header}: {value}\r\n"
         response_message_header += "\r\n"
 
-        self._send_bytes(self._request.connection, response_message_header.encode("utf-8"))
+        self._send_bytes(
+            self._request.connection, response_message_header.encode("utf-8")
+        )
 
     def _send(self) -> None:
-        encoded_body = self._body.encode("utf-8") if isinstance(self._body, str) else self._body
+        encoded_body = (
+            self._body.encode("utf-8") if isinstance(self._body, str) else self._body
+        )
 
         self._send_headers(len(encoded_body), self._content_type)
         self._send_bytes(self._request.connection, encoded_body)
@@ -326,7 +335,7 @@ class ChunkedResponse(Response):  # pylint: disable=too-few-public-methods
         self._send_headers()
 
         for chunk in self._body():
-            if len(chunk) > 0:  # Don't send empty chunks
+            if 0 < len(chunk):  # Don't send empty chunks
                 self._send_chunk(chunk)
 
         # Empty chunk to indicate end of response
@@ -426,7 +435,9 @@ class Redirect(Response):  # pylint: disable=too-few-public-methods
         """
 
         if status is not None and (permanent or preserve_method):
-            raise ValueError("Cannot specify both status and permanent/preserve_method argument")
+            raise ValueError(
+                "Cannot specify both status and permanent/preserve_method argument"
+            )
 
         if status is None:
             if preserve_method:
@@ -669,7 +680,7 @@ class Websocket(Response):  # pylint: disable=too-few-public-methods
         if fin != Websocket.FIN and opcode == Websocket.CONT:
             return Websocket.CONT, None
 
-        payload = b""
+        payload = bytes()
         if fin == Websocket.FIN and opcode == Websocket.CLOSE:
             return Websocket.CLOSE, payload
 
@@ -681,7 +692,7 @@ class Websocket(Response):  # pylint: disable=too-few-public-methods
             mask_length = self._request.connection.recv_into(buffer, 4)
             mask = buffer[:mask_length]
 
-        while length > 0:
+        while 0 < length:
             payload_length = self._request.connection.recv_into(buffer, length)
             payload += buffer[: min(payload_length, length)]
             length -= min(payload_length, length)
@@ -722,7 +733,9 @@ class Websocket(Response):  # pylint: disable=too-few-public-methods
         if self.closed:
             if fail_silently:
                 return None
-            raise RuntimeError("Websocket connection is closed, cannot receive messages")
+            raise RuntimeError(
+                "Websocket connection is closed, cannot receive messages"
+            )
 
         try:
             opcode, payload = self._read_frame()
@@ -783,7 +796,9 @@ class Websocket(Response):  # pylint: disable=too-few-public-methods
                 return
             raise RuntimeError("Websocket connection is closed, cannot send message")
 
-        determined_opcode = opcode or (Websocket.TEXT if isinstance(message, str) else Websocket.BINARY)
+        determined_opcode = opcode or (
+            Websocket.TEXT if isinstance(message, str) else Websocket.BINARY
+        )
 
         if determined_opcode == Websocket.TEXT:
             message = message.encode()

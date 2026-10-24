@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """CPython code. This works only if microcontroller is not asleep.
 Otherwise inject command using Thonny
-Intended to be run from the PC's CPython interpreter"""
+Intended to be run from the PC's CPython interpreter.
+No specific startup folder required.
+"""
 
 import time
 
@@ -19,12 +21,13 @@ from serial.tools import list_ports
 
 # Attention: the time delays are critical!
 
-picoPorts_a = list(list_ports.grep("2E8A:0005"))  # Micropython Pico, Pico 2, Pico W Pico 2 W
-picoPorts_b = list(list_ports.grep("239A:80F4"))  # Adafruit Pico     CircuitPython
+# picoPorts_a = list(list_ports.grep("2E8A:0005"))  # Micropython Pico, Pico 2, Pico W Pico 2 W
+picoPorts = list(list_ports.grep("239A:80F4"))  # Adafruit Pico     CircuitPython
 picoWPorts = list(list_ports.grep("239A:8120"))  # Adafruit Pico   W CircuitPython
+pico2Ports = list(list_ports.grep("239A:8161"))  # Adafruit Pico 2   CircuitPython
 pico2WPorts = list(list_ports.grep("239A:8162"))  # Adafruit Pico 2 W CircuitPython
 
-picoPorts = picoPorts_a + picoPorts_b + picoWPorts + pico2WPorts
+picoPorts = picoPorts + picoWPorts + pico2Ports + pico2WPorts
 
 
 utcTime = str(int(time.time()))

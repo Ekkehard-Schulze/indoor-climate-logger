@@ -8,7 +8,7 @@
 """
 
 try:
-    from typing import Dict, List
+    from typing import List, Dict
 except ImportError:
     pass
 
@@ -107,14 +107,16 @@ class MIMETypes:
     def __check_all_start_with_dot(extensions: List[str]) -> None:
         for extension in extensions:
             if not extension.startswith("."):
-                raise ValueError(f'Invalid extension: "{extension}". All extensions must start with a dot.')
+                raise ValueError(
+                    f'Invalid extension: "{extension}". All extensions must start with a dot.'
+                )
 
     @classmethod
     def __check_all_are_registered(cls, extensions: List[str]) -> None:
         registered_extensions = cls.REGISTERED.keys()
 
         for extension in extensions:
-            if extension not in registered_extensions:
+            if not extension in registered_extensions:
                 raise ValueError(f'Extension "{extension}" is not registered. ')
 
     @classmethod
@@ -139,7 +141,9 @@ class MIMETypes:
         current_extensions = iter(cls.REGISTERED.keys())
 
         cls.REGISTERED = {
-            extension: cls.REGISTERED[extension] for extension in current_extensions if extension in extensions
+            extension: cls.REGISTERED[extension]
+            for extension in current_extensions
+            if extension in extensions
         }
 
     @classmethod

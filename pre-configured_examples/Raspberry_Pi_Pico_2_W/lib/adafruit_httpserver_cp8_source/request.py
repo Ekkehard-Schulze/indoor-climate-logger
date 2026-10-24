@@ -8,9 +8,8 @@
 """
 
 try:
+    from typing import List, Dict, Tuple, Union, Any, TYPE_CHECKING
     from socket import socket
-    from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
-
     from socketpool import SocketPool
 
     if TYPE_CHECKING:
@@ -22,7 +21,7 @@ import json
 
 from .headers import Headers
 from .interfaces import _IFieldStorage, _IXSSSafeFieldStorage
-from .methods import DELETE, PATCH, POST, PUT
+from .methods import POST, PUT, PATCH, DELETE
 
 
 class QueryParams(_IXSSSafeFieldStorage):
@@ -57,7 +56,9 @@ class QueryParams(_IXSSSafeFieldStorage):
     def _add_field_value(self, field_name: str, value: str) -> None:
         super()._add_field_value(field_name, value)
 
-    def get(self, field_name: str, default: str = None, *, safe=True) -> Union[str, None]:
+    def get(
+        self, field_name: str, default: str = None, *, safe=True
+    ) -> Union[str, None]:
         return super().get(field_name, default, safe=safe)
 
     def get_list(self, field_name: str, *, safe=True) -> List[str]:
@@ -86,7 +87,9 @@ class File:
     content: Union[str, bytes]
     """Content of the file."""
 
-    def __init__(self, filename: str, content_type: str, content: Union[str, bytes]) -> None:
+    def __init__(
+        self, filename: str, content_type: str, content: Union[str, bytes]
+    ) -> None:
         self.filename = filename
         self.content_type = content_type
         self.content = content
@@ -104,7 +107,11 @@ class File:
             with open(file.filename, "wb") as f:
                 f.write(file.content_bytes)
         """
-        return self.content.encode("utf-8") if isinstance(self.content, str) else self.content
+        return (
+            self.content.encode("utf-8")
+            if isinstance(self.content, str)
+            else self.content
+        )
 
     @property
     def size(self) -> int:
@@ -196,7 +203,8 @@ class FormData(_IXSSSafeFieldStorage):
             return
 
         for field_name, value in [
-            key_value.split("=", 1) if "=" in key_value else (key_value, "") for key_value in decoded_data.split("&")
+            key_value.split("=", 1) if "=" in key_value else (key_value, "")
+            for key_value in decoded_data.split("&")
         ]:
             self._add_field_value(field_name, value)
 
@@ -235,7 +243,9 @@ class FormData(_IXSSSafeFieldStorage):
     def _add_field_value(self, field_name: str, value: Union[str, bytes]) -> None:
         super()._add_field_value(field_name, value)
 
-    def get(self, field_name: str, default: Union[str, bytes] = None, *, safe=True) -> Union[str, bytes, None]:
+    def get(
+        self, field_name: str, default: Union[str, bytes] = None, *, safe=True
+    ) -> Union[str, bytes, None]:
         return super().get(field_name, default, safe=safe)
 
     def get_list(self, field_name: str, *, safe=True) -> List[Union[str, bytes]]:
@@ -350,7 +360,9 @@ class Request:  # pylint: disable=too-many-instance-attributes
 
         return {
             name: value.strip('"')
-            for name, value in [cookie.strip().split("=", 1) for cookie in cookie_header.split(";")]
+            for name, value in [
+                cookie.strip().split("=", 1) for cookie in cookie_header.split(";")
+            ]
         }
 
     @property
@@ -422,7 +434,11 @@ class Request:  # pylint: disable=too-many-instance-attributes
         Body of the request, as a JSON-decoded dictionary.
         Only available for POST, PUT, PATCH and DELETE requests.
         """
-        return json.loads(self.body) if (self.body and self.method in (POST, PUT, PATCH, DELETE)) else None
+        return (
+            json.loads(self.body)
+            if (self.body and self.method in (POST, PUT, PATCH, DELETE))
+            else None
+        )
 
     @property
     def _raw_header_bytes(self) -> bytes:
@@ -444,7 +460,9 @@ class Request:  # pylint: disable=too-many-instance-attributes
     ) -> Tuple[str, str, QueryParams, str, Headers]:
         """Parse HTTP Start line to method, path, query_params and http_version."""
 
-        start_line, headers_string = header_bytes.decode("utf-8").strip().split("\r\n", 1)
+        start_line, headers_string = (
+            header_bytes.decode("utf-8").strip().split("\r\n", 1)
+        )
 
         method, path, http_version = start_line.strip().split()
 

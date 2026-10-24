@@ -1,4 +1,4 @@
-"""DS3231 set on microcontroller running CircuitPathon. 
+"""DS3231 set on microcontroller running CircuitPathon.
 Use Thonny IDE to tranfer PC-system time on startup to the controller.
 Then set DS3231 with optional offset_hours using the controller's local time.
 

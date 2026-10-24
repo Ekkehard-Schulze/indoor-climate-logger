@@ -8,7 +8,7 @@
 """
 
 try:
-    from typing import Any, Dict, List, Union
+    from typing import List, Dict, Union, Any
 except ImportError:
     pass
 
@@ -81,7 +81,9 @@ def _encode_html_entities(value: Union[str, None]) -> Union[str, None]:
 
 
 class _IXSSSafeFieldStorage(_IFieldStorage):
-    def get(self, field_name: str, default: Any = None, *, safe=True) -> Union[Any, None]:
+    def get(
+        self, field_name: str, default: Any = None, *, safe=True
+    ) -> Union[Any, None]:
         if safe:
             return _encode_html_entities(super().get(field_name, default))
 
@@ -90,7 +92,9 @@ class _IXSSSafeFieldStorage(_IFieldStorage):
 
     def get_list(self, field_name: str, *, safe=True) -> List[Any]:
         if safe:
-            return [_encode_html_entities(value) for value in super().get_list(field_name)]
+            return [
+                _encode_html_entities(value) for value in super().get_list(field_name)
+            ]
 
         _debug_warning_nonencoded_output()
         return super().get_list(field_name)

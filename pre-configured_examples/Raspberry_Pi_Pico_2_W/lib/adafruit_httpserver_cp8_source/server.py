@@ -8,9 +8,8 @@
 """
 
 try:
+    from typing import Callable, Protocol, Union, List, Tuple, Dict, Iterable
     from socket import socket
-    from typing import Callable, Dict, Iterable, List, Protocol, Tuple, Union
-
     from socketpool import SocketPool
 except ImportError:
     pass
@@ -19,20 +18,21 @@ from errno import EAGAIN, ECONNRESET, ETIMEDOUT
 from time import monotonic, sleep
 from traceback import print_exception
 
-from .authentication import Basic, Bearer, Token, require_authentication
+from .authentication import Basic, Token, Bearer, require_authentication
 from .exceptions import (
+    ServerStoppedError,
     AuthenticationError,
     FileNotExistsError,
     InvalidPathError,
-    ServerStoppedError,
     ServingFilesDisabledError,
 )
 from .headers import Headers
 from .methods import GET, HEAD
 from .request import Request
-from .response import FileResponse, Response
-from .route import Route, _Routes
-from .status import BAD_REQUEST_400, FORBIDDEN_403, NOT_FOUND_404, UNAUTHORIZED_401
+from .response import Response, FileResponse
+from .route import _Routes, Route
+from .status import BAD_REQUEST_400, UNAUTHORIZED_401, FORBIDDEN_403, NOT_FOUND_404
+
 
 NO_REQUEST = "no_request"
 CONNECTION_TIMED_OUT = "connection_timed_out"
@@ -52,7 +52,9 @@ class Server:  # pylint: disable=too-many-instance-attributes
     root_path: str
     """Root directory to serve files from. ``None`` if serving files is disabled."""
 
-    def __init__(self, socket_source: Protocol, root_path: str = None, *, debug: bool = False) -> None:
+    def __init__(
+        self, socket_source: Protocol, root_path: str = None, *, debug: bool = False
+    ) -> None:
         """Create a server, and get it ready to run.
 
         :param socket: An object that is a source of sockets. This could be a `socketpool`
@@ -169,7 +171,9 @@ class Server:  # pylint: disable=too-many-instance-attributes
         except OSError as error:
             raise RuntimeError(f"Cannot start server on {host}:{port}") from error
 
-    def serve_forever(self, host: str, port: int = 80, *, poll_interval: float = None) -> None:
+    def serve_forever(
+        self, host: str, port: int = 80, *, poll_interval: float = None
+    ) -> None:
         """
         Wait for HTTP requests at the given host and port. Does not return.
         Ignores any exceptions raised by the handler function and continues to serve.
@@ -206,7 +210,9 @@ class Server:  # pylint: disable=too-many-instance-attributes
         self.host, self.port = host, port
 
         self.stopped = False
-        self._sock = self._socket_source.socket(self._socket_source.AF_INET, self._socket_source.SOCK_STREAM)
+        self._sock = self._socket_source.socket(
+            self._socket_source.AF_INET, self._socket_source.SOCK_STREAM
+        )
         self._sock.bind((host, port))
         self._sock.listen(10)
         self._sock.setblocking(False)  # Non-blocking socket
@@ -248,13 +254,17 @@ class Server:  # pylint: disable=too-many-instance-attributes
         received_body_bytes = request.body
 
         # Receiving remaining body bytes
-        request.body = self._receive_body_bytes(sock, received_body_bytes, content_length)
+        request.body = self._receive_body_bytes(
+            sock, received_body_bytes, content_length
+        )
 
         return request
 
-    def _receive_header_bytes(self, sock: Union["SocketPool.Socket", "socket.socket"]) -> bytes:
+    def _receive_header_bytes(
+        self, sock: Union["SocketPool.Socket", "socket.socket"]
+    ) -> bytes:
         """Receive bytes until a empty line is received."""
-        received_bytes = b""
+        received_bytes = bytes()
         while b"\r\n\r\n" not in received_bytes:
             try:
                 length = sock.recv_into(self._buffer, len(self._buffer))
@@ -286,7 +296,9 @@ class Server:  # pylint: disable=too-many-instance-attributes
                 raise ex
         return received_body_bytes[:content_length]
 
-    def _handle_request(self, request: Request, handler: Union[Callable, None]) -> Union[Response, None]:
+    def _handle_request(
+        self, request: Request, handler: Union[Callable, None]
+    ) -> Union[Response, None]:
         try:
             # Check server authentications if necessary
             if self._auths:
@@ -504,9 +516,11 @@ def _debug_response_sent(response: "Response", time_elapsed: float):
     req_size = len(response._request.raw_request)
     status = response._status
     res_size = response._size
-    time_elapsed_ms = f"{round(time_elapsed * 1000)}ms"
+    time_elapsed_ms = f"{round(time_elapsed*1000)}ms"
 
-    print(f'{client_ip} -- "{method} {path}" {req_size} -- "{status}" {res_size} -- {time_elapsed_ms}')
+    print(
+        f'{client_ip} -- "{method} {path}" {req_size} -- "{status}" {res_size} -- {time_elapsed_ms}'
+    )
 
 
 def _debug_stopped_server(server: "Server"):  # pylint: disable=unused-argument
