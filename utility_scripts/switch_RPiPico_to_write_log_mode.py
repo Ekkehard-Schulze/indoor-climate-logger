@@ -4,6 +4,7 @@ Run this script in CircuitPython's base folder
 
 import os
 import shutil
+import sys
 import time
 from pathlib import Path
 
@@ -13,6 +14,8 @@ from serial.tools import list_ports
 p_name = "indoor-climate-logger.py"
 
 lib_folder_vs_prefix = "lib_cp-"  # e.g. "lib_cp-10.x"
+
+VERBOSE = False
 
 
 def merge_lib_cp(base_directory="."):
@@ -25,8 +28,8 @@ def merge_lib_cp(base_directory="."):
     lib_target_dir = base_path / "lib"
 
     if not boot_file_path.exists():
-        print("'boot_out.txt' not found.)
-        print("Restart this script in the base folder of your CircuitPython device. I abort.")
+        print("'boot_out.txt' not found.")
+        print("Rerun this script in the base folder of your CircuitPython device. I abort.")
         sys.exit()
         return
 
@@ -34,21 +37,22 @@ def merge_lib_cp(base_directory="."):
 
     version_keyword = "CircuitPython "
     if version_keyword not in boot_content:
-        print("Aborted: Version token not found in 'boot_out.txt'.")
-        sys.exit()        
+        print("Aborted: CircuitPython Version token not found in 'boot_out.txt'.")
+        sys.exit()
         return
 
-    # Fixed syntax: added missing [1] and [0] index selections for split operations
     version_str = boot_content.split(version_keyword)[1].split()[0]
     major_version = version_str.split(".")[0]
-    print(f"Identified CircuitPython Major Version: {major_version}")
+    if VERBOSE:
+        print(f"Identified CircuitPython Major Version: {major_version}")
 
     source_folder_name = f"{lib_folder_vs_prefix}{major_version}.x"
     source_folder_path = base_path / source_folder_name
 
     if not source_folder_path.exists():
-        print(f"No folder '{source_folder_name}' found.")
-        print("Assuming the lib/ folder is already complete. Continuing.")
+        if VERBOSE:
+            print(f"No folder '{source_folder_name}' found.")
+            print("Assuming the lib/ folder is already complete. Continuing.")
         return
 
     # Create the 'lib' folder if it doesn't exist
@@ -89,7 +93,6 @@ def merge_lib_cp(base_directory="."):
         if item.is_dir() and item.name.startswith(lib_folder_vs_prefix):
             shutil.rmtree(item)
             print(f" -> Removed unused folder '{item.name}'.")
-
     print("Library migration completed successfully!")
 
 
@@ -103,7 +106,8 @@ if os.path.exists("boot.bak"):
     os.rename("boot.bak", "boot.py")
     print("\nboot.bak renamed to boot.py\n")
 else:
-    print("\nNo boot.bak found\n")
+    if VERBOSE:
+        print("\nNo boot.bak found\n")
     err = True
 
 try:
@@ -113,8 +117,9 @@ try:
     if x == "yes":
         os.remove(p_name)
 except FileNotFoundError:
-    print(f"\nNo local file '{p_name}' found to copy as code.py\n")
-    err = True
+    if VERBOSE:
+        print(f"\nNo local file '{p_name}' found to copy as code.py\n")
+    # err = True
 
 
 # ---------------- Hard Reset Section ---------------------------------------------------
@@ -157,5 +162,5 @@ else:
     if not err:
         print("\nboot.bak renamed to boot.py and microcontroller reset completed.\n")
     else:
-        print("\nMicrocontroller hardware reset issued.\n")
+        print("\nMicrocontroller hardware reset issued.\nWarning: NO boot.bak renamed to boot.py\n")
 time.sleep(6)
