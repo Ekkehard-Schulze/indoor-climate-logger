@@ -16,7 +16,10 @@ An example configuration for logging sensor data locally using the **Raspberry P
 2. **Run the setup script** `switch_RPiPico_to_USB_read_log_mode.py` in the microcontroller's base directory using your PC's CPython interpreter.
 
 **What this script does automatically:**
-* Renames the necessary files and folders.
+* Renames boot.bak to boot.py
+* Renames indoor-climate-logger.py to code.py
+* fills the lib folder with the drivers for the installed CircuitPython version
+* deletes the lib_cp-X.x folders, and optionally also indoor-climate-logger.py
 * Restarts your controller, which then...
 * Starts logging data directly to the local storage.
 
