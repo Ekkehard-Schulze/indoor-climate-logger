@@ -25,7 +25,9 @@ def merge_lib_cp(base_directory="."):
     lib_target_dir = base_path / "lib"
 
     if not boot_file_path.exists():
-        print("'boot_out.txt' not found. No library files copied.")
+        print("'boot_out.txt' not found.)
+        print("Restart this script in the base folder of your CircuitPython device. I abort.")
+        sys.exit()
         return
 
     boot_content = boot_file_path.read_text(encoding="utf-8")
@@ -33,6 +35,7 @@ def merge_lib_cp(base_directory="."):
     version_keyword = "CircuitPython "
     if version_keyword not in boot_content:
         print("Aborted: Version token not found in 'boot_out.txt'.")
+        sys.exit()        
         return
 
     # Fixed syntax: added missing [1] and [0] index selections for split operations
@@ -118,16 +121,12 @@ except FileNotFoundError:
 
 # Target ports registration for execution
 
-
 picoPorts = list(list_ports.grep("239A:80F4"))  # Adafruit Pico (CircuitPython)
 picoWPorts = list(list_ports.grep("239A:8120"))  # Adafruit Pico W (CircuitPython)
 pico2Ports = list(list_ports.grep("239A:8161"))  # Adafruit Pico 2 (CircuitPython)
 pico2WPorts = list(list_ports.grep("239A:8162"))  # Adafruit Pico 2 W (CircuitPython)
 
 picoPorts = picoPorts + picoWPorts + pico2Ports + pico2WPorts
-
-
-utcTime = str(int(time.time()))
 
 
 pythonInject = r"""
@@ -159,4 +158,4 @@ else:
         print("\nboot.bak renamed to boot.py and microcontroller reset completed.\n")
     else:
         print("\nMicrocontroller hardware reset issued.\n")
-    time.sleep(6)
+time.sleep(6)
