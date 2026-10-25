@@ -1273,10 +1273,8 @@ try:  # -------- outer error handler loop -------------------
             pass
 
     # ------------------- main loop ------------------------------------
-
-    while (
-        True
-    ):  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
+    LOOP_DELAY = 0.3333  # sec
+    while True:  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
         # time check if http_server running
@@ -1290,7 +1288,8 @@ try:  # -------- outer error handler loop -------------------
 
         now_monotonic_time = time.monotonic()
         if (
-            now_monotonic_time - last_monotonic_log_time >= LOG_every_n_seconds or not USE_HTTP_server
+            (now_monotonic_time + (LOOP_DELAY / 2)) - last_monotonic_log_time >= LOG_every_n_seconds
+            or not USE_HTTP_server
         ):  # no time check if http_server is not running
             # last_log_time = time.time()
             last_monotonic_log_time = now_monotonic_time
@@ -1331,13 +1330,13 @@ try:  # -------- outer error handler loop -------------------
                 with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
                     except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
             if USE_ALARM_wakeup_sleep:
-                # 1 second light sleep to save some power
-                time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + 1)
+                # 0.3333 second light sleep to save some power
+                time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
                 # Do a light sleep until the alarm wakes us.
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
             else:
-                time.sleep(0.3333) # previously 1 used. Now testing 0.333 to have better time accuracy
+                time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.333 to have better time accuracy
 
         else:  # alternative timing handler for none-http application
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
