@@ -1245,9 +1245,7 @@ try:  # -------- outer error handler loop -------------------
     # ----------------- init logger ----------------------------------
     # starttime = time.time()
     # last_log_time = time.time() - LOG_every_n_seconds
-    # time.monotonic replaced back to time.time 20261025
-    # because it is float, it has 7 seconds resolution after 1 year! up-time. time.time in circuit-python is a integer!
-    last_epoch_log_time = time.time() - LOG_every_n_seconds
+    last_monotonic_log_time = time.monotonic() - LOG_every_n_seconds
 
     if USE_WATCHdog:
         from microcontroller import watchdog
@@ -1281,7 +1279,6 @@ try:  # -------- outer error handler loop -------------------
 
         # time check if http_server running
         # if time.time() - last_log_time >= LOG_every_n_seconds or not USE_HTTP_server: # no time check if http_server is not running
-        # a creep-less timer would be a modulo timer based on time.time
         if USE_WATCHdog:
             watchdog.feed()
         # re-connect wifi if connection broke
@@ -1289,12 +1286,13 @@ try:  # -------- outer error handler loop -------------------
             wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
             pool = socketpool.SocketPool(wifi.radio)
 
-        now_epoch_time = time.time()
+        now_monotonic_time = time.monotonic()
         if (
-            (now_epoch_time + (LOOP_DELAY / 2)) - last_epoch_log_time >= LOG_every_n_seconds or not USE_HTTP_server
+            (now_monotonic_time + (LOOP_DELAY / 2)) - last_monotonic_log_time >= LOG_every_n_seconds
+            or not USE_HTTP_server
         ):  # no time check if http_server is not running
             # last_log_time = time.time()
-            last_epoch_log_time = now_epoch_time
+            last_monotonic_log_time = now_monotonic_time
 
             sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
@@ -1333,7 +1331,7 @@ try:  # -------- outer error handler loop -------------------
                     except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
             if USE_ALARM_wakeup_sleep:
                 # LOOP_DELAY second light sleep to save some power
-                time_alarm = alarm.time.TimeAlarm(epoch_time=time.time() + LOOP_DELAY)
+                time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
                 # Do a light sleep until the alarm wakes us.
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
@@ -1343,14 +1341,16 @@ try:  # -------- outer error handler loop -------------------
         else:  # alternative timing handler for none-http application
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                 time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
-                remaining_time = LOG_every_n_seconds - (ALARM_SLEEP_HOLDOFF_TIME + (time.time() - last_epoch_log_time))
+                remaining_time = LOG_every_n_seconds - (
+                    ALARM_SLEEP_HOLDOFF_TIME + (time.monotonic() - last_monotonic_log_time)
+                )
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
-                    time_alarm = alarm.time.TimeAlarm(epoch_time=time.time() + remaining_time)
+                    time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
                     # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
-                remaining_time = LOG_every_n_seconds - (time.time() - last_epoch_log_time)
+                remaining_time = LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
                     time.sleep(remaining_time)
