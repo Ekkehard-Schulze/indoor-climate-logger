@@ -29,8 +29,9 @@ def merge_lib_cp(base_directory="."):
 
     if not boot_file_path.exists():
         print("'boot_out.txt' not found.")
-        print("Rerun this script in the base folder of your CircuitPython device. I abort.")
-        sys.exit()
+        print("You might need to rerus this script in the base folder of your CircuitPython device.")
+        print("Continuing...")
+        # sys.exit()
         return
 
     boot_content = boot_file_path.read_text(encoding="utf-8")
@@ -52,7 +53,7 @@ def merge_lib_cp(base_directory="."):
     if not source_folder_path.exists():
         if VERBOSE:
             print(f"No folder '{source_folder_name}' found.")
-            print("Assuming the lib/ folder is already complete. Continuing.")
+            print("Assuming the lib/ folder is already complete. Continuing...")
         return
 
     # Create the 'lib' folder if it doesn't exist
@@ -80,12 +81,12 @@ def merge_lib_cp(base_directory="."):
     if not has_files:
         print("Notice: Source folder was already empty.")
 
-    # # Delete the now empty source folder
-    # try:
-    # shutil.rmtree(source_folder_path)
-    # print(f"Folder '{source_folder_name}' deleted successfully.")
-    # except OSError:
-    # print(f"Error: '{source_folder_name}' could not be deleted.")
+    # Delete the now empty source folder
+    try:
+        shutil.rmtree(source_folder_path)
+        print(f"Folder '{source_folder_name}' deleted successfully.")
+    except OSError:
+        print(f"Error: '{source_folder_name}' could not be deleted.")
 
     # Delete all remaining folders that start with the prefix
     print(f"Cleaning up alternative '{lib_folder_vs_prefix}*' folders...")
@@ -97,6 +98,8 @@ def merge_lib_cp(base_directory="."):
 
 
 # ----------- main ----------------------------
+
+print("Preparing for write mount and restart...")
 
 err = False
 
@@ -157,6 +160,22 @@ else:
             time.sleep(0.05)
         time.sleep(0.25)
         s.write(b"\x04")  # Exit raw REPL interface targets and evaluate code execution
+    # vs. 10 works only with a second attempt
+    try:
+        with serial.Serial(picoSerialPort) as s:
+            s.write(b"\x03")  # Interrupt the currently running script
+            time.sleep(1.3)
+            s.write(b"\x03")  # Send it twice to secure raw REPL state entry
+            time.sleep(1.3)
+            s.write(b"\x01")  # Switch over to raw REPL mode interface
+            time.sleep(0.7)
+            for code in pythonInject:
+                s.write(bytes(code + "\r\n", "ascii"))
+                time.sleep(0.05)
+            time.sleep(0.25)
+            s.write(b"\x04")  # Exit raw REPL interface targets and evaluate code execution
+    except Exception:
+        pass
 
     print(f"\nRaspberry Pi Pico found and processed at {picoSerialPort}\n")
     if not err:
