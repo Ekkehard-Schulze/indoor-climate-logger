@@ -1330,7 +1330,7 @@ try:  # -------- outer error handler loop -------------------
                 with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
                     except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
             if USE_ALARM_wakeup_sleep:
-                # 0.3333 second light sleep to save some power
+                # LOOP_DELAY second light sleep to save some power
                 time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
                 # Do a light sleep until the alarm wakes us.
                 alarm.light_sleep_until_alarms(time_alarm)
