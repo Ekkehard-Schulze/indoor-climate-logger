@@ -1276,7 +1276,7 @@ try:  # -------- outer error handler loop -------------------
 
     while (
         True
-    ):  # if http_server is running this loop runs every second for http poll and writes data every LOG_every_n_seconds
+    ):  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
         # time check if http_server running
@@ -1337,7 +1337,7 @@ try:  # -------- outer error handler loop -------------------
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
             else:
-                time.sleep(1)
+                time.sleep(0.3333) # previously 1 used. Now testing 0.333 to have better time accuracy
 
         else:  # alternative timing handler for none-http application
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
