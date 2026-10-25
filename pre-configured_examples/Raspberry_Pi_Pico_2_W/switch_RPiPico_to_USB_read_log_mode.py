@@ -40,6 +40,7 @@ os.rename("/boot.py", "/boot.bak")
 microcontroller.reset()
 """.splitlines()[1:]
 
+print("Preparing for mount mount and restart...")
 
 if not picoPorts:
     print("No Raspberry Pi Pico found")
@@ -65,4 +66,4 @@ else:
 
     print("\nRaspberry Pi Pico found at " + str(picoSerialPort) + "\n")
     print("\nboot.py renamed to boot.bak and controller reset.\n")
-    time.sleep(6)
+time.sleep(6)
