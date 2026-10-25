@@ -80,12 +80,12 @@ def merge_lib_cp(base_directory="."):
     if not has_files:
         print("Notice: Source folder was already empty.")
 
-    # Delete the now empty source folder
-    try:
-        shutil.rmtree(source_folder_path)
-        print(f"Folder '{source_folder_name}' deleted successfully.")
-    except OSError:
-        print(f"Error: '{source_folder_name}' could not be deleted.")
+    # # Delete the now empty source folder
+    # try:
+    # shutil.rmtree(source_folder_path)
+    # print(f"Folder '{source_folder_name}' deleted successfully.")
+    # except OSError:
+    # print(f"Error: '{source_folder_name}' could not be deleted.")
 
     # Delete all remaining folders that start with the prefix
     print(f"Cleaning up alternative '{lib_folder_vs_prefix}*' folders...")
@@ -104,7 +104,7 @@ merge_lib_cp()
 
 if os.path.exists("boot.bak"):
     os.rename("boot.bak", "boot.py")
-    print("\nboot.bak renamed to boot.py\n")
+    # print("\nboot.bak renamed to boot.py\n")
 else:
     if VERBOSE:
         print("\nNo boot.bak found\n")
@@ -160,7 +160,7 @@ else:
 
     print(f"\nRaspberry Pi Pico found and processed at {picoSerialPort}\n")
     if not err:
-        print("\nboot.bak renamed to boot.py and microcontroller reset completed.\n")
+        print("\nboot.bak renamed to boot.py and microcontroller reset issued.\n")
     else:
         print("\nMicrocontroller hardware reset issued.\nWarning: NO boot.bak renamed to boot.py\n")
 time.sleep(6)
