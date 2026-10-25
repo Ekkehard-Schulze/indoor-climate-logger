@@ -1245,6 +1245,13 @@ try:  # -------- outer error handler loop -------------------
     # ----------------- init logger ----------------------------------
     # starttime = time.time()
     # last_log_time = time.time() - LOG_every_n_seconds
+    # Attention: time.monotonic() looses resolution over up-time.
+    # for steps <300 ms reboot every 10 days, 7 seconds increments after 1 y
+    # for longer offline logs replace by time.time()
+    # for creep-less timing use modulo on time.time() epoche
+    # time.monotonic() was appropriate for WLAN application with 12h re-boot intervals
+    # adapt timing strategy to specific requirements
+
     last_monotonic_log_time = time.monotonic() - LOG_every_n_seconds
 
     if USE_WATCHdog:
