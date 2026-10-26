@@ -1317,7 +1317,9 @@ try:  # -------- outer error handler loop -------------------
             pass
 
     # ------------------- main loop ------------------------------------
+
     LOOP_DELAY = 0.2  # sec, choose even numbers
+
     while True:  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
@@ -1325,33 +1327,33 @@ try:  # -------- outer error handler loop -------------------
         # if time.time() - last_log_time >= LOG_every_n_seconds or not USE_HTTP_server: # no time check if http_server is not running
         if USE_WATCHdog:
             watchdog.feed()
-        # re-connect wifi if connection broke
-        if USE_HTTP_server and MONITOR_WIFI_connection and not wifi.radio.connected:
-            wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
-            pool = socketpool.SocketPool(wifi.radio)
 
-        now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
-        if (
-            now_monotonic_ms_time - last_monotonic_ms_log_time
-            >= LOG_every_n_seconds * FACTOR_s_to_ms
-            - ((LOOP_DELAY * FACTOR_s_to_ms) // 2)  # subtract half a loop delay for rounding to reduce creepage
-            or not USE_HTTP_server
-        ):  # no time check if http_server is not running
-            last_monotonic_ms_log_time = now_monotonic_ms_time  # comit to record now
+        if USE_HTTP_server:
+            now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
 
-            write_data_frame()  # <------------ !
+            if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
+                (LOOP_DELAY * FACTOR_s_to_ms) // 2
+            ):  # subtract half a loop delay for rounding to reduce creepage
+                last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
 
-            if USE_HTTP_server:
-                reboot_counter_for_server -= LOOP_DELAY  # reboot every 12 hours
+                write_data_frame()  # <------------ !
+
+                reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
                 if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
                     reset_microcontroller(reset_delay=3)
-        # Process waiting www requests
-        if USE_HTTP_server:
+
+                # re-connect wifi if connection broke
+                if USE_HTTP_server and MONITOR_WIFI_connection and not wifi.radio.connected:
+                    wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
+                    pool = socketpool.SocketPool(wifi.radio)
+
+            # Process waiting www requests
             try:
                 pool_result = server.poll()
             except OSError as e:
                 with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
                     except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
+
             if USE_ALARM_wakeup_sleep:
                 # LOOP_DELAY second light sleep to save some power
                 time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
@@ -1361,7 +1363,9 @@ try:  # -------- outer error handler loop -------------------
             else:
                 time.sleep(LOOP_DELAY)
 
-        else:  # alternative timing handler for none-http application
+        else:  # alternative timing handler for none-http stand alone logging
+            write_data_frame()  # <------------ !
+
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                 time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
                 remaining_time = LOG_every_n_seconds - (

@@ -1337,28 +1337,39 @@ try:  # -------- outer error handler loop -------------------
 
     LOOP_DELAY = 0.333  # sec
 
+    # this is to monitor overflows
+    last_loop_time = None
+
     while True:
         if USE_WATCHdog:
             watchdog.feed()
-        # re-connect wifi if connection broke
-        if USE_HTTP_server and MONITOR_WIFI_connection and not wifi.radio.connected:
-            wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
-            pool = socketpool.SocketPool(wifi.radio)
 
-        if get_wait_seconds_for_next_log() == 0 or not USE_HTTP_server:  # no time check if http_server is not running
-            write_data_frame()  # <------------ !
+        if USE_HTTP_server:
+            wait_seconds_begin = get_wait_seconds_for_next_log()
 
-            if USE_HTTP_server:
-                reboot_counter_for_server -= LOOP_DELAY  # reboot every 12 hours
+            # detect zero overflow of down-counter
+            if last_loop_time is not None and wait_seconds_begin > last_loop_time:
+                write_data_frame()  # <------------ !
+                last_loop_time = None
+                reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
                 if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
                     reset_microcontroller(reset_delay=3)
-        # Process waiting www requests
-        if USE_HTTP_server:
+
+                # re-connect wifi if connection broke
+                if MONITOR_WIFI_connection and not wifi.radio.connected:
+                    wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
+                    pool = socketpool.SocketPool(wifi.radio)
+            else:
+                last_loop_time = wait_seconds_begin
+
+            # Process waiting www requests
             try:
                 pool_result = server.poll()
             except OSError as e:
                 with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
                     except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
+
+            # issue loop time delay
             if USE_ALARM_wakeup_sleep:
                 time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
                 # Do a light sleep until the alarm wakes us.
@@ -1367,7 +1378,9 @@ try:  # -------- outer error handler loop -------------------
             else:
                 time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.333 to have better time accuracy
 
-        else:  # alternative timing handler for none-http application
+        else:  # alternative timing handler for none-http stand alone logging
+            write_data_frame()  # <------------ !
+
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                 time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
                 remaining_time = get_wait_seconds_for_next_log()
