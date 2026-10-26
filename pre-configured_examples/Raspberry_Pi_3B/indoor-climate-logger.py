@@ -997,6 +997,33 @@ def get_time_date_str():
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
+def write_data_frame():
+    sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
+
+    logline = LOGGER_name + SEPARATOR + get_time_date_str() + sensor_measurements
+
+    if VERBOSE:
+        print(logline)
+    if WRITE_LOG_data_to_file:
+        with open(log_file_path, "a") as log_file:
+            log_file.write(logline + "\n")
+        # delete the oldest 24 h of data
+        if max_exception_file_size:
+            truncate_log_top(
+                log_file_path,
+                MAX_log_file_size_in_bytes,
+                n_lines_to_delete=int((24 * 60 * 60) / LOG_every_n_seconds),
+            )
+    if LOG_EXCEPTIONS_to_file:
+        truncate_log_top(
+            exceptions_file_path,
+            max_exception_file_size,
+            n_lines_to_delete=50,
+        )
+    if quit_after_one_log:
+        sys.exit()
+
+
 # --------- main  ----------------------------
 # init exceptions log file
 if MAX_log_file_size_in_bytes:
@@ -1243,16 +1270,26 @@ try:  # -------- outer error handler loop -------------------
             write_header_line()
 
     # ----------------- init logger ----------------------------------
-    # starttime = time.time()
-    # last_log_time = time.time() - LOG_every_n_seconds
-    # Attention: time.monotonic() looses resolution over up-time.
-    # for steps <300 ms reboot every 10 days, 7 seconds increments after 1 y
-    # for longer offline logs replace by time.time()
-    # for creep-less timing use modulo on time.time() epoche
+    # starttime = time.time() # originally used
+    # some authors recommend time.monotonic(), which howeve is problematic here, because_
+    # time.monotonic() looses resolution over up-time, because it is a size-limited float
+    # for steps <300 ms reboot every 10 days, for steps <7 seconds increments reboot after after 1 y !
+    # for longer offline logs replace time.monotonic by time.time(), which,
+    # however is an integer with 1 s resolution!!! in micropython and circuitpython, whereas it is a float in CPython
+    # ------------------------------------------------
     # time.monotonic() was appropriate for WLAN application with 12h re-boot intervals
-    # adapt timing strategy to specific requirements
+    # time.monotonic_ns() gives an arbitrary-precision integer, and is available in CPython an CircuitPython, but not in Micropython
+    # time.monotonic_ns() // DIVISOR_ns_to_ms (integer division!), provides  ms
+    # as integer. Integers have no size limitation in Python. This can run long times.
 
-    last_monotonic_log_time = time.monotonic() - LOG_every_n_seconds
+    # not implemented here: for creep-less timing use modulo on time.time() epoche  or on seconds in hour
+
+    DIVISOR_ns_to_ms = 1_000_000  # ns to ms
+    FACTOR_s_to_ms = 1_000  # s to ms
+    FACTOR_ms_to_s = 0.001  # ms to s
+
+    #                              subtract one logging inteval to have it read a frame right now
+    last_monotonic_ms_log_time = time.monotonic_ns() // DIVISOR_ns_to_ms - LOG_every_n_seconds * FACTOR_s_to_ms
 
     if USE_WATCHdog:
         from microcontroller import watchdog
@@ -1280,7 +1317,7 @@ try:  # -------- outer error handler loop -------------------
             pass
 
     # ------------------- main loop ------------------------------------
-    LOOP_DELAY = 0.3333  # sec
+    LOOP_DELAY = 0.2  # sec, choose even numbers
     while True:  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
@@ -1293,40 +1330,19 @@ try:  # -------- outer error handler loop -------------------
             wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
             pool = socketpool.SocketPool(wifi.radio)
 
-        now_monotonic_time = time.monotonic()
+        now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
         if (
-            (now_monotonic_time + (LOOP_DELAY / 2)) - last_monotonic_log_time >= LOG_every_n_seconds
+            now_monotonic_ms_time - last_monotonic_ms_log_time
+            >= LOG_every_n_seconds * FACTOR_s_to_ms
+            - ((LOOP_DELAY * FACTOR_s_to_ms) // 2)  # subtract half a loop delay for rounding to reduce creepage
             or not USE_HTTP_server
         ):  # no time check if http_server is not running
-            # last_log_time = time.time()
-            last_monotonic_log_time = now_monotonic_time
+            last_monotonic_ms_log_time = now_monotonic_ms_time  # comit to record now
 
-            sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
+            write_data_frame()  # <------------ !
 
-            logline = LOGGER_name + SEPARATOR + get_time_date_str() + sensor_measurements
-
-            if VERBOSE:
-                print(logline)
-            if WRITE_LOG_data_to_file:
-                with open(log_file_path, "a") as log_file:
-                    log_file.write(logline + "\n")
-                # delete the oldest 24 h of data
-                if max_exception_file_size:
-                    truncate_log_top(
-                        log_file_path,
-                        MAX_log_file_size_in_bytes,
-                        n_lines_to_delete=int((24 * 60 * 60) / LOG_every_n_seconds),
-                    )
-            if LOG_EXCEPTIONS_to_file:
-                truncate_log_top(
-                    exceptions_file_path,
-                    max_exception_file_size,
-                    n_lines_to_delete=50,
-                )
-            if quit_after_one_log:
-                sys.exit()
             if USE_HTTP_server:
-                reboot_counter_for_server -= 1  # reboot every 12 hours
+                reboot_counter_for_server -= LOOP_DELAY  # reboot every 12 hours
                 if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
                     reset_microcontroller(reset_delay=3)
         # Process waiting www requests
@@ -1343,13 +1359,14 @@ try:  # -------- outer error handler loop -------------------
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
             else:
-                time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.333 to have better time accuracy
+                time.sleep(LOOP_DELAY)
 
         else:  # alternative timing handler for none-http application
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                 time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
                 remaining_time = LOG_every_n_seconds - (
-                    ALARM_SLEEP_HOLDOFF_TIME + (time.monotonic() - last_monotonic_log_time)
+                    ALARM_SLEEP_HOLDOFF_TIME
+                    + FACTOR_ms_to_s * (time.monotonic_ns() // DIVISOR_ns_to_ms - last_monotonic_ms_log_time)
                 )
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
@@ -1357,7 +1374,9 @@ try:  # -------- outer error handler loop -------------------
                     # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
-                remaining_time = LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
+                remaining_time = LOG_every_n_seconds - FACTOR_ms_to_s * (
+                    time.monotonic_ns() // DIVISOR_ns_to_ms - last_monotonic_ms_log_time
+                )
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
                     time.sleep(remaining_time)
