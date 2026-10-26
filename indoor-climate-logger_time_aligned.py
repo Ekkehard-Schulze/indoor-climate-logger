@@ -1026,12 +1026,10 @@ def get_seconds_after_hour():
 
 def get_wait_seconds_for_next_log():
     """This works if 3600 is divisible by LOG_every_n_seconds without a rest."""
-    now_sec_after_hour = get_seconds_after_hour()
-    next_sec = ((now_sec_after_hour // LOG_every_n_seconds) * LOG_every_n_seconds) + LOG_every_n_seconds
-
-    wait_sec = next_sec - now_sec_after_hour
-
-    return wait_sec
+    # now_sec_after_hour = get_seconds_after_hour()
+    # next_sec = ((now_sec_after_hour // LOG_every_n_seconds) * LOG_every_n_seconds) + LOG_every_n_seconds
+    # wait_sec = next_sec - now_sec_after_hour
+    return LOG_every_n_seconds - (get_seconds_after_hour() % LOG_every_n_seconds)  # return wait_sec
 
 
 def write_data_frame():
