@@ -997,7 +997,7 @@ def get_time_date_str():
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
-def get_seconds_after_hour():
+def seconds_after_midnight():
     if not DS3231_present:
         if sys.implementation.name == "cpython":
             d = datetime.now(timezone.utc) + UTC_offset_hours_time_delta
@@ -1021,15 +1021,12 @@ def get_seconds_after_hour():
         now = ds3231_rtc.datetime
 
     # Berechnet die vergangenen Sekunden seit der letzten vollen Stunde
-    return (now.tm_min * 60) + now.tm_sec
+    return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
 
 
 def get_wait_seconds_for_next_log():
-    """This works if 3600 is divisible by LOG_every_n_seconds without a rest."""
-    # now_sec_after_hour = get_seconds_after_hour()
-    # next_sec = ((now_sec_after_hour // LOG_every_n_seconds) * LOG_every_n_seconds) + LOG_every_n_seconds
-    # wait_sec = next_sec - now_sec_after_hour
-    return LOG_every_n_seconds - (get_seconds_after_hour() % LOG_every_n_seconds)  # return wait_sec
+    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
+    return LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)
 
 
 def write_data_frame():
