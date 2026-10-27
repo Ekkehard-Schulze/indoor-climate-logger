@@ -917,8 +917,8 @@ if USE_MHZ_19_CO2:
 
 # ============================= end sensor objects ===============================
 
-# --- utilities, not used from a lib not to spoil the convenient single-file usage option
-# on Win or Linux PC running CPython
+# ------------------- utilities ----------------------
+# not used from  lib\ not to allow for a single script file on Windows and Linux CPython / Blinka
 
 
 def file_exists(fnamel):
@@ -1024,7 +1024,8 @@ def write_data_frame():
         sys.exit()
 
 
-# --------- main  ----------------------------
+# --------------------------- main  ----------------------------
+
 # init exceptions log file
 if MAX_log_file_size_in_bytes:
     max_exception_file_size = int(MAX_log_file_size_in_bytes * 0.05)
@@ -1343,7 +1344,7 @@ try:  # -------- outer error handler loop -------------------
                     reset_microcontroller(reset_delay=3)
 
                 # re-connect wifi if connection broke
-                if USE_HTTP_server and MONITOR_WIFI_connection and not wifi.radio.connected:
+                if MONITOR_WIFI_connection and not wifi.radio.connected:
                     wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
                     pool = socketpool.SocketPool(wifi.radio)
 
@@ -1364,6 +1365,7 @@ try:  # -------- outer error handler loop -------------------
                 time.sleep(LOOP_DELAY)
 
         else:  # alternative timing handler for none-http stand alone logging
+            #
             write_data_frame()  # <------------ !
 
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:

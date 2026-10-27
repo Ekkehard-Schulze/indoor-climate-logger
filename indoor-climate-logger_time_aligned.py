@@ -917,8 +917,8 @@ if USE_MHZ_19_CO2:
 
 # ============================= end sensor objects ===============================
 
-# --- utilities, not used from a lib not to spoil the convenient single-file usage option
-# on Win or Linux PC running CPython
+# ------------------- utilities ----------------------
+# not used from  lib\ not to allow for a single script file on Windows and Linux CPython / Blinka
 
 
 def file_exists(fnamel):
@@ -1054,11 +1054,10 @@ def write_data_frame():
         )
     if quit_after_one_log:
         sys.exit()
-    # make sure at least one second passed, to that no further frame is triggered in this second due to modulo sec timer
-    time.sleep(1)
 
 
-# --------- main  ----------------------------
+# --------------------------- main  ----------------------------
+
 # init exceptions log file
 if MAX_log_file_size_in_bytes:
     max_exception_file_size = int(MAX_log_file_size_in_bytes * 0.05)
@@ -1344,7 +1343,9 @@ try:  # -------- outer error handler loop -------------------
 
             # detect zero overflow of down-counter
             if last_loop_time is not None and wait_seconds_begin > last_loop_time:
+                #
                 write_data_frame()  # <------------ !
+
                 last_loop_time = None
                 reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
                 if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
@@ -1374,6 +1375,7 @@ try:  # -------- outer error handler loop -------------------
                 time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.333 to have better time accuracy
 
         else:  # alternative timing handler for none-http stand alone logging
+            #
             write_data_frame()  # <------------ !
 
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
