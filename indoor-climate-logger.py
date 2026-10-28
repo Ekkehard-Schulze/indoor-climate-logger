@@ -127,8 +127,8 @@ LOGGER_filename = "MHZ_19_CO2_log.tsv"
 
 # select which busses / devices are queried on init
 USE_i2c = True
-USE_MHZ_19_CO2 = False
-USE_ONE_WIRE = False
+USE_MHZ_19_CO2 = True
+USE_ONE_WIRE = True
 # Attention: For parasite power, I used the library modified by Schulze
 # and an 820 Ohm (DS18x20) or 450 Ohm (MAX31850) pull-up resistor
 # A 4700 Ohm pull-up resistor wasn't sufficient for four sensors, but it
@@ -138,17 +138,17 @@ REJECT_sensor_changes = True  # abort startup if sensors detected on init do not
 
 WRITE_LOG_data_to_file = True
 LOGGER_data_dir = "logger_data"
-LOG_EXCEPTIONS_to_file = False
+LOG_EXCEPTIONS_to_file = True
 SEPARATOR = "\t"
 
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
-USE_HTTP_server = False  # tested with Raspberry PicoW and Pico2W
+USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 IPV4 = "192.168.178.42"
 NETMASK = "255.255.255.0"
 GATEWAY = "192.168.178.1"
-SET_RTC_from_NTP = False  # intended for microcontroller with WiFi.
+SET_RTC_from_NTP = True  # intended for microcontroller with WiFi.
 # Attention: RTC is the controllers build in RTC, NOT DS3231
 # https://en.wikipedia.org/wiki/ISO_8601
 UTC_offset_hours = +1  # e. g. UTC is 0, CET is 1, CEST is 2. Used  for NTP time request to set RTC and CPython
@@ -972,7 +972,7 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
         os.remove(bak_file_name)
 
 
-def _get_now():
+def get_now():
     """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt."""
     if DS3231_present:
         return ds3231_rtc.datetime
@@ -982,7 +982,7 @@ def _get_now():
 
 
 def get_time_date_str():
-    now = _get_now()
+    now = get_now()
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 

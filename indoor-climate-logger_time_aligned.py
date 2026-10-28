@@ -972,7 +972,7 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
         os.remove(bak_file_name)
 
 
-def _get_now():
+def get_now():
     """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt."""
     if DS3231_present:
         return ds3231_rtc.datetime
@@ -982,12 +982,12 @@ def _get_now():
 
 
 def get_time_date_str():
-    now = _get_now()
+    now = get_now()
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
 def seconds_after_midnight():
-    now = _get_now()
+    now = get_now()
     return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
 
 
@@ -1296,8 +1296,9 @@ try:  # -------- outer error handler loop -------------------
 
     # ------------------- main loop ------------------------------------
 
-    # this is to monitor overflows for http sub-seconds loop polling frequency
-    LOOP_DELAY = 0.333  # sec
+    # this is for http sub-seconds loop polling frequency
+    LOOP_DELAY = 0.2  # sec, choose even numbers
+    # to detect timer underflow as log trigger
     last_loop_time = None
 
     while True:
