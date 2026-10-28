@@ -144,6 +144,8 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
+USE_ALIGNED_TIMER = False
+
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 IPV4 = "192.168.178.42"
 NETMASK = "255.255.255.0"
@@ -210,7 +212,12 @@ DATE_TIME_field_name = "Date_time"
 
 quit_after_one_log = False
 
-# ---------- just here for pylint
+DIVISOR_ns_to_ms = 1_000_000  # ns to ms
+FACTOR_s_to_ms = 1_000  # s to ms
+FACTOR_ms_to_s = 0.001  # ms to s
+
+
+# ---------- just here for pylint:
 i2c = None
 uart = None
 ipv4 = None
@@ -986,6 +993,16 @@ def get_time_date_str():
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
+def seconds_after_midnight():
+    now = get_now()
+    return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
+
+
+def get_wait_seconds_for_next_log():
+    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
+    return LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)
+
+
 def write_data_frame():
     sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
@@ -994,8 +1011,8 @@ def write_data_frame():
     if VERBOSE:
         print(logline)
     if WRITE_LOG_data_to_file:
-        with open(log_file_path, "a") as log_file:
-            log_file.write(logline + "\n")
+        with open(log_file_path, "a") as log_filel:
+            log_filel.write(logline + "\n")
         # delete the oldest 24 h of data
         if max_exception_file_size:
             truncate_log_top(
@@ -1272,15 +1289,6 @@ try:  # -------- outer error handler loop -------------------
     # time.monotonic_ns() // DIVISOR_ns_to_ms (integer division!), provides  ms
     # as integer. Integers have no size limitation in Python. This can run long times.
 
-    # not implemented here: for creep-less timing use modulo on time.time() epoche  or on seconds in hour
-
-    DIVISOR_ns_to_ms = 1_000_000  # ns to ms
-    FACTOR_s_to_ms = 1_000  # s to ms
-    FACTOR_ms_to_s = 0.001  # ms to s
-
-    #                              subtract one logging inteval to have it read a frame right now
-    last_monotonic_ms_log_time = time.monotonic_ns() // DIVISOR_ns_to_ms - LOG_every_n_seconds * FACTOR_s_to_ms
-
     if USE_WATCHdog:
         from microcontroller import watchdog
         from watchdog import WatchDogMode
@@ -1306,79 +1314,148 @@ try:  # -------- outer error handler loop -------------------
         except OSError:
             pass
 
-    # ------------------- main loop ------------------------------------
-
     # this is for http sub-seconds loop polling frequency
     LOOP_DELAY = 0.2  # sec, choose even numbers
 
-    while True:
-        # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
-        # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
+    if USE_ALIGNED_TIMER:
+        print("Waiting for clock alignment for first record.")
+        time.sleep(get_wait_seconds_for_next_log())
 
-        # loop entry time
-        now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
+        # to detect timer underflow as log trigger
+        last_loop_time = None
 
-        if USE_WATCHdog:
-            watchdog.feed()
+        # --------- stat of aligned main timer loop ------------------------------
+        while True:
+            # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
+            # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
-        if USE_HTTP_server:  # http request polling and data frame trigger
-            if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
-                (LOOP_DELAY * FACTOR_s_to_ms) // 2
-            ):  # subtract half a loop delay for rounding to reduce creepage
-                last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
+            if USE_WATCHdog:
+                watchdog.feed()
 
+            if USE_HTTP_server:  # http request polling and data frame trigger
+                wait_seconds_begin = get_wait_seconds_for_next_log()
+
+                # detect zero overflow of down-counter
+                if last_loop_time is not None and wait_seconds_begin > last_loop_time:
+                    #
+                    write_data_frame()  # <------------ !
+
+                    last_loop_time = None
+                    reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
+                    if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
+                        reset_microcontroller(reset_delay=3)
+
+                    # re-connect wifi if connection broke
+                    if MONITOR_WIFI_connection and not wifi.radio.connected:
+                        wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
+                        pool = socketpool.SocketPool(wifi.radio)
+                else:
+                    last_loop_time = wait_seconds_begin
+
+                # Process waiting www requests
+                try:
+                    pool_result = server.poll()
+                except OSError as e:
+                    with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
+                        except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
+
+                # issue loop time delay
+                if USE_ALARM_wakeup_sleep:
+                    time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
+                    # Do a light sleep until the alarm wakes us.
+                    alarm.light_sleep_until_alarms(time_alarm)
+                    # after light sleep code continues here
+                else:
+                    time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.333 to have better time accuracy
+
+            else:  # alternative timing handler for none-http stand alone logging
+                #
                 write_data_frame()  # <------------ !
 
-                reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
-                if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
-                    reset_microcontroller(reset_delay=3)
+                if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
+                    time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
+                    remaining_time = get_wait_seconds_for_next_log()
+                    if remaining_time > 0:
+                        time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
+                        # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
+                        alarm.exit_and_deep_sleep_until_alarms(time_alarm)
+                else:
+                    time.sleep(get_wait_seconds_for_next_log())
 
-                # re-connect wifi if connection broke
-                if MONITOR_WIFI_connection and not wifi.radio.connected:
-                    wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
-                    pool = socketpool.SocketPool(wifi.radio)
+        # --------- end of aligned main timer loop ------------------------------
 
-            # Process waiting www requests
-            try:
-                pool_result = server.poll()
-            except OSError as e:
-                with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
-                    except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
+    else:  # ------------ non-aligned subtractive timer main loop using time.monotonic_ns ----------------
+        #                              subtract one logging inteval to have it read a frame right now
+        last_monotonic_ms_log_time = (time.monotonic_ns() // DIVISOR_ns_to_ms) - (LOG_every_n_seconds * FACTOR_s_to_ms)
 
-            if USE_ALARM_wakeup_sleep:
-                # LOOP_DELAY second light sleep to save some power
-                time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
-                # Do a light sleep until the alarm wakes us.
-                alarm.light_sleep_until_alarms(time_alarm)
-                # after light sleep code continues here
-            else:
-                time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.2 to have better time accuracy
+        # ------------------ start alternative non-aligned subtractive timer main loop using time.monotonic_ns -----------
+        while True:
+            # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
+            # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
-        else:  # alternative timing handler for none-http stand alone logging
-            #
-            last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
-            write_data_frame()  # <------------ !
+            # loop entry time
+            now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
 
-            if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
-                time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
-                remaining_time = LOG_every_n_seconds - (
-                    ALARM_SLEEP_HOLDOFF_TIME
-                    + FACTOR_ms_to_s * ((time.monotonic_ns() // DIVISOR_ns_to_ms) - last_monotonic_ms_log_time)
-                )
-                remaining_time = max(0, remaining_time)
-                if remaining_time > 0:
-                    time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
-                    # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
-                    alarm.exit_and_deep_sleep_until_alarms(time_alarm)
-            else:
-                remaining_time = LOG_every_n_seconds - FACTOR_ms_to_s * (
-                    (time.monotonic_ns() // DIVISOR_ns_to_ms) - last_monotonic_ms_log_time
-                )
-                remaining_time = max(0, remaining_time)
-                if remaining_time > 0:
-                    time.sleep(remaining_time)
+            if USE_WATCHdog:
+                watchdog.feed()
 
-    # -------------------- end main loop --------------------------
+            if USE_HTTP_server:  # http request polling and data frame trigger
+                if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
+                    (LOOP_DELAY * FACTOR_s_to_ms) // 2
+                ):  # subtract half a loop delay for rounding to reduce creepage
+                    last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
+
+                    write_data_frame()  # <------------ !
+
+                    reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
+                    if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
+                        reset_microcontroller(reset_delay=3)
+
+                    # re-connect wifi if connection broke
+                    if MONITOR_WIFI_connection and not wifi.radio.connected:
+                        wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
+                        pool = socketpool.SocketPool(wifi.radio)
+
+                # Process waiting www requests
+                try:
+                    pool_result = server.poll()
+                except OSError as e:
+                    with open(LOG_EXCPTIONS_filename, "a") as except_log_filem:
+                        except_log_filem.write(f"{get_time_date_str()} {e} in http server poll\n")
+
+                if USE_ALARM_wakeup_sleep:
+                    # LOOP_DELAY second light sleep to save some power
+                    time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
+                    # Do a light sleep until the alarm wakes us.
+                    alarm.light_sleep_until_alarms(time_alarm)
+                    # after light sleep code continues here
+                else:
+                    time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.2 to have better time accuracy
+
+            else:  # alternative timing handler for none-http stand alone logging
+                #
+                last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
+                write_data_frame()  # <------------ !
+
+                if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
+                    time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
+                    remaining_time = LOG_every_n_seconds - (
+                        ALARM_SLEEP_HOLDOFF_TIME
+                        + FACTOR_ms_to_s * ((time.monotonic_ns() // DIVISOR_ns_to_ms) - last_monotonic_ms_log_time)
+                    )
+                    remaining_time = max(0, remaining_time)
+                    if remaining_time > 0:
+                        time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
+                        # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
+                        alarm.exit_and_deep_sleep_until_alarms(time_alarm)
+                else:
+                    remaining_time = LOG_every_n_seconds - FACTOR_ms_to_s * (
+                        (time.monotonic_ns() // DIVISOR_ns_to_ms) - last_monotonic_ms_log_time
+                    )
+                    remaining_time = max(0, remaining_time)
+                    if remaining_time > 0:
+                        time.sleep(remaining_time)
+        # ------------------ end  alternative non-aligned subtractive timer main loop using time.monotonic_ns -----------
 
 
 except KeyboardInterrupt:
