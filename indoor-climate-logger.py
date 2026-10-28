@@ -127,8 +127,8 @@ LOGGER_filename = "MHZ_19_CO2_log.tsv"
 
 # select which busses / devices are queried on init
 USE_i2c = True
-USE_MHZ_19_CO2 = True
-USE_ONE_WIRE = True
+USE_MHZ_19_CO2 = False
+USE_ONE_WIRE = False
 # Attention: For parasite power, I used the library modified by Schulze
 # and an 820 Ohm (DS18x20) or 450 Ohm (MAX31850) pull-up resistor
 # A 4700 Ohm pull-up resistor wasn't sufficient for four sensors, but it
@@ -138,17 +138,17 @@ REJECT_sensor_changes = True  # abort startup if sensors detected on init do not
 
 WRITE_LOG_data_to_file = True
 LOGGER_data_dir = "logger_data"
-LOG_EXCEPTIONS_to_file = True
+LOG_EXCEPTIONS_to_file = False
 SEPARATOR = "\t"
 
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
-USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
+USE_HTTP_server = False  # tested with Raspberry PicoW and Pico2W
 IPV4 = "192.168.178.42"
 NETMASK = "255.255.255.0"
 GATEWAY = "192.168.178.1"
-SET_RTC_from_NTP = True  # intended for microcontroller with WiFi.
+SET_RTC_from_NTP = False  # intended for microcontroller with WiFi.
 # Attention: RTC is the controllers build in RTC, NOT DS3231
 # https://en.wikipedia.org/wiki/ISO_8601
 UTC_offset_hours = +1  # e. g. UTC is 0, CET is 1, CEST is 2. Used  for NTP time request to set RTC and CPython
@@ -1315,12 +1315,13 @@ try:  # -------- outer error handler loop -------------------
         # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
+        # loop entry time
+        now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
+
         if USE_WATCHdog:
             watchdog.feed()
 
         if USE_HTTP_server:  # http request polling and data frame trigger
-            now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
-
             if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
                 (LOOP_DELAY * FACTOR_s_to_ms) // 2
             ):  # subtract half a loop delay for rounding to reduce creepage
@@ -1355,13 +1356,14 @@ try:  # -------- outer error handler loop -------------------
 
         else:  # alternative timing handler for none-http stand alone logging
             #
+            last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
             write_data_frame()  # <------------ !
 
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                 time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
                 remaining_time = LOG_every_n_seconds - (
                     ALARM_SLEEP_HOLDOFF_TIME
-                    + FACTOR_ms_to_s * (time.monotonic_ns() // DIVISOR_ns_to_ms - last_monotonic_ms_log_time)
+                    + FACTOR_ms_to_s * ((time.monotonic_ns() // DIVISOR_ns_to_ms) - last_monotonic_ms_log_time)
                 )
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
@@ -1370,7 +1372,7 @@ try:  # -------- outer error handler loop -------------------
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
                 remaining_time = LOG_every_n_seconds - FACTOR_ms_to_s * (
-                    time.monotonic_ns() // DIVISOR_ns_to_ms - last_monotonic_ms_log_time
+                    (time.monotonic_ns() // DIVISOR_ns_to_ms) - last_monotonic_ms_log_time
                 )
                 remaining_time = max(0, remaining_time)
                 if remaining_time > 0:
