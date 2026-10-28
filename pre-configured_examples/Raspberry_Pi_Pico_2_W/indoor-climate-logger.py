@@ -917,8 +917,8 @@ if USE_MHZ_19_CO2:
 
 # ============================= end sensor objects ===============================
 
-# --- utilities, not used from a lib not to spoil the convenient single-file usage option
-# on Win or Linux PC running CPython
+# ------------------- utilities ----------------------
+# not used from  lib\ not to allow for a single script file on Windows and Linux CPython / Blinka
 
 
 def file_exists(fnamel):
@@ -972,28 +972,17 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
         os.remove(bak_file_name)
 
 
+def _get_now():
+    """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt."""
+    if DS3231_present:
+        return ds3231_rtc.datetime
+    if sys.implementation.name == "cpython":
+        return (datetime.now(timezone.utc) + UTC_offset_hours_time_delta).timetuple()
+    return time.localtime()
+
+
 def get_time_date_str():
-    if not DS3231_present:
-        if sys.implementation.name == "cpython":
-            d = datetime.now(timezone.utc) + UTC_offset_hours_time_delta
-            now = time.struct_time(
-                (
-                    d.year,
-                    d.month,
-                    d.day,
-                    d.hour,
-                    d.minute,
-                    d.second,
-                    0,
-                    d.weekday(),
-                    0,
-                    -1,
-                )
-            )
-        else:  # sys.implementation.name == "circuitpython":
-            now = time.localtime()
-    else:
-        now = ds3231_rtc.datetime
+    now = _get_now()
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
@@ -1024,7 +1013,8 @@ def write_data_frame():
         sys.exit()
 
 
-# --------- main  ----------------------------
+# --------------------------- main  ----------------------------
+
 # init exceptions log file
 if MAX_log_file_size_in_bytes:
     max_exception_file_size = int(MAX_log_file_size_in_bytes * 0.05)
@@ -1318,17 +1308,17 @@ try:  # -------- outer error handler loop -------------------
 
     # ------------------- main loop ------------------------------------
 
+    # this is for http sub-seconds loop polling frequency
     LOOP_DELAY = 0.2  # sec, choose even numbers
 
-    while True:  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
+    while True:
+        # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
-        # time check if http_server running
-        # if time.time() - last_log_time >= LOG_every_n_seconds or not USE_HTTP_server: # no time check if http_server is not running
         if USE_WATCHdog:
             watchdog.feed()
 
-        if USE_HTTP_server:
+        if USE_HTTP_server:  # http request polling and data frame trigger
             now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
 
             if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
@@ -1343,7 +1333,7 @@ try:  # -------- outer error handler loop -------------------
                     reset_microcontroller(reset_delay=3)
 
                 # re-connect wifi if connection broke
-                if USE_HTTP_server and MONITOR_WIFI_connection and not wifi.radio.connected:
+                if MONITOR_WIFI_connection and not wifi.radio.connected:
                     wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
                     pool = socketpool.SocketPool(wifi.radio)
 
@@ -1361,9 +1351,10 @@ try:  # -------- outer error handler loop -------------------
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
             else:
-                time.sleep(LOOP_DELAY)
+                time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.2 to have better time accuracy
 
         else:  # alternative timing handler for none-http stand alone logging
+            #
             write_data_frame()  # <------------ !
 
             if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
