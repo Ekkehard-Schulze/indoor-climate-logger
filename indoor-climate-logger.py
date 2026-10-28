@@ -1319,17 +1319,17 @@ try:  # -------- outer error handler loop -------------------
 
     # ------------------- main loop ------------------------------------
 
+    # this is for http sub-seconds loop polling frequency
     LOOP_DELAY = 0.2  # sec, choose even numbers
 
-    while True:  # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
+    while True:
+        # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
         # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
 
-        # time check if http_server running
-        # if time.time() - last_log_time >= LOG_every_n_seconds or not USE_HTTP_server: # no time check if http_server is not running
         if USE_WATCHdog:
             watchdog.feed()
 
-        if USE_HTTP_server:
+        if USE_HTTP_server:  # http request polling and data frame trigger
             now_monotonic_ms_time = time.monotonic_ns() // DIVISOR_ns_to_ms
 
             if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
@@ -1362,7 +1362,7 @@ try:  # -------- outer error handler loop -------------------
                 alarm.light_sleep_until_alarms(time_alarm)
                 # after light sleep code continues here
             else:
-                time.sleep(LOOP_DELAY)
+                time.sleep(LOOP_DELAY)  # previously 1 used. Now testing 0.2 to have better time accuracy
 
         else:  # alternative timing handler for none-http stand alone logging
             #

@@ -1329,16 +1329,18 @@ try:  # -------- outer error handler loop -------------------
 
     # ------------------- main loop ------------------------------------
 
+    # this is to monitor overflows for http sub-seconds loop polling frequency
     LOOP_DELAY = 0.333  # sec
-
-    # this is to monitor overflows
     last_loop_time = None
 
     while True:
+        # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
+        # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
+
         if USE_WATCHdog:
             watchdog.feed()
 
-        if USE_HTTP_server:
+        if USE_HTTP_server:  # http request polling and data frame trigger
             wait_seconds_begin = get_wait_seconds_for_next_log()
 
             # detect zero overflow of down-counter
