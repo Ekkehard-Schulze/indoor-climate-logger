@@ -972,55 +972,22 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
         os.remove(bak_file_name)
 
 
+def _get_now():
+    """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt."""
+    if DS3231_present:
+        return ds3231_rtc.datetime
+    if sys.implementation.name == "cpython":
+        return (datetime.now(timezone.utc) + UTC_offset_hours_time_delta).timetuple()
+    return time.localtime()
+
+
 def get_time_date_str():
-    if not DS3231_present:
-        if sys.implementation.name == "cpython":
-            d = datetime.now(timezone.utc) + UTC_offset_hours_time_delta
-            now = time.struct_time(
-                (
-                    d.year,
-                    d.month,
-                    d.day,
-                    d.hour,
-                    d.minute,
-                    d.second,
-                    0,
-                    d.weekday(),
-                    0,
-                    -1,
-                )
-            )
-        else:  # sys.implementation.name == "circuitpython":
-            now = time.localtime()
-    else:
-        now = ds3231_rtc.datetime
+    now = _get_now()
     return TIME_FORMAT_PATTERN.format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
 def seconds_after_midnight():
-    if not DS3231_present:
-        if sys.implementation.name == "cpython":
-            d = datetime.now(timezone.utc) + UTC_offset_hours_time_delta
-            now = time.struct_time(
-                (
-                    d.year,
-                    d.month,
-                    d.day,
-                    d.hour,
-                    d.minute,
-                    d.second,
-                    0,
-                    d.weekday(),
-                    0,
-                    -1,
-                )
-            )
-        else:  # sys.implementation.name == "circuitpython":
-            now = time.localtime()
-    else:
-        now = ds3231_rtc.datetime
-
-    # Berechnet die vergangenen Sekunden seit der letzten vollen Stunde
+    now = _get_now()
     return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
 
 
