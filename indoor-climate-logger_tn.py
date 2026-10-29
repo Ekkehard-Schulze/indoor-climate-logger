@@ -1007,16 +1007,17 @@ def seconds_after_midnight():
 def get_RTC_seconds_to_next_alignment(offset_seconds=0):
     """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
     with the second modulo it counts from (LOG_every_n_seconds - 1) down to 0
-    (without the last modulo it counted from LOG_every_n_seconds  down to 1)
     """
     return (
-        (LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)) + offset_seconds
+        (LOG_every_n_seconds - 1 - (seconds_after_midnight() % LOG_every_n_seconds)) + offset_seconds
     ) % LOG_every_n_seconds
 
 
 def get_time_monotonic_ns_seconds_to_next_alignment(offset_nano_seconds=0):
     """This modulo works if 86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
-    return (((interval_ns - (time.monotonic_ns() % interval_ns)) + offset_nano_seconds) % interval_ns) * FACTOR_ns_to_s
+    return (
+        ((interval_ns - 1_000_000_000 - (time.monotonic_ns() % interval_ns)) + offset_nano_seconds) % interval_ns
+    ) * FACTOR_ns_to_s
 
 
 def write_data_frame():
