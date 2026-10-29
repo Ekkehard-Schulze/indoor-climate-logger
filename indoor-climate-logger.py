@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-
-# Göttingen Version holt sich die Göttingen-Außentemperatur von der Sternwarte
-
-# This script can run under CPython3 and also under CircuitPython on microcontrollers
-
-# You probably like to adjust the user settings starting in line 113 to your project's needs
-
-# Attention: provide a user_settings.py file when using pylint, to avoid some complains
-# pylint: disable=trailing-whitespace
 # pylint: disable=line-too-long
 # pylint: disable=invalid-name
 # pylint: disable=too-many-lines
@@ -18,18 +9,13 @@
 # pylint: disable=consider-using-f-string
 # pylint: disable=import-outside-toplevel
 # pylint: disable=unspecified-encoding
-# flake8 --ignore=F541,E501 "indoor-climate-logger.py"
-
-# Thonny command for RPi Pico stop write mode:
-# import os; os.rename("/boot.py", "/boot.bak")
-
 
 """Indoor-climate-logger.py is a sensor data logger for either:
 
  • CircuitPython (tested: 9.2.1) on a microcontroller,
    with I2C, 1Wire, and serial for the MH-Z19 CO2 sensor
 
- • CPython using the Adafruit Blinka Library running on MS-Windows
+ • CPython3 using the Adafruit Blinka Library running on MS-Windows
    or Linux PCs or RaspberryPis
    CPython with Blinka  allows I2C bus communication, but not 1Wire.
    However on some linux systems, such as the RaspberyPi, a 1Wire kernel
@@ -106,6 +92,9 @@ the MAX31850 gave ~50°C readings in room temperature)
 I think that the micropython 1wire driver does not cover correctly parasitic power,
 however the Arduino implementation does. The same poblems seems to be in the Linux kernel driver.
 
+
+You probably like to adjust the user settings starting in line 97 to your project's needs
+
 20261008 switched to ruff linting and formatting
 """
 
@@ -144,7 +133,8 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
-USE_ALIGNED_RTC_TIMER = True
+USE_MODULO_TIMER = True  # False: differental loop timer using time.monotonic_ns deltas, True is either RTC_ALIGNED or time.monotonic_ns modulo
+USE_ALIGNED_RTC_TIMER = True  # only possible if USE_MODULO_TIMER = True
 
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 IPV4 = "192.168.178.42"
@@ -215,6 +205,11 @@ quit_after_one_log = False
 DIVISOR_ns_to_ms = 1_000_000  # ns to ms
 FACTOR_s_to_ms = 1_000  # s to ms
 FACTOR_ms_to_s = 0.001  # ms to s
+FACTOR_s_to_ns = 1_000_000_000
+FACTOR_ns_to_s = 0.000_000_001
+
+interval_ms = LOG_every_n_seconds * FACTOR_s_to_ms
+interval_ns = LOG_every_n_seconds * FACTOR_s_to_ns
 
 
 # ---------- just here for pylint:
@@ -892,7 +887,7 @@ if USE_MHZ_19_CO2:
                     if LOG_EXCEPTIONS_to_file:
                         with open(LOG_EXCPTIONS_filename, "a") as except_log_filel:
                             try:
-                                except_log_file.write(get_time_date_str())
+                                except_log_filel.write(get_time_date_str())
                             except OSError:
                                 pass  # Ignoriert den Fehler genau wie contextlib.suppress. Contextlib is not available on CircuitPython 9.2.8
                             except_log_filel.write("MH-Z19 exception, attempt nr. " + str(attempts) + "\n")
@@ -1006,6 +1001,22 @@ def get_wait_seconds_for_next_log():
     In the http I trigger I poll for the underflow of the timer, which is more accurate.
     """
     return LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)
+
+
+def get_RTC_seconds_to_next_alignment_with_offset(offset_seconds=0):
+    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
+    output counts down from (LOG_every_n_seconds -1) to 0, which means that it never gets to OG_every_n_seconds.
+    The reason is final calculation of a modulo. The resolution is just 1 second,
+    so the intervals may jitter. in the http I trigger for the underflow, which is more accurate
+    """
+    return (
+        (LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)) + offset_seconds
+    ) % LOG_every_n_seconds
+
+
+def get_time_monotonic_ns_seconds_to_next_alignment_with_offset(offset_nano_seconds=0):
+    """This modulo works if 86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
+    return (((interval_ns - (time.monotonic_ns() % interval_ns)) + offset_nano_seconds) % interval_ns) * FACTOR_ns_to_s
 
 
 def write_data_frame():
@@ -1325,18 +1336,31 @@ try:  # -------- outer error handler loop -------------------
     LOOP_DELAY = 0.2  # sec, choose even numbers
 
     # two alternative timing loops. A particular sertup will only need one of these
-    # first loop variant is RTC based and modulo alogned
+    # first loop variant is modulo driven and allows optional RTC alignment
     # second loop variant is time.monotonic_ns based differential based and non-aligned
-    if USE_ALIGNED_RTC_TIMER:
-        print("Waiting for clock alignment for first record.")
 
-        if not USE_HTTP_server:
-            time.sleep(get_wait_seconds_for_next_log())
+    if USE_MODULO_TIMER:
+        # ----------------------- xxxxxxxxxxxxxxxxxxxxxxxxxx------------------------------
+        # assign timer funcion used in the main loop, either for RTC or time.monotonic_ns
+        if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
+            wait_seconds_function = get_RTC_seconds_to_next_alignment_with_offset  # function assignment
+            # offset in seconds for this function, here not used,
+            # but required for compatibility with get_time_monotonic_ns_seconds_to_next_alignment_with_offset
+            offset = 0
+            last_loop_time = LOG_every_n_seconds  # waits for downcount overflow
+            print("Waiting for clock alignment for first record.")
+            if not USE_HTTP_server:
+                time.sleep(wait_seconds_function(offset))
 
-        # used to detect timer wrap 1 -> LOG_every_n_seconds as log trigger. Init to max to observable.
-        last_loop_time = LOG_every_n_seconds
+        else:  # time.monotonic_ns modulo timer, but NOT aligned to RTC due to arbitrary reference
+            wait_seconds_function = get_time_monotonic_ns_seconds_to_next_alignment_with_offset  # function assignment
+            # offset needed to allow instant start of measurement-interval
+            offset = (
+                LOG_every_n_seconds - get_time_monotonic_ns_seconds_to_next_alignment_with_offset()
+            ) * FACTOR_s_to_ns  # here ns!
+            last_loop_time = 0  # for immediate trigger in http-mode
 
-        # --------- start of aligned-timer main-loop ------------------------------
+        # --------- start of modulo-timer main-loop ------------------------------
         while True:
             # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
             # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
@@ -1345,7 +1369,7 @@ try:  # -------- outer error handler loop -------------------
                 watchdog.feed()
 
             if USE_HTTP_server:  # http request polling and data frame trigger
-                wait_seconds_begin = get_wait_seconds_for_next_log()
+                wait_seconds_begin = wait_seconds_function(offset)
 
                 # detect  overflow of down-counter 1 jumps to LOG_every_n_seconds
                 if last_loop_time is not None and wait_seconds_begin > last_loop_time:
@@ -1386,18 +1410,18 @@ try:  # -------- outer error handler loop -------------------
 
                 if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                     time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
-                    remaining_time = get_wait_seconds_for_next_log()
+                    remaining_time = wait_seconds_function(offset)
                     if remaining_time > 0:
                         time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
                         # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
                         alarm.exit_and_deep_sleep_until_alarms(time_alarm)
                 else:
-                    # time.sleep(1)  # not required in this code to avoid re-trigger in the same second slot
-                    time.sleep(get_wait_seconds_for_next_log())
+                    time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
+                    time.sleep(wait_seconds_function(offset))
 
-        # --------- end of aligned-timer main-loop ------------------------------
+        # ---xxxxxxxxxxx end of modulo-timer main-loop xxxxxxxxxxxxxxx-----------------
 
-    else:  # ------------ non-aligned subtractive timer using time.monotonic_ns ----------------
+    else:  # ------------ non-modulo non-aligned subtractive timer using time.monotonic_ns ----------------
         #                                               subtract one logging inteval to have it read a frame right now
         last_monotonic_ms_log_time = (time.monotonic_ns() // DIVISOR_ns_to_ms) - (LOG_every_n_seconds * FACTOR_s_to_ms)
 
