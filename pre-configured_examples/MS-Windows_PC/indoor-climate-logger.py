@@ -144,7 +144,7 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
-USE_ALIGNED_TIMER = True
+USE_ALIGNED_RTC_TIMER = True
 
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 IPV4 = "192.168.178.42"
@@ -1319,10 +1319,12 @@ try:  # -------- outer error handler loop -------------------
     # this is for http sub-seconds loop polling frequency
     LOOP_DELAY = 0.2  # sec, choose even numbers
 
-    # two alternative timing loops. A particular will only need one of these
-    if USE_ALIGNED_TIMER:
+    # two alternative timing loops. A particular sertup will only need one of these
+    # first loop variant is RTC based and modulo alogned
+    # second loop variant is time.monotonic_ns based differential based and non-aligned
+    if USE_ALIGNED_RTC_TIMER:
         print("Waiting for clock alignment for first record.")
-        
+
         if not USE_HTTP_server:
             time.sleep(get_wait_seconds_for_next_log())
 
@@ -1385,6 +1387,7 @@ try:  # -------- outer error handler loop -------------------
                         # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
                         alarm.exit_and_deep_sleep_until_alarms(time_alarm)
                 else:
+                    # time.sleep(1)  # not required in this code to avoid re-trigger in the same second slot
                     time.sleep(get_wait_seconds_for_next_log())
 
         # --------- end of aligned-timer main-loop ------------------------------
@@ -1410,7 +1413,7 @@ try:  # -------- outer error handler loop -------------------
                 ):  # subtract half a loop delay for rounding to reduce creepage
                     #
                     # commit to record
-                    last_monotonic_ms_log_time = now_monotonic_ms_time  
+                    last_monotonic_ms_log_time = now_monotonic_ms_time
                     write_data_frame()  # <------------ !
 
                     reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
@@ -1441,7 +1444,7 @@ try:  # -------- outer error handler loop -------------------
             else:  # alternative timing handler for none-http stand alone logging
                 #
                 # commit to record
-                last_monotonic_ms_log_time = now_monotonic_ms_time  
+                last_monotonic_ms_log_time = now_monotonic_ms_time
                 write_data_frame()  # <------------ !
 
                 if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
