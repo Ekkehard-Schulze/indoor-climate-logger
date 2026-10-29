@@ -144,7 +144,7 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
-USE_ALIGNED_TIMER = False
+USE_ALIGNED_TIMER = True
 
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 IPV4 = "192.168.178.42"
@@ -1300,7 +1300,9 @@ try:  # -------- outer error handler loop -------------------
     # -------------- startup message file logging --------------------------
     if WRITE_LOG_data_to_file:
         print("\nData logging to " + LOGGER_data_dir + os.sep + LOGGER_filename + " in progess....")
+
     print("Terminate with Strg+C")
+
     if (
         LOG_EXCEPTIONS_to_file
         and (not USE_ALARM_wakeup_sleep or USE_HTTP_server)
@@ -1317,14 +1319,17 @@ try:  # -------- outer error handler loop -------------------
     # this is for http sub-seconds loop polling frequency
     LOOP_DELAY = 0.2  # sec, choose even numbers
 
+    # two alternative timing loops. A particular will only need one of these
     if USE_ALIGNED_TIMER:
         print("Waiting for clock alignment for first record.")
-        time.sleep(get_wait_seconds_for_next_log())
+        
+        if not USE_HTTP_server:
+            time.sleep(get_wait_seconds_for_next_log())
 
-        # to detect timer underflow as log trigger
-        last_loop_time = None
+        # used to detect timer wrap 1 -> LOG_every_n_seconds as log trigger. Init to max to observable.
+        last_loop_time = LOG_every_n_seconds
 
-        # --------- stat of aligned main timer loop ------------------------------
+        # --------- start of aligned-timer main-loop ------------------------------
         while True:
             # if http_server is running this loop runs 3 x every second (originally tested 1x) for http poll and writes data every LOG_every_n_seconds
             # without http_server running, loop runs every LOG_every_n_seconds and writes data on each run
@@ -1335,7 +1340,7 @@ try:  # -------- outer error handler loop -------------------
             if USE_HTTP_server:  # http request polling and data frame trigger
                 wait_seconds_begin = get_wait_seconds_for_next_log()
 
-                # detect zero overflow of down-counter
+                # detect  overflow of down-counter 1 jumps to LOG_every_n_seconds
                 if last_loop_time is not None and wait_seconds_begin > last_loop_time:
                     #
                     write_data_frame()  # <------------ !
@@ -1382,10 +1387,10 @@ try:  # -------- outer error handler loop -------------------
                 else:
                     time.sleep(get_wait_seconds_for_next_log())
 
-        # --------- end of aligned main timer loop ------------------------------
+        # --------- end of aligned-timer main-loop ------------------------------
 
-    else:  # ------------ non-aligned subtractive timer main loop using time.monotonic_ns ----------------
-        #                              subtract one logging inteval to have it read a frame right now
+    else:  # ------------ non-aligned subtractive timer using time.monotonic_ns ----------------
+        #                                               subtract one logging inteval to have it read a frame right now
         last_monotonic_ms_log_time = (time.monotonic_ns() // DIVISOR_ns_to_ms) - (LOG_every_n_seconds * FACTOR_s_to_ms)
 
         # ------------------ start alternative non-aligned subtractive timer main loop using time.monotonic_ns -----------
@@ -1403,8 +1408,9 @@ try:  # -------- outer error handler loop -------------------
                 if now_monotonic_ms_time - last_monotonic_ms_log_time >= LOG_every_n_seconds * FACTOR_s_to_ms - (
                     (LOOP_DELAY * FACTOR_s_to_ms) // 2
                 ):  # subtract half a loop delay for rounding to reduce creepage
-                    last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
-
+                    #
+                    # commit to record
+                    last_monotonic_ms_log_time = now_monotonic_ms_time  
                     write_data_frame()  # <------------ !
 
                     reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
@@ -1434,7 +1440,8 @@ try:  # -------- outer error handler loop -------------------
 
             else:  # alternative timing handler for none-http stand alone logging
                 #
-                last_monotonic_ms_log_time = now_monotonic_ms_time  # commit to record now
+                # commit to record
+                last_monotonic_ms_log_time = now_monotonic_ms_time  
                 write_data_frame()  # <------------ !
 
                 if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:

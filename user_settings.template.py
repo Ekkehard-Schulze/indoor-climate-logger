@@ -45,6 +45,8 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
+USE_ALIGNED_TIMER = True
+
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 SET_RTC_from_NTP = True  # intended for microcontroller with WiFi.
 # Attention: RTC is the controllers build in RTC, NOT DS3231

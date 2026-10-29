@@ -40,11 +40,13 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
+USE_ALIGNED_TIMER = True
+
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 SET_RTC_from_NTP = True  # intended for microcontroller with WiFi.
 # Attention: RTC is the controllers build in RTC, NOT DS3231
-# https://en.wikipedia.org/wiki/ISO_8601
-UTC_offset_hours = +1  # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
+WRITE_LOG_data_to_file = True# https://en.wikipedia.org/wiki/ISO_8601
+LOGGER_data_dir = "logger_datUTC_offset_hours = +1  # UTC is 0, CET is 1, CEST is 2. Used only for NTP time request to set RTC'
 TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}+01:00"  # use this style to indicate RTC time zone
 # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"     # for UTC
 # TIME_FORMAT_PATTERN = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}"      # for time zone agnostic
