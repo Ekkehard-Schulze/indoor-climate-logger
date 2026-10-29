@@ -801,7 +801,7 @@ if USE_i2c:
         """----------- sensor SCD30 Sensirion specific code for logger  ------------
         Attention: leads to RaspBerryPi3B crashes and reboots, unless set:
 
-        dtparam=i2c_arm=on,i2c_arm_baudrate=25000,i2c_arm_timeout=250 # Attention: still i2c bus hangup crashes on RPi3B
+        dtparam=i2c_arm=on,i2c_arm_baudrate=12500,i2c_arm_timeout=250
 
         Attention: arm_baudrate=50000,i2c_arm_timeout=200 were NOT sufficient for stable operation on Rasberry Pi 3B
 
