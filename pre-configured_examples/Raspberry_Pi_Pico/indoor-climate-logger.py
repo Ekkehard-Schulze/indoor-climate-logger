@@ -1000,9 +1000,12 @@ def seconds_after_midnight():
 
 def get_wait_seconds_for_next_log():
     """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
-    output counts down from (LOG_every_n_seconds - 1) to 0
+    Output counts down from LOG_every_n_seconds to 1, which means that it never gets 0.
+    The reason is the subtraction of the modulo.
+    The resolution is just 1 second, so the intervals may jitter.
+    In the http I trigger I poll for the underflow of the timer, which is more accurate.
     """
-    return LOG_every_n_seconds - 1 - (seconds_after_midnight() % LOG_every_n_seconds)
+    return LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)
 
 
 def write_data_frame():

@@ -1006,18 +1006,18 @@ def seconds_after_midnight():
 
 def get_RTC_seconds_to_next_alignment(offset_seconds=0):
     """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
-    with the second modulo it counts from (LOG_every_n_seconds - 1) down to 0
+    output counts down from (LOG_every_n_seconds -1) to 0, which means that it never gets to OG_every_n_seconds.
+    The reason is final calculation of a modulo. The resolution is just 1 second,
+    so the intervals may jitter. in the http I trigger for the underflow, which is more accurate
     """
     return (
-        (LOG_every_n_seconds - 1 - (seconds_after_midnight() % LOG_every_n_seconds)) + offset_seconds
+        (LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)) + offset_seconds
     ) % LOG_every_n_seconds
 
 
 def get_time_monotonic_ns_seconds_to_next_alignment(offset_nano_seconds=0):
     """This modulo works if 86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
-    return (
-        ((interval_ns - 1_000_000_000 - (time.monotonic_ns() % interval_ns)) + offset_nano_seconds) % interval_ns
-    ) * FACTOR_ns_to_s
+    return (((interval_ns - (time.monotonic_ns() % interval_ns)) + offset_nano_seconds) % interval_ns) * FACTOR_ns_to_s
 
 
 def write_data_frame():
@@ -1338,17 +1338,20 @@ try:  # -------- outer error handler loop -------------------
 
     # two alternative timing loops. A particular will only need one of these
 
-    # assign funcion used for timing
-    if USE_ALIGNED_RTC_TIMER:
-        wait_seconds_function = get_RTC_seconds_to_next_alignment
-        offset = 0  # in seconds for this function
+    # assign timer funcion used in the main loop
+    if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
+        wait_seconds_function = get_RTC_seconds_to_next_alignment  # function assignment
+        # in seconds for this function, here not used,
+        # but required for compatibility with get_time_monotonic_ns_seconds_to_next_alignment
+        offset = 0
         last_loop_time = LOG_every_n_seconds  # waits for downcount overflow
         print("Waiting for clock alignment for first record.")
         if not USE_HTTP_server:
             time.sleep(wait_seconds_function(offset))
 
-    else:  # time.monotonic_ns modulo timer
-        wait_seconds_function = get_time_monotonic_ns_seconds_to_next_alignment
+    else:  # time.monotonic_ns modulo timer, but NOT aligned to RTC due to arbitrary reference
+        wait_seconds_function = get_time_monotonic_ns_seconds_to_next_alignment  # function assignment
+        # offset needed to allow instant start of measurement-interval
         offset = (LOG_every_n_seconds - get_time_monotonic_ns_seconds_to_next_alignment()) * FACTOR_s_to_ns  # here ns!
         last_loop_time = 0  # for immediate trigger in http-mode
 
