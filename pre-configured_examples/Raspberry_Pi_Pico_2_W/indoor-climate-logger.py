@@ -993,7 +993,7 @@ def seconds_after_midnight():
     return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
 
 
-def get_wait_seconds_for_next_log():
+def get_RTC_seconds_to_next_alignment():
     """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
     Output counts down from LOG_every_n_seconds to 1, which means that it never gets 0.
     The reason is the subtraction of the modulo.
@@ -1009,9 +1009,7 @@ def get_RTC_seconds_to_next_alignment_with_offset(offset_seconds=0):
     The reason is final calculation of a modulo. The resolution is just 1 second,
     so the intervals may jitter. in the http I trigger for the underflow, which is more accurate
     """
-    return (
-        (LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)) + offset_seconds
-    ) % LOG_every_n_seconds
+    return (get_RTC_seconds_to_next_alignment + offset_seconds) % LOG_every_n_seconds
 
 
 def get_time_monotonic_ns_seconds_to_next_alignment_with_offset(offset_nano_seconds=0):
