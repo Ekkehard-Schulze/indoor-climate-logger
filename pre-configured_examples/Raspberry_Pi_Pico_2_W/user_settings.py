@@ -40,7 +40,8 @@ SEPARATOR = "\t"
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
 VERBOSE = True  # data goto console print
 
-USE_ALIGNED_TIMER = True
+USE_MODULO_TIMER = True  # False: differental loop timer using time.monotonic_ns deltas, True is either RTC_ALIGNED or time.monotonic_ns modulo
+USE_ALIGNED_RTC_TIMER = True  # only possible if USE_MODULO_TIMER = True
 
 USE_HTTP_server = True  # tested with Raspberry PicoW and Pico2W
 SET_RTC_from_NTP = True  # intended for microcontroller with WiFi.
