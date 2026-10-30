@@ -1338,7 +1338,7 @@ try:  # -------- outer error handler loop -------------------
     # second loop variant is time.monotonic_ns based differential based and non-aligned
 
     if USE_MODULO_TIMER:
-        # ----------------------- xxxxxxxxxxxxxxxxxxxxxxxxxx------------------------------
+        # ------- xxxxxxxxxxxxxxx----modulo timer either RTC 1 s or time.nonotonic_ns ------xxxxxxxxxxxxxxxxxxxxxxxxxxx---------
         # assign timer funcion used in the main loop, either for RTC or time.monotonic_ns
         if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
             wait_seconds_function = get_RTC_seconds_to_next_alignment_with_offset  # function assignment
@@ -1395,6 +1395,7 @@ try:  # -------- outer error handler loop -------------------
 
                 # issue loop time delay
                 if USE_ALARM_wakeup_sleep:
+                    # expect problems with time.monotonic in long up-times!
                     time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
                     # Do a light sleep until the alarm wakes us.
                     alarm.light_sleep_until_alarms(time_alarm)
@@ -1410,16 +1411,20 @@ try:  # -------- outer error handler loop -------------------
                     time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
                     remaining_time = wait_seconds_function(offset)
                     if remaining_time > 0:
+                        # expect problems with time.monotonic in long up-times!
                         time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
-                        # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
+                        # Exit the program, and then deep sleep until the alarm wakes us.
+                        # See failure comment on top of this code
+                        # Attention: re-start is from very TOP of this code!
                         alarm.exit_and_deep_sleep_until_alarms(time_alarm)
                 else:
                     time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
                     time.sleep(wait_seconds_function(offset))
 
-        # ---xxxxxxxxxxx end of modulo-timer main-loop xxxxxxxxxxxxxxx-----------------
+        # ---xxxxxxxxxxx----- end of modulo-timer main-loop ------------xxxxxxxxxxxxxxx-----------------
 
-    else:  # ------------ non-modulo non-aligned subtractive timer using time.monotonic_ns ----------------
+    else:
+        # ---yyyyyyyy------------- non-modulo non-aligned subtractive timer using time.monotonic_ns ---------- yyyyyyyyyyyyy  ----------------
         #                                               subtract one logging inteval to have it read a frame right now
         last_monotonic_ms_log_time = (time.monotonic_ns() // DIVISOR_ns_to_ms) - (LOG_every_n_seconds * FACTOR_s_to_ms)
 
@@ -1461,6 +1466,7 @@ try:  # -------- outer error handler loop -------------------
 
                 if USE_ALARM_wakeup_sleep:
                     # LOOP_DELAY second light sleep to save some power
+                    # expect problems with time.monotonic in long up-times!
                     time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + LOOP_DELAY)
                     # Do a light sleep until the alarm wakes us.
                     alarm.light_sleep_until_alarms(time_alarm)
@@ -1483,7 +1489,10 @@ try:  # -------- outer error handler loop -------------------
                     remaining_time = max(0, remaining_time)
                     if remaining_time > 0:
                         time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
-                        # Exit the program, and then deep sleep until the alarm wakes us. # See failure comment on top of this code
+                        # expect problems with time.monotonic in long up-times!
+                        # Exit the program, and then deep sleep until the alarm wakes us.
+                        # See failure comment on top of this code
+                        # Attention: re-start is from very TOP of this code!
                         alarm.exit_and_deep_sleep_until_alarms(time_alarm)
                 else:
                     remaining_time = LOG_every_n_seconds - FACTOR_ms_to_s * (
@@ -1492,7 +1501,7 @@ try:  # -------- outer error handler loop -------------------
                     remaining_time = max(0, remaining_time)
                     if remaining_time > 0:
                         time.sleep(remaining_time)
-        # ------------------ end  alternative non-aligned subtractive timer main loop using time.monotonic_ns -----------
+        # -------yyyyyyyyyyyyyy end  alternative non-aligned subtractive timer main loop using time.monotonic_ns yyyyyyyyyyyyyy-----------
 
 
 except KeyboardInterrupt:
