@@ -7,7 +7,7 @@ Features
 
 - **data logging**
 
-  - writes data to a TSV file with ISO 8601 timestamps. Fully compatible with Excel, Google Sheets, and Python (pandas).
+  - writes data to a TSV file with ISO 8601 timestamps. Fully compatible with spreadsheets and Python (pandas) for downstream analysis.
 
 
 - **supported platforms**
