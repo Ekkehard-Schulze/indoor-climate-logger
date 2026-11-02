@@ -209,7 +209,7 @@ FACTOR_s_to_ns = 1_000_000_000
 FACTOR_ns_to_s = 0.000_000_001
 
 interval_ms = LOG_every_n_seconds * FACTOR_s_to_ms
-interval_ns = LOG_every_n_seconds * FACTOR_s_to_ns
+# interval_ns = LOG_every_n_seconds * FACTOR_s_to_ns
 
 
 # ---------- just here for pylint:
@@ -998,28 +998,31 @@ def get_RTC_seconds_to_next_alignment():
     Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
     The resolution is just 1 second.
     """
-    return LOG_every_n_seconds - 1 - (seconds_after_midnight() % LOG_every_n_seconds)
+    return (LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)) % LOG_every_n_seconds
 
 
-def get_RTC_seconds_to_next_alignment_with_offset(offset_seconds=0):
-    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
-    output counts down from (LOG_every_n_seconds -1) to 0, which means that it never gets to OG_every_n_seconds.
-    The reason is final calculation of a modulo. The resolution is just 1 second,
-    so the intervals may jitter. in the http I trigger for the underflow, which is more accurate
+class Interval_Timer:
+    """Use Modulo on  time.monotonic_ns fixed arbitrary timer start to
+    define interval baundaries.  To allow initialization at any moment,
+    record the offset at startup and use it later fo calculations.
     """
-    return (get_RTC_seconds_to_next_alignment() + offset_seconds) % LOG_every_n_seconds
 
+    def __init__(self, interval_seconds: float):
 
-def get_RTC_ns_to_next_alignment_with_offset(offset_ns_seconds=0):
-    return (
-        get_RTC_seconds_to_next_alignment_with_offset(offset_seconds=offset_ns_seconds * FACTOR_ns_to_s)
-        * FACTOR_s_to_ns
-    )
+        # Convert the interval from seconds to nanoseconds
+        self.interval_ns = int(interval_seconds * FACTOR_ns_to_s)
 
+        # Calculate the initial alignment offset based on the current monotonic time
+        self.offset_ns = time.monotonic_ns() % self.interval_ns
 
-def get_time_monotonic_ns_seconds_to_next_alignment_with_offset(offset_nano_seconds=0):
-    """This modulo works if 86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
-    return ((interval_ns - (time.monotonic_ns() % interval_ns)) + offset_nano_seconds) % interval_ns
+    # @property # as property you can call it without ()
+    def seconds_to_next(self) -> float:
+        """Returns the waiting time to the next interval in seconds."""
+        # Subtract offset to align to initialization grid, find elapsed time in current cycle,
+        # subtract from interval to get remaining time, and modulo again to handle the 0 case.
+        return (
+            (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
+        ) / FACTOR_ns_to_s
 
 
 def write_data_frame():
@@ -1347,20 +1350,19 @@ try:  # -------- outer error handler loop -------------------
         # ------- xxxxxxxxxxxxxxx----modulo timer either RTC 1 s or time.nonotonic_ns ------xxxxxxxxxxxxxxxxxxxxxxxxxxx---------
         # -------- assign timer funcion used in the main loop, either for RTC or time.monotonic_ns ------
         if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
-            wait_nano_seconds_function = get_RTC_ns_to_next_alignment_with_offset  # function assignment
-            offset_ns = 0
-            previous_loop_end_wait_ns = interval_ns  # to prevent immedeate trigger in http mode
+            wait_seconds_function = (
+                get_RTC_seconds_to_next_alignment()
+            )  # function assignment, # --> seconds as integer!!!
+            previous_loop_end_wait_seconds = LOG_every_n_seconds  # to prevent immeadate trigger in http mode
             print("Waiting for clock alignment for first record.")
             if not USE_HTTP_server:
-                time.sleep(wait_nano_seconds_function(offset_ns) * FACTOR_ns_to_s)
+                time.sleep(wait_seconds_function())
 
         else:  # NOT aligned to RTC bcause it has an arbitrary reference
-            wait_nano_seconds_function = (
-                get_time_monotonic_ns_seconds_to_next_alignment_with_offset  # function assignment
-            )
-            # offset_ns needed to allow instant start of measurement-interval
-            offset_ns = interval_ns - get_time_monotonic_ns_seconds_to_next_alignment_with_offset()
-            previous_loop_end_wait_ns = 0  # for immediate trigger in http-mode
+            interval_timer = Interval_Timer(LOG_every_n_seconds)
+            # function assignment
+            wait_seconds_function = interval_timer.seconds_to_next()  # --> seconds as float !!
+            previous_loop_end_wait_seconds = 0  # for immediate trigger in http-mode
 
         # --------- start of modulo-timer main-loop ------------------------------
         while True:
@@ -1371,18 +1373,15 @@ try:  # -------- outer error handler loop -------------------
                 watchdog.feed()
 
             if USE_HTTP_server:  # http request polling and data frame trigger
-                this_loop_begin_wait_ns = wait_nano_seconds_function(offset_ns)
+                this_loop_begin_wait_seconds = wait_seconds_function()  # may be float or integer
 
                 # detect  overflow of down-counter 0 jumps to LOG_every_n_seconds -1
-                if (
-                    previous_loop_end_wait_ns is not None
-                    and (this_loop_begin_wait_ns > previous_loop_end_wait_ns)
-                    or (this_loop_begin_wait_ns == 0)
+                if (this_loop_begin_wait_seconds > previous_loop_end_wait_seconds) or (
+                    this_loop_begin_wait_seconds == 0
                 ):  #  roll-over of down-counter either at 0, or when the next value (which is a large number)  appears
                     #
                     write_data_frame()  # <------------ !
 
-                    previous_loop_end_wait_ns = None
                     reboot_counter_for_server -= 1  # counts data frames unitl reboot, e.g. for reboot every 12 hours
                     if reboot_counter_for_server <= 0 and sys.implementation.name == "circuitpython":
                         reset_microcontroller(reset_delay=3)
@@ -1392,7 +1391,7 @@ try:  # -------- outer error handler loop -------------------
                         wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
                         pool = socketpool.SocketPool(wifi.radio)
                 else:
-                    previous_loop_end_wait_ns = this_loop_begin_wait_ns
+                    previous_loop_end_wait_seconds = this_loop_begin_wait_seconds
 
                 # Process waiting www requests
                 try:
@@ -1417,7 +1416,7 @@ try:  # -------- outer error handler loop -------------------
 
                 if LOG_every_n_seconds >= ALARM_SLEEP_HOLDOFF_TIME and USE_ALARM_wakeup_sleep:
                     time.sleep(ALARM_SLEEP_HOLDOFF_TIME)
-                    remaining_time = wait_nano_seconds_function(offset_ns)
+                    remaining_time = wait_seconds_function()
                     if remaining_time > 0:
                         # expect problems with time.monotonic in long up-times!
                         time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + remaining_time)
@@ -1427,7 +1426,7 @@ try:  # -------- outer error handler loop -------------------
                         alarm.exit_and_deep_sleep_until_alarms(time_alarm)
                 else:
                     time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
-                    time.sleep(wait_nano_seconds_function(offset_ns) * FACTOR_ns_to_s)
+                    time.sleep(wait_seconds_function())  # my be float or integer
 
         # ---xxxxxxxxxxx----- end of modulo-timer main-loop ------------xxxxxxxxxxxxxxx-----------------
 
