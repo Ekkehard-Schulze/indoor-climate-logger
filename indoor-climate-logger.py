@@ -993,12 +993,14 @@ def seconds_after_midnight():
     return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
 
 
-def get_RTC_seconds_to_next_alignment():
+def get_RTC_seconds_to_next_alignment(offset_seconds=0):
     """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
     Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
     The resolution is just 1 second.
     """
-    return (LOG_every_n_seconds - (seconds_after_midnight() % LOG_every_n_seconds)) % LOG_every_n_seconds
+    return (
+        LOG_every_n_seconds - ((seconds_after_midnight() - offset_seconds) % LOG_every_n_seconds)
+    ) % LOG_every_n_seconds
 
 
 class Interval_Timer:
