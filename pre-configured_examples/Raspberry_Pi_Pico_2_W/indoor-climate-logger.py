@@ -988,6 +988,7 @@ def get_time_date_str():
 
 
 def seconds_after_midnight():
+    """whole seconds. struct-time does not cover milliseconds"""
     now = get_now()
     return (now.tm_hour * 3600) + (now.tm_min * 60) + now.tm_sec
 
