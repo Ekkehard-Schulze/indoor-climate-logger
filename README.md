@@ -22,8 +22,9 @@ Features
   - wirelessly retrieve your data via Wi-Fi when using the **Raspberry&nbsp;Pi&nbsp;Pico&nbsp;2&nbsp;W**, or use it completely offline.
 
 
-- **proven stable cross platform operation** 
-  - proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using CPython and the Adafruit Blinka library.
+* **Proven Cross-Platform Stability:** Years of real-world deployment across diverse environments:
+  * **Raspberry Pi Pico 2 W** via CircuitPython
+  * **Raspberry Pi 3B** via CPython & Adafruit Blink
 
 - **records**
 
