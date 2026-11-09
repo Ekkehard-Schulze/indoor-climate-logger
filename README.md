@@ -23,7 +23,7 @@ Features
 
 
 - **cross-Platform & stable** 
-  - proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using CPython and the Adafruit Blinka library. Works also on PCs under Windows and Linux and on Raspberry Pi Pico and Pico 2.
+  - proven stable through years of real-world deployment on the Pico 2 W using CircuitPython, as well as on Raspberry Pi 3B using CPython and the Adafruit Blinka library.
 
 - **records**
 
