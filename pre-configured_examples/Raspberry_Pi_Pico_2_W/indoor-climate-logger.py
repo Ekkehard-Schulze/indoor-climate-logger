@@ -1297,7 +1297,7 @@ try:  # -------- outer error handler loop -------------------
         file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:])
         if file_sens_header.strip() != sens_header.strip() and REJECT_sensor_changes:
             raise HeaderMismatchError("File header not matching sensors detected")
-        if file_sens_header.strip() != sens_header.strip() and not REJECT_sensor_changes:
+        elif file_sens_header.strip() != sens_header.strip():
             write_header_line()
 
     # ----------------- init logger ----------------------------------
