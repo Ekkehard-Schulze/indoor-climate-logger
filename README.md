@@ -23,7 +23,7 @@ Features
 
 - **Proven Cross-Platform Stability:** Years of real-world deployment on
   - **Raspberry Pi Pico 2 W** via CircuitPython
-  - **Raspberry Pi 3B** via CPython & Adafruit Blink
+  - **Raspberry Pi 3B** via CPython & Adafruit Blinka
 
 - **records**
 
