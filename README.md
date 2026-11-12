@@ -198,7 +198,7 @@ combination with CPython's time functions.
   * *Hardware Note:* Testing revealed that an 820 Ω pull-up resistor is required when using multiple DS18X20 sensors (and 450 Ω for the MAX31850), instead of the standard 4.7 kΩ resistor. This strongly indicates that the 1-Wire protocol implementation in MicroPython/CircuitPython, as well as the Linux kernel, handles parasite power poorly. For larger setups, **do not use parasite power**—always opt for a standard 3-wire connection.
 
 ### Stability & Debugging
-* **Long-Term Testing:** The default settings have been stress-tested on multiple Raspberry Pi Pico 2 W boards running CircuitPython 9.2.8 for over 6 months of continuous, stable operation. A setup utilizing the precise DS3231 hardware clock (instead of NTP) was verified over an identical 6-month period.
+* This project was developed and tested using **CircuitPython 9.2.8** on the **Raspberry Pi Pico 2 W**. Additional testing and execution runs were verified on **CircuitPython 9.2** and **10.3**, as well as **CPython 3.13** running on a **Raspberry Pi 3B**.
 * **Production Logging:** Setting `LOG_EXCEPTIONS_to_file = True` saves exception messages directly to a file (accessible via HTTP if the web server is running). Note that CircuitPython limitations prevent these logs from containing standard backtraces or line numbers. This setting also mutes error outputs to the REPL.
 * **Development Mode:** For live console debugging, use these settings:
   ```python
