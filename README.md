@@ -8,7 +8,11 @@ Features
 - **data logging**
 
   - writes data to a TSV file with ISO 8601 timestamps. Fully compatible with spreadsheets and Python (pandas) for downstream analysis.
+  - **Logging data instantly** on startup, zero setup time
 
+  - **Automatically detecting** connected sensors
+
+  - Supports **multiple sensors** simultaneously
 
 - **supported platforms**
 
