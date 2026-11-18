@@ -14,7 +14,7 @@ Features
 
   - Supports multiple sensors simultaneously
   
-  - writes data to a TSV file with ISO 8601 timestamps. Fully compatible with spreadsheets and Python (pandas) for downstream analysis.  
+  - Writes data to a TSV file with ISO 8601 timestamps. Fully compatible with spreadsheets and Python (pandas) for downstream analysis.  
 
 - **supported platforms**
 
@@ -25,7 +25,7 @@ Features
 
 - **flexible access on microcontrollers**
 
-  - wirelessly retrieve your data via Wi-Fi when using the **Raspberry&nbsp;Pi&nbsp;Pico&nbsp;2&nbsp;W**, or use it completely offline.
+  - Wirelessly retrieve your data via Wi-Fi when using the **Raspberry&nbsp;Pi&nbsp;Pico&nbsp;2&nbsp;W**, or use it completely offline.
 
 - **Proven Cross-Platform Stability:** Years of real-world deployment on
   - **Raspberry Pi Pico 2 W** via CircuitPython
