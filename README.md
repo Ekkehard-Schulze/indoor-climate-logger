@@ -8,7 +8,7 @@ Features
 - **data logging**
 
   
-  - Logging data instantly on startup, zero setup time
+  - Logging data instantly on startup
 
   - Automatically detecting connected sensors
 
