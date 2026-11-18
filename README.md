@@ -33,13 +33,13 @@ Features
 
 - **records**
 
-  - accurate temperature using up to four I2C sensors
-  - general purpose 1-Wire temperature sensors
-  - humidity
-  - atmospheric pressure
-  - carbon dioxide concentration
-  - illuminances
-  - radiation surface temperature
+  - Accurate temperature using up to four I2C sensors
+  - General purpose 1-Wire temperature sensors
+  - Humidity
+  - Atmospheric pressure
+  - Carbon dioxide concentration
+  - Illuminances
+  - Radiation surface temperature
   
   
 - **supported sensors, all with auto-discovery**
@@ -47,10 +47,10 @@ Features
   - i2c
     - TMP117   temperature ±0.1 °C accuracy from –20&nbsp;°C to +50&nbsp;°C
     - ADT7420  temperature ±0.2 °C accuracy from −10°C to +85 °C
-    - mlx90614 infrared non-contact temperature from -70…+380°C, see data sheet for accuracy
-    - bme280   barometric pressure, humidity 3%, temperature ±1 °C accuracy
-    - bme680   barometric pressure, humidity 3%, temperature ±1 °C accuracy
-    - tsl2561  illuminance
+    - MLX90614 infrared non-contact temperature from -70…+380°C, see data sheet for accuracy
+    - BME280   barometric pressure, humidity 3%, temperature ±1 °C accuracy
+    - BME680   barometric pressure, humidity 3%, temperature ±1 °C accuracy
+    - TSL2561  illuminance
 	- SCD30    carbon dioxide concentration
 
   - 1-Wire
