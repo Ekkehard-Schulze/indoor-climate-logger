@@ -1016,7 +1016,7 @@ def seconds_after_midnight():
 
 
 def get_RTC_seconds_to_next_alignment(offset_seconds=0):
-    """currently not uses
+    """currently not used
     This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
     Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
     The resolution is just 1 second.
@@ -1051,8 +1051,8 @@ class Interval_Timer_seconds_RTC_aligned:
 
 class Interval_Timer_ns_unaligned:
     """Use Modulo on  time.monotonic_ns fixed arbitrary timer start to
-    define interval baundaries.  To allow initialization at any moment,
-    record the offset at startup and use it later fo calculations.
+    define interval boundaries.  To allow initialization at any moment,
+    record the offset to modulo 0 at startup and use it later for calculations.
     """
 
     def __init__(self, interval_seconds: float):
