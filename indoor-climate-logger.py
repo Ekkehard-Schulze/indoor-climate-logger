@@ -253,21 +253,6 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
     import traceback
     from datetime import datetime, timedelta, timezone
 
-    UTC_offset_hours_time_delta = timedelta(hours=UTC_offset_hours)
-
-    if USE_ONE_WIRE:
-        if platform.system() == "Linux":
-            USE_ONE_WIRE_temperature_Linux_Kernel = True
-            USE_ONE_WIRE_temperature_Adafruit_CircuitPy = False
-        else:
-            raise OneWireNotAvailableError("1Wire with CPython requires Linux and the 1Wire kernel driver.")
-    # if USE_MHZ_19_CO2:
-    #    raise Exception('MH-Z19 not implemented in CPython.')
-    if USE_HTTP_server:
-        raise HTTPServerNotInCPython("http-Server not imlemented in CPython.")
-    if SET_RTC_from_NTP:
-        raise NTPNotInCPython("NTP-time not imlemented in CPython. Use python time.")
-
     def set_i2c_environment_vars_for_Blinka(mode=1):
         """prepare for adafruit-blinka on cpython PC"""
 
@@ -331,6 +316,8 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
                 # put IC-specifying env var in py code instead of administrating the
                 os.environ[blinka_ic[0]] = blinka_ic[1]
 
+    # --------------- end of set_i2c_environment_vars_for_Blinka --------------------
+
     parser = argparse.ArgumentParser(
         description="Ekkehard's environment logger for CPython on PC or RaspberryPi using Blinka, \nor CircuitPython on RaspberryPi Pico or PicoW with http server",
         epilog="Have fun with precision sensors",
@@ -364,10 +351,26 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
         help="quits after single log",
         action="store_true",
     )  # boolean argparse
+    parser.add_argument(
+        "-z",
+        "--settings",
+        default=False,
+        help="Filename of user settings",
+    )  # string
     # --------------  collect arguments
     args = parser.parse_args()
 
     # ------- poke arguments
+    if args.settings:
+        try:
+            os.rename(args.settings, "user_settings.py")
+            from user_settings import *  # noqa: F403 # ruff ignore
+
+            print(f"imported {args.settings}")
+            os.rename("user_settings.py", args.settings)
+        except ImportError:
+            print(f"imported {args.settings} failed")
+            pass
     if args.USB_IC == "0" and platform.system() != "Linux" and "ARM" not in platform.machine().upper():
         parser.print_help()
         sys.exit("You have to choose an USB-Ic.")
@@ -377,6 +380,22 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
     if args.USB_IC not in "0123":
         sys.exit("-u argument must either be 0, 1, 2, or 3\n")
     set_i2c_environment_vars_for_Blinka(int(args.USB_IC))
+
+    UTC_offset_hours_time_delta = timedelta(hours=UTC_offset_hours)
+
+    if USE_ONE_WIRE:
+        if platform.system() == "Linux":
+            USE_ONE_WIRE_temperature_Linux_Kernel = True
+            USE_ONE_WIRE_temperature_Adafruit_CircuitPy = False
+        else:
+            raise OneWireNotAvailableError("1Wire with CPython requires Linux and the 1Wire kernel driver.")
+    # if USE_MHZ_19_CO2:
+    #    raise Exception('MH-Z19 not implemented in CPython.')
+    if USE_HTTP_server:
+        raise HTTPServerNotInCPython("http-Server not imlemented in CPython.")
+    if SET_RTC_from_NTP:
+        raise NTPNotInCPython("NTP-time not imlemented in CPython. Use python time.")
+
     print("\nUsing PC-Adafruit-Blinka mode\n")
     import board
 
@@ -1017,11 +1036,17 @@ class Interval_Timer:
         # Calculate the initial alignment offset based on the current monotonic time
         self.offset_ns = time.monotonic_ns() % self.interval_ns
 
+        self.last_call = time.monotonic_ns()
+
     # @property # as property you can call it without ()
     def seconds_to_next(self) -> float:
         """Returns the waiting time to the next interval in seconds."""
         # Subtract offset to align to initialization grid, find elapsed time in current cycle,
         # subtract from interval to get remaining time, and modulo again to handle the 0 case.
+        # is requested interval shorter than measurement time, then so no sleep needed
+        self.last_call = time.monotonic_ns()
+        if time.monotonic_ns() - self.last_call >= self.interval_ns:
+            return 0
         return (
             (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
         ) * FACTOR_ns_to_s
@@ -1422,7 +1447,8 @@ try:  # -------- outer error handler loop -------------------
                     # Attention: re-start is from very TOP of this code!
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
-                time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
+                if USE_ALIGNED_RTC_TIMER:  # DS3231 has just 1 second resolution
+                    time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
                 time.sleep(wait_seconds_function())  # my be float or integer
 
         # --------------- end of main loop -----------------------------------------
