@@ -954,9 +954,8 @@ def file_exists(fnamel):
     return exists
 
 
-def dir_exists(
-    dirnamel,
-):  # workaround: from os.path import exists # not available in circuit/micro python
+def dir_exists(dirnamel):
+    """workaround: from os.path import exists # not available in circuit/micro python"""
     old_dir = os.getcwd()
     try:
         os.chdir(dirnamel)
@@ -996,7 +995,9 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
 
 
 def get_now():
-    """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt."""
+    """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt.
+    Attention: no micro or nanoseconds in struct_time, py time has seconds as smallest unit.
+    datetime is not availbale in CircuitPython"""
     if DS3231_present:
         return ds3231_rtc.datetime
     if sys.implementation.name == "cpython":
