@@ -1012,7 +1012,7 @@ class Interval_Timer:
     def __init__(self, interval_seconds: float):
 
         # Convert the interval from seconds to nanoseconds
-        self.interval_ns = int(interval_seconds * FACTOR_ns_to_s)
+        self.interval_ns = int(interval_seconds * FACTOR_s_to_ns)
 
         # Calculate the initial alignment offset based on the current monotonic time
         self.offset_ns = time.monotonic_ns() % self.interval_ns
@@ -1024,7 +1024,7 @@ class Interval_Timer:
         # subtract from interval to get remaining time, and modulo again to handle the 0 case.
         return (
             (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
-        ) / FACTOR_ns_to_s
+        ) * FACTOR_ns_to_s
 
 
 def write_data_frame():
@@ -1349,7 +1349,7 @@ try:  # -------- outer error handler loop -------------------
     # requires 12 testing conditions = 3 timer modi * 2 http on/off *  2 for pico with/without alarm.time
 
     if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
-        wait_seconds_function = get_RTC_seconds_to_next_alignment()  # function assignment, # --> seconds as integer!!!
+        wait_seconds_function = get_RTC_seconds_to_next_alignment  # function assignment, # --> seconds as integer!!!
         previous_loop_end_wait_seconds = LOG_every_n_seconds  # to prevent immeadate trigger in http mode
         print("Waiting for clock alignment for first record.")
         if not USE_HTTP_server:
@@ -1358,7 +1358,7 @@ try:  # -------- outer error handler loop -------------------
     else:  # NOT aligned to RTC bcause it has an arbitrary reference
         interval_timer = Interval_Timer(LOG_every_n_seconds)
         # function assignment
-        wait_seconds_function = interval_timer.seconds_to_next()  # --> seconds as float !!
+        wait_seconds_function = interval_timer.seconds_to_next  # --> seconds as float !!
         previous_loop_end_wait_seconds = 0  # for immediate trigger in http-mode
 
     # ---------  main-loop ------------------------------
