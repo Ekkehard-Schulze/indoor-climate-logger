@@ -316,7 +316,7 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
                 # put IC-specifying env var in py code instead of administrating the
                 os.environ[blinka_ic[0]] = blinka_ic[1]
 
-    # --------------- end of set_i2c_environment_vars_for_Blinka --------------------
+    # --------------- end  "def set_i2c_environment_vars_for_Blinka" --------------------
 
     parser = argparse.ArgumentParser(
         description="Ekkehard's environment logger for CPython on PC or RaspberryPi using Blinka, \nor CircuitPython on RaspberryPi Pico or PicoW with http server",
@@ -1053,9 +1053,12 @@ class Interval_Timer:
 
 
 def write_data_frame():
+
+    time_str_start_measure = get_time_date_str()
+
     sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
-    logline = LOGGER_name + SEPARATOR + get_time_date_str() + sensor_measurements
+    logline = LOGGER_name + SEPARATOR + time_str_start_measure + sensor_measurements
 
     if VERBOSE:
         print(logline)
