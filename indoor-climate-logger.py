@@ -328,7 +328,7 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
     parser.add_argument(
         "-s",
         "--LOG_every_n_seconds",
-        default=str(LOG_every_n_seconds),
+        default="",
         help="Log every second",
     )  # string
     parser.add_argument(
@@ -368,6 +368,7 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
 
             print(f"imported {args.settings}")
             os.rename("user_settings.py", args.settings)
+            interval_ms = LOG_every_n_seconds * FACTOR_s_to_ms
         except ImportError:
             print(f"imported {args.settings} failed")
             pass
@@ -375,7 +376,8 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
         parser.print_help()
         sys.exit("You have to choose an USB-Ic.")
     quit_after_one_log = args.log_once
-    LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
+    if args.LOG_every_n_seconds:
+        LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
     WRITE_LOG_data_to_file = not args.do_not_write_log_file
     if args.USB_IC not in "0123":
         sys.exit("-u argument must either be 0, 1, 2, or 3\n")
@@ -398,6 +400,7 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
 
     print("\nUsing PC-Adafruit-Blinka mode\n")
     import board
+
 
 elif sys.implementation.name == "circuitpython":
     import board
@@ -1013,7 +1016,8 @@ def seconds_after_midnight():
 
 
 def get_RTC_seconds_to_next_alignment(offset_seconds=0):
-    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
+    """currently not uses
+    This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
     Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
     The resolution is just 1 second.
     """
@@ -1022,7 +1026,30 @@ def get_RTC_seconds_to_next_alignment(offset_seconds=0):
     ) % LOG_every_n_seconds
 
 
-class Interval_Timer:
+class Interval_Timer_seconds_RTC_aligned:
+    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
+    Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
+    The resolution is just 1 second.
+    """
+
+    def __init__(self, interval_seconds: float):
+        self.interval_sec = int(interval_seconds)
+        self.last_call = None
+
+    # @property # as property you can call it without ()
+    def seconds_to_next(self, offset_seconds=0) -> float:
+        """Returns the waiting time to the next interval in seconds."""
+        now = seconds_after_midnight()
+        # prevent double-measurement in the same second
+        if self.last_call is not None and now == self.last_call:
+            self.last_call = now + self.interval_sec
+            return self.interval_sec
+        return (
+            LOG_every_n_seconds - ((seconds_after_midnight() - offset_seconds) % LOG_every_n_seconds)
+        ) % LOG_every_n_seconds
+
+
+class Interval_Timer_ns_unaligned:
     """Use Modulo on  time.monotonic_ns fixed arbitrary timer start to
     define interval baundaries.  To allow initialization at any moment,
     record the offset at startup and use it later fo calculations.
@@ -1044,9 +1071,11 @@ class Interval_Timer:
         # Subtract offset to align to initialization grid, find elapsed time in current cycle,
         # subtract from interval to get remaining time, and modulo again to handle the 0 case.
         # is requested interval shorter than measurement time, then so no sleep needed
-        self.last_call = time.monotonic_ns()
+
         if time.monotonic_ns() - self.last_call >= self.interval_ns:
+            self.last_call = time.monotonic_ns()
             return 0
+        self.last_call = time.monotonic_ns()
         return (
             (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
         ) * FACTOR_ns_to_s
@@ -1377,16 +1406,17 @@ try:  # -------- outer error handler loop -------------------
     # requires 12 testing conditions = 3 timer modi * 2 http on/off *  2 for pico with/without alarm.time
 
     if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
-        wait_seconds_function = get_RTC_seconds_to_next_alignment  # function assignment, # --> seconds as integer!!!
+        interval_timer = Interval_Timer_seconds_RTC_aligned(LOG_every_n_seconds)
+        wait_seconds_function = interval_timer.seconds_to_next  # function assignment, # --> seconds as integer!!!
         previous_loop_end_wait_seconds = LOG_every_n_seconds  # to prevent immeadate trigger in http mode
-        print("Waiting for clock alignment for first record.")
+        s = wait_seconds_function()
+        print(f"Waiting for clock alignment for first record for {s} seconds.")
         if not USE_HTTP_server:
-            time.sleep(wait_seconds_function())
+            time.sleep(s)
 
-    else:  # NOT aligned to RTC bcause it has an arbitrary reference
-        interval_timer = Interval_Timer(LOG_every_n_seconds)
-        # function assignment
-        wait_seconds_function = interval_timer.seconds_to_next  # --> seconds as float !!
+    else:  # NOT aligned to RTC because timer has an arbitrary starting point
+        interval_timer = Interval_Timer_ns_unaligned(LOG_every_n_seconds)
+        wait_seconds_function = interval_timer.seconds_to_next  #  function assignment, # --> seconds as float !!
         previous_loop_end_wait_seconds = 0  # for immediate trigger in http-mode
 
     # ---------  main-loop ------------------------------
@@ -1450,8 +1480,6 @@ try:  # -------- outer error handler loop -------------------
                     # Attention: re-start is from very TOP of this code!
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
-                if USE_ALIGNED_RTC_TIMER:  # DS3231 has just 1 second resolution
-                    time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
                 time.sleep(wait_seconds_function())  # my be float or integer
 
         # --------------- end of main loop -----------------------------------------
