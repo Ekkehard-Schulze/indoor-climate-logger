@@ -57,6 +57,7 @@ Features
     - BME680   barometric pressure, humidity 3%, temperature ±1 °C accuracy
     - TSL2561  illuminance
 	- SCD30    carbon dioxide concentration
+	- Si7021   humidity, temperature
 
   - 1-Wire
     - DS18B20  ±0.5 °C accuracy from -10 °C to +85 °C
@@ -115,6 +116,7 @@ Alternatively, place the drivers from the  [Adafruit CircuitPython Bundle](https
   * `adafruit_tsl2561`
   * `adafruit_onewire`
   * `adafruit_scd30`
+  * `adafruit_si7021`  
   * `adafruit_ds3231`
   * `adafruit_ntp`
 
