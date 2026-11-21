@@ -938,6 +938,35 @@ if USE_MHZ_19_CO2:
             return SEPARATOR + CO2valstr
 
 
+class Si7021:
+    """----------- sensor Si7021 Adafruit specific code for logger ------------
+    failed on CPython USB interface U2IF Pico
+    worked on Raspberry Pi Pico 2
+    """
+
+    filename = r"Si7021_log.tsv"
+    i2c_address = "0x40"
+
+    def __init__(self):
+        self.LOGGER_name = "Si7021_logger"
+        self.my_sensor_names = ["Si[°C]", "Si_h%"]
+
+        import adafruit_si7021
+
+        self.si7021 = adafruit_si7021.SI7021(i2c)
+
+    def get_sensor_headers(self):
+        return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
+
+    def get_measurement_str(self):
+        def f(val, fmt):
+            """consider None for formatting"""
+            return fmt.format(val) if val is not None else ""
+
+        return f"{SEPARATOR}{f(self.si7021.temperature, '{:.1f}')}{SEPARATOR}{f(self.si7021.relative_humidity, '{:.1f}')}"
+
+
+
 # ============================= end sensor objects ===============================
 
 # ------------------- utilities ----------------------
@@ -1239,6 +1268,9 @@ try:  # -------- outer error handler loop -------------------
 
         if "0x61" in i2c_devices:
             my_sensors.append(SCD30_CO2())
+            
+        if Si7021.i2c_address in i2c_devices:
+            my_sensors.append(Si7021())
 
     if USE_ONE_WIRE_temperature_Linux_Kernel:
         my_sensors.append(one_wire_temperature_Linux_kernel())
