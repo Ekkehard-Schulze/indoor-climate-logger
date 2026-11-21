@@ -124,11 +124,11 @@ Alternatively, place the drivers from the  [Adafruit CircuitPython Bundle](https
 
 You can also use the following helper scripts, which run on your host PC via **CPython**:
 
-* ### `switch_RPiPico_to_USB_read_log_mode.py`
+* #### `switch_RPiPico_to_USB_read_log_mode.py`
   Renames `boot.py` to `boot.bak` on the microcontroller. The board will reset, and **subsequently the logged data will be accessible via USB**. 
   * **Use case:** Use this method if WiFi is unavailable for data retrieval, or if you need to modify data directly on the microcontroller.
 
-* ### `switch_RPiPico_to_write_log_mode.py`
+* #### `switch_RPiPico_to_write_log_mode.py`
   Renames `boot.bak` back to `boot.py`. For development convenience, this script also automatically copies `indoor-climate-logger.py` to `code.py`. The board will reset, the filesystem is mounted in read/write mode for the microcontroller, and **logging begins**.
   * **Note:** You cannot read the active log file via USB or modify files while in this mode.
 
