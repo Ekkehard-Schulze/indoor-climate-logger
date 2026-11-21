@@ -120,7 +120,7 @@ Alternatively, place the drivers from the  [Adafruit CircuitPython Bundle](https
   * `adafruit_ds3231`
   * `adafruit_ntp`
 
-## 🛠️ Optional Utility Scripts
+### Optional Utility Scripts
 
 You can also use the following helper scripts, which run on your host PC via **CPython**:
 
