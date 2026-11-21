@@ -18,7 +18,7 @@ Features
   
 - **data retrieval**
   - **Embedded / Microcontrollers:**
-    - Asynchronous HTTP transfer
+    - Asynchronous HTTP transfer via Wi-Fi
     - Asynchronous USB Mass Storage (MSD) file transfer
     - Synchronous serial streaming (live transfer while logging)
   - **Desktop (Linux & Windows):**
@@ -31,10 +31,6 @@ Features
   - **Linux:** Supported on **Linux PCs** and **Raspberry Pi single-board computers** using **CPython**.
   - **Windows:** Supported on **PCs** using **CPython**.
 
-
-- **flexible access on microcontrollers**
-
-  - Wirelessly retrieve your data via Wi-Fi when using the **Raspberry&nbsp;Pi&nbsp;Pico&nbsp;2&nbsp;W**, or use it completely offline.
 
 - **proven cross-platform stability:** years of real-world deployment on
   - **Raspberry Pi Pico 2 W** via CircuitPython
