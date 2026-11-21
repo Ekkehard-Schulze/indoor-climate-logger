@@ -15,6 +15,15 @@ Features
   - Supports multiple sensors simultaneously
   
   - Writes data to a TSV file with ISO 8601 timestamps. Fully compatible with spreadsheets and Python (pandas) for downstream analysis.  
+  
+- **data retrieval**
+  - **Embedded / Microcontrollers:**
+    - Asynchronous HTTP transfer
+    - Asynchronous USB Mass Storage (MSD) file transfer
+    - Synchronous serial streaming (live transfer while logging)
+  - **Desktop (Linux & Windows):**
+    - Standard local filesystem and network access
+
 
 - **supported platforms**
 
