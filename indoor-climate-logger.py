@@ -963,8 +963,9 @@ class Si7021:
             """consider None for formatting"""
             return fmt.format(val) if val is not None else ""
 
-        return f"{SEPARATOR}{f(self.si7021.temperature, '{:.1f}')}{SEPARATOR}{f(self.si7021.relative_humidity, '{:.1f}')}"
-
+        return (
+            f"{SEPARATOR}{f(self.si7021.temperature, '{:.1f}')}{SEPARATOR}{f(self.si7021.relative_humidity, '{:.1f}')}"
+        )
 
 
 # ============================= end sensor objects ===============================
@@ -1268,7 +1269,7 @@ try:  # -------- outer error handler loop -------------------
 
         if "0x61" in i2c_devices:
             my_sensors.append(SCD30_CO2())
-            
+
         if Si7021.i2c_address in i2c_devices:
             my_sensors.append(Si7021())
 
@@ -1373,6 +1374,8 @@ try:  # -------- outer error handler loop -------------------
         # use append mode to prevent deleting data. Append makes a new file if none exists.
         with open(log_file_path, "a") as log_filel:
             log_filel.write(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n")
+        if VERBOSE:
+            print(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header)
 
     if (
         not file_exists(log_file_path) and WRITE_LOG_data_to_file
