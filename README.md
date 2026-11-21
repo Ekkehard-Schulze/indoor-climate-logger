@@ -20,7 +20,7 @@ Features
   - **Embedded / Microcontrollers:**
     - Asynchronous HTTP transfer via Wi-Fi
     - Asynchronous USB Mass Storage (MSD) file transfer
-    - Synchronous serial streaming (live transfer while logging)
+    - Synchronous USB-serial streaming (live transfer while logging)
   - **Desktop (Linux & Windows):**
     - Standard local filesystem and network access
 
