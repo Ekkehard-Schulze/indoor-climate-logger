@@ -38,7 +38,14 @@ LOG_EXCEPTIONS_to_file = True
 SEPARATOR = "\t"
 
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
-VERBOSE = True  # data goto console print
+
+# filter for print_msg
+ERROR = 10
+LOGDATA = 20
+LOGGER_ACTIONS = 30
+VERBOSE = 50
+DEBUG = 90
+PRINT_MSG_LEVEL = VERBOSE  # filter threshold for print
 
 USE_ALIGNED_RTC_TIMER = True  # False: starts immediately, uses time.monotonic_ns
 

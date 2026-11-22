@@ -131,7 +131,14 @@ LOG_EXCEPTIONS_to_file = True
 SEPARATOR = "\t"
 
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
-VERBOSE = True  # data goto console print
+
+# filter for print_msg
+ERROR = 10
+LOGDATA = 20
+LOGGER_ACTIONS = 30
+VERBOSE = 50
+DEBUG = 90
+PRINT_MSG_LEVEL = VERBOSE  # filter threshold for print
 
 USE_ALIGNED_RTC_TIMER = True  # False: starts immediately, uses time_monotonic_ns
 
@@ -245,6 +252,11 @@ class NTPNotInCPython(Exception):
     """Direct NTP access is only implemented for CircuitPython"""
 
 
+def print_level_msg(content, level):
+    if level <= PRINT_MSG_LEVEL:
+        print(content)
+
+
 # -------------- board and python implementation specific settings ----------------
 
 if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Windows or Linux
@@ -252,21 +264,6 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
     import platform
     import traceback
     from datetime import datetime, timedelta, timezone
-
-    UTC_offset_hours_time_delta = timedelta(hours=UTC_offset_hours)
-
-    if USE_ONE_WIRE:
-        if platform.system() == "Linux":
-            USE_ONE_WIRE_temperature_Linux_Kernel = True
-            USE_ONE_WIRE_temperature_Adafruit_CircuitPy = False
-        else:
-            raise OneWireNotAvailableError("1Wire with CPython requires Linux and the 1Wire kernel driver.")
-    # if USE_MHZ_19_CO2:
-    #    raise Exception('MH-Z19 not implemented in CPython.')
-    if USE_HTTP_server:
-        raise HTTPServerNotInCPython("http-Server not imlemented in CPython.")
-    if SET_RTC_from_NTP:
-        raise NTPNotInCPython("NTP-time not imlemented in CPython. Use python time.")
 
     def set_i2c_environment_vars_for_Blinka(mode=1):
         """prepare for adafruit-blinka on cpython PC"""
@@ -331,6 +328,8 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
                 # put IC-specifying env var in py code instead of administrating the
                 os.environ[blinka_ic[0]] = blinka_ic[1]
 
+    # --------------- end  "def set_i2c_environment_vars_for_Blinka" --------------------
+
     parser = argparse.ArgumentParser(
         description="Ekkehard's environment logger for CPython on PC or RaspberryPi using Blinka, \nor CircuitPython on RaspberryPi Pico or PicoW with http server",
         epilog="Have fun with precision sensors",
@@ -341,7 +340,7 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
     parser.add_argument(
         "-s",
         "--LOG_every_n_seconds",
-        default=str(LOG_every_n_seconds),
+        default="",
         help="Log every second",
     )  # string
     parser.add_argument(
@@ -364,21 +363,56 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
         help="quits after single log",
         action="store_true",
     )  # boolean argparse
+    parser.add_argument(
+        "-z",
+        "--settings",
+        default=False,
+        help="Filename of user settings",
+    )  # string
     # --------------  collect arguments
     args = parser.parse_args()
 
     # ------- poke arguments
+    if args.settings:
+        try:
+            os.rename(args.settings, "user_settings.py")
+            from user_settings import *  # noqa: F403 # ruff ignore
+
+            print_level_msg(f"imported {args.settings}", VERBOSE)
+            os.rename("user_settings.py", args.settings)
+            interval_ms = LOG_every_n_seconds * FACTOR_s_to_ms
+        except ImportError:
+            print_level_msg(f"imported {args.settings} failed", VERBOSE)
+            pass
     if args.USB_IC == "0" and platform.system() != "Linux" and "ARM" not in platform.machine().upper():
         parser.print_help()
         sys.exit("You have to choose an USB-Ic.")
     quit_after_one_log = args.log_once
-    LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
+    if args.LOG_every_n_seconds:
+        LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
     WRITE_LOG_data_to_file = not args.do_not_write_log_file
     if args.USB_IC not in "0123":
         sys.exit("-u argument must either be 0, 1, 2, or 3\n")
     set_i2c_environment_vars_for_Blinka(int(args.USB_IC))
-    print("\nUsing PC-Adafruit-Blinka mode\n")
+
+    UTC_offset_hours_time_delta = timedelta(hours=UTC_offset_hours)
+
+    if USE_ONE_WIRE:
+        if platform.system() == "Linux":
+            USE_ONE_WIRE_temperature_Linux_Kernel = True
+            USE_ONE_WIRE_temperature_Adafruit_CircuitPy = False
+        else:
+            raise OneWireNotAvailableError("1Wire with CPython requires Linux and the 1Wire kernel driver.")
+    # if USE_MHZ_19_CO2:
+    #    raise Exception('MH-Z19 not implemented in CPython.')
+    if USE_HTTP_server:
+        raise HTTPServerNotInCPython("http-Server not imlemented in CPython.")
+    if SET_RTC_from_NTP:
+        raise NTPNotInCPython("NTP-time not imlemented in CPython. Use python time.")
+
+    print_level_msg("\nUsing PC-Adafruit-Blinka mode\n", VERBOSE)
     import board
+
 
 elif sys.implementation.name == "circuitpython":
     import board
@@ -694,7 +728,7 @@ if USE_i2c:
                 if lux is not None:
                     dlist.append(lux)
                 else:
-                    print("Overflow?")
+                    print_level_msg("# Overflow of tsl2561?", ERROR)
                 time.sleep(self.delay)
             return round(sum(dlist) / len(dlist)) if len(dlist) > 0 else ""
 
@@ -916,6 +950,36 @@ if USE_MHZ_19_CO2:
             return SEPARATOR + CO2valstr
 
 
+class Si7021:
+    """----------- sensor Si7021 Adafruit specific code for logger ------------
+    failed on CPython USB interface U2IF Pico
+    worked on Raspberry Pi Pico 2
+    """
+
+    filename = r"Si7021_log.tsv"
+    i2c_address = "0x40"
+
+    def __init__(self):
+        self.LOGGER_name = "Si7021_logger"
+        self.my_sensor_names = ["Si[°C]", "Si_h%"]
+
+        import adafruit_si7021
+
+        self.si7021 = adafruit_si7021.SI7021(i2c)
+
+    def get_sensor_headers(self):
+        return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
+
+    def get_measurement_str(self):
+        def f(val, fmt):
+            """consider None for formatting"""
+            return fmt.format(val) if val is not None else ""
+
+        return (
+            f"{SEPARATOR}{f(self.si7021.temperature, '{:.1f}')}{SEPARATOR}{f(self.si7021.relative_humidity, '{:.1f}')}"
+        )
+
+
 # ============================= end sensor objects ===============================
 
 # ------------------- utilities ----------------------
@@ -932,9 +996,8 @@ def file_exists(fnamel):
     return exists
 
 
-def dir_exists(
-    dirnamel,
-):  # workaround: from os.path import exists # not available in circuit/micro python
+def dir_exists(dirnamel):
+    """workaround: from os.path import exists # not available in circuit/micro python"""
     old_dir = os.getcwd()
     try:
         os.chdir(dirnamel)
@@ -949,7 +1012,7 @@ def dir_exists(
 def reset_microcontroller(reset_delay=5):
     import microcontroller
 
-    print(f"restarting in {reset_delay} seconds ..")
+    print_level_msg(f"restarting in {reset_delay} seconds ..", LOGGER_ACTIONS)
     time.sleep(reset_delay)
     microcontroller.reset()
 
@@ -974,7 +1037,9 @@ def truncate_log_top(log_file_namel, size_limit, n_lines_to_delete=288):
 
 
 def get_now():
-    """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt."""
+    """Hilfsfunktion: Holt die aktuelle Zeit immer als struct_time-kompatibles Objekt.
+    Attention: no micro or nanoseconds in struct_time, py time has seconds as smallest unit.
+    datetime is not availbale in CircuitPython"""
     if DS3231_present:
         return ds3231_rtc.datetime
     if sys.implementation.name == "cpython":
@@ -994,7 +1059,8 @@ def seconds_after_midnight():
 
 
 def get_RTC_seconds_to_next_alignment(offset_seconds=0):
-    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
+    """currently not used
+    This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
     Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
     The resolution is just 1 second.
     """
@@ -1003,37 +1069,71 @@ def get_RTC_seconds_to_next_alignment(offset_seconds=0):
     ) % LOG_every_n_seconds
 
 
-class Interval_Timer:
+class Interval_Timer_seconds_RTC_aligned:
+    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest.
+    Output counts down from LOG_every_n_seconds - 1 to 0. Zero means we are on alignment.
+    The resolution is just 1 second.
+    """
+
+    def __init__(self, interval_seconds: float):
+        self.interval_sec = int(interval_seconds)
+        self.last_call = None
+
+    # @property # as property you can call it without ()
+    def seconds_to_next(self, offset_seconds=0) -> float:
+        """Returns the waiting time to the next interval in seconds."""
+        now = seconds_after_midnight()
+        # prevent double-measurement in the same second
+        if self.last_call is not None and now == self.last_call:
+            self.last_call = now + self.interval_sec
+            return self.interval_sec
+        return (
+            LOG_every_n_seconds - ((seconds_after_midnight() - offset_seconds) % LOG_every_n_seconds)
+        ) % LOG_every_n_seconds
+
+
+class Interval_Timer_ns_unaligned:
     """Use Modulo on  time.monotonic_ns fixed arbitrary timer start to
-    define interval baundaries.  To allow initialization at any moment,
-    record the offset at startup and use it later fo calculations.
+    define interval boundaries.  To allow initialization at any moment,
+    record the offset to modulo 0 at startup and use it later for calculations.
     """
 
     def __init__(self, interval_seconds: float):
 
         # Convert the interval from seconds to nanoseconds
-        self.interval_ns = int(interval_seconds * FACTOR_ns_to_s)
+        self.interval_ns = int(interval_seconds * FACTOR_s_to_ns)
 
         # Calculate the initial alignment offset based on the current monotonic time
         self.offset_ns = time.monotonic_ns() % self.interval_ns
+
+        self.last_call = time.monotonic_ns()
 
     # @property # as property you can call it without ()
     def seconds_to_next(self) -> float:
         """Returns the waiting time to the next interval in seconds."""
         # Subtract offset to align to initialization grid, find elapsed time in current cycle,
         # subtract from interval to get remaining time, and modulo again to handle the 0 case.
+        # is requested interval shorter than measurement time, then so no sleep needed
+
+        if time.monotonic_ns() - self.last_call >= self.interval_ns:
+            self.last_call = time.monotonic_ns()
+            return 0
+        self.last_call = time.monotonic_ns()
         return (
             (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
-        ) / FACTOR_ns_to_s
+        ) * FACTOR_ns_to_s
 
 
 def write_data_frame():
+
+    time_str_start_measure = get_time_date_str()
+
     sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
-    logline = LOGGER_name + SEPARATOR + get_time_date_str() + sensor_measurements
+    logline = LOGGER_name + SEPARATOR + time_str_start_measure + sensor_measurements
 
-    if VERBOSE:
-        print(logline)
+    print_level_msg(logline, LOGDATA)
+
     if WRITE_LOG_data_to_file:
         with open(log_file_path, "a") as log_filel:
             log_filel.write(logline + "\n")
@@ -1127,7 +1227,7 @@ try:  # -------- outer error handler loop -------------------
         i2c_present_str = "\ni2c device(s) "
         for dv in i2c_devices:
             i2c_present_str += dv + " "
-        # print(i2c_present_str)
+        print_level_msg(i2c_present_str, DEBUG)
 
         # ------------ tcxo clock DS3221 if present ---------------------
         DS3231_present = "0x68" in i2c_devices
@@ -1135,7 +1235,7 @@ try:  # -------- outer error handler loop -------------------
             import adafruit_ds3231
 
             ds3231_rtc = adafruit_ds3231.DS3231(i2c)
-            print("Using DS3231 clock")
+            print_level_msg("Using DS3231 clock", LOGGER_ACTIONS)
             # Attention: the following commands lead to failure to alarm-restart !!!
             # import rtc
             # rtc = rtc.RTC()
@@ -1182,6 +1282,9 @@ try:  # -------- outer error handler loop -------------------
         if "0x61" in i2c_devices:
             my_sensors.append(SCD30_CO2())
 
+        if Si7021.i2c_address in i2c_devices:
+            my_sensors.append(Si7021())
+
     if USE_ONE_WIRE_temperature_Linux_Kernel:
         my_sensors.append(one_wire_temperature_Linux_kernel())
 
@@ -1217,7 +1320,7 @@ try:  # -------- outer error handler loop -------------------
         # base64.b64decode(os.getenv("CIRCUITPY_WIFI_PASSWORD")).decode("utf-8"), #
         # )
         wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
-        print("Connected to WiFi")
+        print_level_msg("Connected to WiFi", LOGGER_ACTIONS)
         pool = socketpool.SocketPool(wifi.radio)
 
     if USE_HTTP_server:
@@ -1242,11 +1345,11 @@ try:  # -------- outer error handler loop -------------------
 
         server = Server(pool, LOGGER_data_dir, debug=True)  # use root dir
 
-        print("starting server..")
+        print_level_msg("starting server..", LOGGER_ACTIONS)
         # startup the server
         try:
             server.start(str(wifi.radio.ipv4_address))
-            print(f"Serving http://{wifi.radio.ipv4_address}:80//{LOGGER_filename}")
+            print_level_msg(f"Serving http://{wifi.radio.ipv4_address}:80//{LOGGER_filename}", VERBOSE)
         #  if the server fails to begin, restart the RPi Pico w
         except OSError:
             if sys.implementation.name == "circuitpython":
@@ -1267,26 +1370,34 @@ try:  # -------- outer error handler loop -------------------
 
     sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])
 
-    print("\nSensor(s) " + sens_header.replace(SEPARATOR, " "))
+    print_level_msg(f"\nSensor(s) {sens_header.replace(SEPARATOR, ' ')}", VERBOSE)
 
-    LOGGER_name = (
-        my_sensors[0].LOGGER_name if LOGGER_name == "" else LOGGER_name
-    )  # get name from sensor object if no other name was pre-defined
+    # get name from sensor object if no other name was pre-defined
+    LOGGER_name = my_sensors[0].LOGGER_name if LOGGER_name == "" else LOGGER_name
 
     # ------------------- init log file and log dir  ------------------------
+
+    # -------------- startup message file logging --------------------------
+    if WRITE_LOG_data_to_file:
+        print_level_msg(f"\nData logging to {log_file_path} in progess...\n", LOGGER_ACTIONS)
+
+    print_level_msg("Terminate with Strg+C\n", VERBOSE)
+
     if LOGGER_data_dir != "" and WRITE_LOG_data_to_file and not dir_exists(LOGGER_data_dir):
         os.mkdir(LOGGER_data_dir)
 
     # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here,
     # use 'target-version = "py38"' for ruff in pyproject.toml
+
     def write_header_line():
+        header_line = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n"
         # use append mode to prevent deleting data. Append makes a new file if none exists.
         with open(log_file_path, "a") as log_filel:
-            log_filel.write(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n")
+            log_filel.write(header_line)
+        print_level_msg(header_line.rstrip(), LOGDATA)
 
-    if (
-        not file_exists(log_file_path) and WRITE_LOG_data_to_file
-    ):  # test for file presence to assure a single header line
+    # test for file presence to assure a single header line
+    if not file_exists(log_file_path) and WRITE_LOG_data_to_file:
         write_header_line()
 
     # test if found log file header matches detected sensors
@@ -1299,6 +1410,8 @@ try:  # -------- outer error handler loop -------------------
             raise HeaderMismatchError("File header not matching sensors detected")
         elif file_sens_header.strip() != sens_header.strip():
             write_header_line()
+
+    print_level_msg(f"{LOGGER_ID_field_name}{SEPARATOR}{DATE_TIME_field_name}{sens_header}", LOGDATA)
 
     # ----------------- init logger ----------------------------------
     # starttime = time.time() # originally used
@@ -1320,12 +1433,6 @@ try:  # -------- outer error handler loop -------------------
         watchdog.timeout = 7  # Set a timeout of 7 seconds
         watchdog.mode = WatchDogMode.RESET
         watchdog.feed()
-
-    # -------------- startup message file logging --------------------------
-    if WRITE_LOG_data_to_file:
-        print("\nData logging to " + LOGGER_data_dir + os.sep + LOGGER_filename + " in progess....")
-
-    print("Terminate with Strg+C")
 
     if (
         LOG_EXCEPTIONS_to_file
@@ -1349,16 +1456,17 @@ try:  # -------- outer error handler loop -------------------
     # requires 12 testing conditions = 3 timer modi * 2 http on/off *  2 for pico with/without alarm.time
 
     if USE_ALIGNED_RTC_TIMER:  # aligns to midnight seconds
-        wait_seconds_function = get_RTC_seconds_to_next_alignment()  # function assignment, # --> seconds as integer!!!
+        interval_timer = Interval_Timer_seconds_RTC_aligned(LOG_every_n_seconds)
+        wait_seconds_function = interval_timer.seconds_to_next  # function assignment, # --> seconds as integer!!!
         previous_loop_end_wait_seconds = LOG_every_n_seconds  # to prevent immeadate trigger in http mode
-        print("Waiting for clock alignment for first record.")
+        s = wait_seconds_function()
+        print(f"Waiting for clock alignment for first record for {s} seconds.")
         if not USE_HTTP_server:
-            time.sleep(wait_seconds_function())
+            time.sleep(s)
 
-    else:  # NOT aligned to RTC bcause it has an arbitrary reference
-        interval_timer = Interval_Timer(LOG_every_n_seconds)
-        # function assignment
-        wait_seconds_function = interval_timer.seconds_to_next()  # --> seconds as float !!
+    else:  # NOT aligned to RTC because timer has an arbitrary starting point
+        interval_timer = Interval_Timer_ns_unaligned(LOG_every_n_seconds)
+        wait_seconds_function = interval_timer.seconds_to_next  #  function assignment, # --> seconds as float !!
         previous_loop_end_wait_seconds = 0  # for immediate trigger in http-mode
 
     # ---------  main-loop ------------------------------
@@ -1422,7 +1530,6 @@ try:  # -------- outer error handler loop -------------------
                     # Attention: re-start is from very TOP of this code!
                     alarm.exit_and_deep_sleep_until_alarms(time_alarm)
             else:
-                time.sleep(1)  # to prevent getting a re-trigger 0 for the same second
                 time.sleep(wait_seconds_function())  # my be float or integer
 
         # --------------- end of main loop -----------------------------------------
@@ -1433,8 +1540,7 @@ except KeyboardInterrupt:
 
 except Exception as e:
     if LOG_EXCEPTIONS_to_file:
-        if VERBOSE:
-            print(e)
+        print_level_msg(e, VERBOSE)
         with open(exceptions_file_path, "a") as except_log_file:
             try:
                 except_log_file.write(get_time_date_str())

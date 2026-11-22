@@ -131,7 +131,14 @@ LOG_EXCEPTIONS_to_file = True
 SEPARATOR = "\t"
 
 LOG_EXCPTIONS_filename = "exceptions_log.txt"
-VERBOSE = True  # data goto console print
+
+# filter for print_msg
+ERROR = 10
+LOGDATA = 20
+LOGGER_ACTIONS = 30
+VERBOSE = 50
+DEBUG = 90
+PRINT_MSG_LEVEL = VERBOSE  # filter threshold for print
 
 USE_ALIGNED_RTC_TIMER = True  # False: starts immediately, uses time_monotonic_ns
 
@@ -243,6 +250,11 @@ class HTTPServerNotInCPython(Exception):
 
 class NTPNotInCPython(Exception):
     """Direct NTP access is only implemented for CircuitPython"""
+
+
+def print_level_msg(content, level):
+    if level <= PRINT_MSG_LEVEL:
+        print(content)
 
 
 # -------------- board and python implementation specific settings ----------------
@@ -366,11 +378,11 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
             os.rename(args.settings, "user_settings.py")
             from user_settings import *  # noqa: F403 # ruff ignore
 
-            print(f"imported {args.settings}")
+            print_level_msg(f"imported {args.settings}", VERBOSE)
             os.rename("user_settings.py", args.settings)
             interval_ms = LOG_every_n_seconds * FACTOR_s_to_ms
         except ImportError:
-            print(f"imported {args.settings} failed")
+            print_level_msg(f"imported {args.settings} failed", VERBOSE)
             pass
     if args.USB_IC == "0" and platform.system() != "Linux" and "ARM" not in platform.machine().upper():
         parser.print_help()
@@ -398,7 +410,7 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
     if SET_RTC_from_NTP:
         raise NTPNotInCPython("NTP-time not imlemented in CPython. Use python time.")
 
-    print("\nUsing PC-Adafruit-Blinka mode\n")
+    print_level_msg("\nUsing PC-Adafruit-Blinka mode\n", VERBOSE)
     import board
 
 
@@ -716,7 +728,7 @@ if USE_i2c:
                 if lux is not None:
                     dlist.append(lux)
                 else:
-                    print("Overflow?")
+                    print_level_msg("# Overflow of tsl2561?", ERROR)
                 time.sleep(self.delay)
             return round(sum(dlist) / len(dlist)) if len(dlist) > 0 else ""
 
@@ -1000,7 +1012,7 @@ def dir_exists(dirnamel):
 def reset_microcontroller(reset_delay=5):
     import microcontroller
 
-    print(f"restarting in {reset_delay} seconds ..")
+    print_level_msg(f"restarting in {reset_delay} seconds ..", LOGGER_ACTIONS)
     time.sleep(reset_delay)
     microcontroller.reset()
 
@@ -1120,8 +1132,8 @@ def write_data_frame():
 
     logline = LOGGER_name + SEPARATOR + time_str_start_measure + sensor_measurements
 
-    if VERBOSE:
-        print(logline)
+    print_level_msg(logline, LOGDATA)
+
     if WRITE_LOG_data_to_file:
         with open(log_file_path, "a") as log_filel:
             log_filel.write(logline + "\n")
@@ -1215,7 +1227,7 @@ try:  # -------- outer error handler loop -------------------
         i2c_present_str = "\ni2c device(s) "
         for dv in i2c_devices:
             i2c_present_str += dv + " "
-        # print(i2c_present_str)
+        print_level_msg(i2c_present_str, DEBUG)
 
         # ------------ tcxo clock DS3221 if present ---------------------
         DS3231_present = "0x68" in i2c_devices
@@ -1223,7 +1235,7 @@ try:  # -------- outer error handler loop -------------------
             import adafruit_ds3231
 
             ds3231_rtc = adafruit_ds3231.DS3231(i2c)
-            print("Using DS3231 clock")
+            print_level_msg("Using DS3231 clock", LOGGER_ACTIONS)
             # Attention: the following commands lead to failure to alarm-restart !!!
             # import rtc
             # rtc = rtc.RTC()
@@ -1308,7 +1320,7 @@ try:  # -------- outer error handler loop -------------------
         # base64.b64decode(os.getenv("CIRCUITPY_WIFI_PASSWORD")).decode("utf-8"), #
         # )
         wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
-        print("Connected to WiFi")
+        print_level_msg("Connected to WiFi", LOGGER_ACTIONS)
         pool = socketpool.SocketPool(wifi.radio)
 
     if USE_HTTP_server:
@@ -1333,11 +1345,11 @@ try:  # -------- outer error handler loop -------------------
 
         server = Server(pool, LOGGER_data_dir, debug=True)  # use root dir
 
-        print("starting server..")
+        print_level_msg("starting server..", LOGGER_ACTIONS)
         # startup the server
         try:
             server.start(str(wifi.radio.ipv4_address))
-            print(f"Serving http://{wifi.radio.ipv4_address}:80//{LOGGER_filename}")
+            print_level_msg(f"Serving http://{wifi.radio.ipv4_address}:80//{LOGGER_filename}", VERBOSE)
         #  if the server fails to begin, restart the RPi Pico w
         except OSError:
             if sys.implementation.name == "circuitpython":
@@ -1358,28 +1370,34 @@ try:  # -------- outer error handler loop -------------------
 
     sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])
 
-    print("\nSensor(s) " + sens_header.replace(SEPARATOR, " "))
+    print_level_msg(f"\nSensor(s) {sens_header.replace(SEPARATOR, ' ')}", VERBOSE)
 
-    LOGGER_name = (
-        my_sensors[0].LOGGER_name if LOGGER_name == "" else LOGGER_name
-    )  # get name from sensor object if no other name was pre-defined
+    # get name from sensor object if no other name was pre-defined
+    LOGGER_name = my_sensors[0].LOGGER_name if LOGGER_name == "" else LOGGER_name
 
     # ------------------- init log file and log dir  ------------------------
+
+    # -------------- startup message file logging --------------------------
+    if WRITE_LOG_data_to_file:
+        print_level_msg(f"\nData logging to {log_file_path} in progess...\n", LOGGER_ACTIONS)
+
+    print_level_msg("Terminate with Strg+C\n", VERBOSE)
+
     if LOGGER_data_dir != "" and WRITE_LOG_data_to_file and not dir_exists(LOGGER_data_dir):
         os.mkdir(LOGGER_data_dir)
 
     # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here,
     # use 'target-version = "py38"' for ruff in pyproject.toml
+
     def write_header_line():
+        header_line = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n"
         # use append mode to prevent deleting data. Append makes a new file if none exists.
         with open(log_file_path, "a") as log_filel:
-            log_filel.write(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n")
-        if VERBOSE:
-            print(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header)
+            log_filel.write(header_line)
+        print_level_msg(header_line.rstrip(), LOGDATA)
 
-    if (
-        not file_exists(log_file_path) and WRITE_LOG_data_to_file
-    ):  # test for file presence to assure a single header line
+    # test for file presence to assure a single header line
+    if not file_exists(log_file_path) and WRITE_LOG_data_to_file:
         write_header_line()
 
     # test if found log file header matches detected sensors
@@ -1392,6 +1410,8 @@ try:  # -------- outer error handler loop -------------------
             raise HeaderMismatchError("File header not matching sensors detected")
         elif file_sens_header.strip() != sens_header.strip():
             write_header_line()
+
+    print_level_msg(f"{LOGGER_ID_field_name}{SEPARATOR}{DATE_TIME_field_name}{sens_header}", LOGDATA)
 
     # ----------------- init logger ----------------------------------
     # starttime = time.time() # originally used
@@ -1413,12 +1433,6 @@ try:  # -------- outer error handler loop -------------------
         watchdog.timeout = 7  # Set a timeout of 7 seconds
         watchdog.mode = WatchDogMode.RESET
         watchdog.feed()
-
-    # -------------- startup message file logging --------------------------
-    if WRITE_LOG_data_to_file:
-        print("\nData logging to " + LOGGER_data_dir + os.sep + LOGGER_filename + " in progess....")
-
-    print("Terminate with Strg+C")
 
     if (
         LOG_EXCEPTIONS_to_file
@@ -1526,8 +1540,7 @@ except KeyboardInterrupt:
 
 except Exception as e:
     if LOG_EXCEPTIONS_to_file:
-        if VERBOSE:
-            print(e)
+        print_level_msg(e, VERBOSE)
         with open(exceptions_file_path, "a") as except_log_file:
             try:
                 except_log_file.write(get_time_date_str())
