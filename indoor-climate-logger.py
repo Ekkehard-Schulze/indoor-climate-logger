@@ -253,6 +253,7 @@ class NTPNotInCPython(Exception):
 
 
 def print_level_msg(content, level):
+    """ print with level threshold"""    
     if level <= PRINT_MSG_LEVEL:
         print(content)
 
@@ -1374,13 +1375,13 @@ try:  # -------- outer error handler loop -------------------
     # get name from sensor object if no other name was pre-defined
     LOGGER_name = my_sensors[0].LOGGER_name if LOGGER_name == "" else LOGGER_name
 
-    # ------------------- init log file and log dir  ------------------------
-
     # -------------- startup message file logging --------------------------
     if WRITE_LOG_data_to_file:
         print_level_msg(f"\nData logging to {log_file_path} in progess...\n", LOGGER_ACTIONS)
 
     print_level_msg("Terminate with Strg+C\n", VERBOSE)
+
+    # ------------------- init log file and log dir  ------------------------
 
     if LOGGER_data_dir != "" and WRITE_LOG_data_to_file and not dir_exists(LOGGER_data_dir):
         os.mkdir(LOGGER_data_dir)
@@ -1388,12 +1389,12 @@ try:  # -------- outer error handler loop -------------------
     # Attention CircuitPython 9.2.8 does not tolerate () after with!!! ruff had () inserted here,
     # use 'target-version = "py38"' for ruff in pyproject.toml
 
+    header_line_now = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header_now + "\n"
+
     def write_header_line():
-        header_line = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header_now + "\n"
-        # use append mode to prevent deleting data. Append makes a new file if none exists.
+        """use append mode to prevent deleting data. Append makes a new file if none exists."""
         with open(log_file_path, "a") as log_filel:
-            log_filel.write(header_line)
-        print_level_msg(header_line.rstrip(), LOGDATA)
+            log_filel.write(header_line_now)
 
     if WRITE_LOG_data_to_file:
         if not file_exists(log_file_path):
@@ -1407,7 +1408,7 @@ try:  # -------- outer error handler loop -------------------
                     raise HeaderMismatchError("File header not matching sensors detected")
                 write_header_line()
 
-    print_level_msg(f"{LOGGER_ID_field_name}{SEPARATOR}{DATE_TIME_field_name}{sens_header_now}", LOGDATA)
+    print_level_msg(header_line_now.rstrip(), LOGDATA)
 
     # ----------------- init logger ----------------------------------
     # starttime = time.time() # originally used
