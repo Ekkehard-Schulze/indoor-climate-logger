@@ -1295,6 +1295,8 @@ try:  # -------- outer error handler loop -------------------
         my_sensors[0].filename if LOGGER_filename == "" else LOGGER_filename
     )  # get name from sensor object if no othre name waf pre-defined
 
+    log_file_path = f"{LOGGER_data_dir}{os.sep}{LOGGER_filename}"
+    
     # ------ configure and start http server -----------------
     if USE_HTTP_server or SET_RTC_from_NTP:
         # www code parts for RapberryPi PicoW
@@ -1365,7 +1367,6 @@ try:  # -------- outer error handler loop -------------------
         rtc = RTC()
         rtc.datetime = adafruit_ntp.NTP(pool, tz_offset=UTC_offset_hours, cache_seconds=3600).datetime
 
-    log_file_path = f"{LOGGER_data_dir}{os.sep}{LOGGER_filename}"
     # --------------- collect all sensor names from sensor objects -------------------------------
 
     sens_header_now = "".join([sensor.get_sensor_headers() for sensor in my_sensors])
