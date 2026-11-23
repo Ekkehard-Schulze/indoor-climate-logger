@@ -72,7 +72,7 @@ USE_WATCHdog = False
 # every 7 seconds in your code loops to prevent reset
 # Attention: True lead in combination with
 # MONITOR_WIFI_connection = True for Gundelfingen
-# CO2 logger to Error 205 and non-sceduled reboots
+# CO2 logger to Error 205 and non-scheduled reboots
 
 # used for HTTP-server to force cold-start and WiFi re-connect
 HOURS_between_reboots = 12
