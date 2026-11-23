@@ -383,7 +383,6 @@ if sys.implementation.name == "cpython":  # auto-switch to PC-mode for MS_Window
             interval_ms = LOG_every_n_seconds * FACTOR_s_to_ms
         except ImportError:
             print_level_msg(f"imported {args.settings} failed", VERBOSE)
-            pass
     if args.USB_IC == "0" and platform.system() != "Linux" and "ARM" not in platform.machine().upper():
         parser.print_help()
         sys.exit("You have to choose an USB-Ic.")
@@ -864,6 +863,34 @@ if USE_i2c:
             # Die Formatierungs-Klammern werden jetzt direkt hier übergeben:
             return f"{SEPARATOR}{f(self.scd30.CO2, '{:.0f}')}{SEPARATOR}{f(self.scd30.relative_humidity, '{:.1f}')}"
 
+    class Si7021:
+        """----------- sensor Si7021 Adafruit specific code for logger ------------
+        failed on CPython USB interface U2IF Pico
+        worked on Raspberry Pi Pico 2
+        """
+
+        filename = r"Si7021_log.tsv"
+        i2c_address = "0x40"
+
+        def __init__(self):
+            self.LOGGER_name = "Si7021_logger"
+            self.my_sensor_names = ["Si[°C]", "Si_h%"]
+
+            import adafruit_si7021
+
+            self.si7021 = adafruit_si7021.SI7021(i2c)
+
+        def get_sensor_headers(self):
+            return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
+
+        def get_measurement_str(self):
+            def f(val, fmt):
+                """consider None for formatting"""
+                return fmt.format(val) if val is not None else ""
+
+            return f"{SEPARATOR}{f(self.si7021.temperature, '{:.1f}')}{SEPARATOR}{f(self.si7021.relative_humidity, '{:.1f}')}"
+
+    # -------- end of USE_i2c -----------------------
 
 if USE_MHZ_19_CO2:
 
@@ -949,35 +976,7 @@ if USE_MHZ_19_CO2:
 
             return SEPARATOR + CO2valstr
 
-
-class Si7021:
-    """----------- sensor Si7021 Adafruit specific code for logger ------------
-    failed on CPython USB interface U2IF Pico
-    worked on Raspberry Pi Pico 2
-    """
-
-    filename = r"Si7021_log.tsv"
-    i2c_address = "0x40"
-
-    def __init__(self):
-        self.LOGGER_name = "Si7021_logger"
-        self.my_sensor_names = ["Si[°C]", "Si_h%"]
-
-        import adafruit_si7021
-
-        self.si7021 = adafruit_si7021.SI7021(i2c)
-
-    def get_sensor_headers(self):
-        return SEPARATOR + SEPARATOR.join(self.my_sensor_names)
-
-    def get_measurement_str(self):
-        def f(val, fmt):
-            """consider None for formatting"""
-            return fmt.format(val) if val is not None else ""
-
-        return (
-            f"{SEPARATOR}{f(self.si7021.temperature, '{:.1f}')}{SEPARATOR}{f(self.si7021.relative_humidity, '{:.1f}')}"
-        )
+    # -------- end of USE_MHZ_19_CO2 -----------------------
 
 
 # ============================= end sensor objects ===============================
@@ -1368,9 +1367,9 @@ try:  # -------- outer error handler loop -------------------
     log_file_path = f"{LOGGER_data_dir}{os.sep}{LOGGER_filename}"
     # --------------- collect all sensor names from sensor objects -------------------------------
 
-    sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])
+    sens_header_now = "".join([sensor.get_sensor_headers() for sensor in my_sensors])
 
-    print_level_msg(f"\nSensor(s) {sens_header.replace(SEPARATOR, ' ')}", VERBOSE)
+    print_level_msg(f"\nSensor(s) {sens_header_now.replace(SEPARATOR, ' ')}", VERBOSE)
 
     # get name from sensor object if no other name was pre-defined
     LOGGER_name = my_sensors[0].LOGGER_name if LOGGER_name == "" else LOGGER_name
@@ -1390,28 +1389,25 @@ try:  # -------- outer error handler loop -------------------
     # use 'target-version = "py38"' for ruff in pyproject.toml
 
     def write_header_line():
-        header_line = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n"
+        header_line = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header_now + "\n"
         # use append mode to prevent deleting data. Append makes a new file if none exists.
         with open(log_file_path, "a") as log_filel:
             log_filel.write(header_line)
         print_level_msg(header_line.rstrip(), LOGDATA)
 
-    # test for file presence to assure a single header line
-    if not file_exists(log_file_path) and WRITE_LOG_data_to_file:
-        write_header_line()
-
-    # test if found log file header matches detected sensors
-    elif WRITE_LOG_data_to_file and file_exists(log_file_path):
-        with open(log_file_path) as log_file:
-            file_head_line = log_file.readline()
-        # file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:-1])
-        file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:])
-        if file_sens_header.strip() != sens_header.strip() and REJECT_sensor_changes:
-            raise HeaderMismatchError("File header not matching sensors detected")
-        elif file_sens_header.strip() != sens_header.strip():
+    if WRITE_LOG_data_to_file:
+        if not file_exists(log_file_path):
             write_header_line()
+        else:  # check if now detected header matches file header
+            with open(log_file_path) as log_file:
+                file_head_line = log_file.readline()
+            file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:])
+            if file_sens_header.strip() != sens_header_now.strip():
+                if REJECT_sensor_changes:
+                    raise HeaderMismatchError("File header not matching sensors detected")
+                write_header_line()
 
-    print_level_msg(f"{LOGGER_ID_field_name}{SEPARATOR}{DATE_TIME_field_name}{sens_header}", LOGDATA)
+    print_level_msg(f"{LOGGER_ID_field_name}{SEPARATOR}{DATE_TIME_field_name}{sens_header_now}", LOGDATA)
 
     # ----------------- init logger ----------------------------------
     # starttime = time.time() # originally used
