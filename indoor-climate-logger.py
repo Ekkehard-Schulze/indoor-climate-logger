@@ -1153,6 +1153,7 @@ def write_data_frame():
     if quit_after_one_log:
         sys.exit()
 
+# ------------------- end of utilities ----------------------
 
 # --------------------------- main  ----------------------------
 
